@@ -47,6 +47,8 @@ public class GameManager {
 	// 싱글 또는 멀티일 때
 	public GameManager(GAME_MODE gameMode) {
 		LoadSetting();									// 옵션에서 설정한 세팅 저장
+		MakeDir(defaultCompletedSaveDirectory);
+		MakeDir(defaultIncompletedSaveDirectory);
 		this.gameMode = gameMode;
 		String gMode;									// 게임 모드를 저장하기 위한 스트링
 		p1 = new Player(1, this, wallNum, playerName);
@@ -71,6 +73,8 @@ public class GameManager {
 	// 네트워크 게임일 때
 	public GameManager(GAME_MODE gamemode, NetWorkSocket socket) {
 		LoadSetting();
+		MakeDir(defaultCompletedSaveDirectory);
+		MakeDir(defaultIncompletedSaveDirectory);
 		this.socket = socket;
 		this.gameMode = gamemode;
 		System.out.println(gameMode);
@@ -121,6 +125,8 @@ public class GameManager {
 	
 	// 게임 로드 또는 리플레이 시
 	public GameManager(GAME_MODE gamemode, File file) {
+		MakeDir(defaultCompletedSaveDirectory);
+		MakeDir(defaultIncompletedSaveDirectory);
 		this.gameMode = gamemode;
 		FileReader fin = null;
 		//fileName = file.getName();
@@ -437,6 +443,15 @@ public class GameManager {
 			}
 	}
 	
+	// 폴더 생성
+	public void MakeDir(String dirName)
+	{
+		File Folder = new File(dirName);
+		if(!Folder.exists()) {
+			Folder.mkdir();
+		}
+	}
+
 	public String GetDate()
 	{
 		Calendar now = Calendar.getInstance();
