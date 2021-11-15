@@ -8,15 +8,15 @@ import enums.GAME_MODE;
 import scene.Game;
 
 /*
- * ¼­¹ö¿Í Å¬¶óÀÌ¾ğÆ®¸¦ ´ã´Â ¾²·¹µå
+ * ì„œë²„ì™€ í´ë¼ì´ì–¸íŠ¸ë¥¼ ë‹´ëŠ” ì“°ë ˆë“œ
  */
 
 public class SocketThread extends Thread {
-	private NetWorkSocket socket;	// ¼­¹ö ¶Ç´Â Å¬¶óÀÌ¾ğÆ®
-	private Frame frame;			// Ã¢ Á¾·á¸¦ À§ÇÑ °´Ã¼
-	private String hostIP;			// È£½ºÆ® IP
-	private JTextArea connectLog;	// Åë½Å ±â·Ï
-	private JButton closeBT;		// Ãë¼Ò ¹öÆ°
+	private NetWorkSocket socket;	// ì„œë²„ ë˜ëŠ” í´ë¼ì´ì–¸íŠ¸
+	private Frame frame;			// ì°½ ì¢…ë£Œë¥¼ ìœ„í•œ ê°ì²´
+	private String hostIP;			// í˜¸ìŠ¤íŠ¸ IP
+	private JTextArea connectLog;	// í†µì‹  ê¸°ë¡
+	private JButton closeBT;		// ì·¨ì†Œ ë²„íŠ¼
 	public SocketThread(NetWorkSocket socket, Frame frame) {
 		this.socket = socket;
 		this.frame = frame;
@@ -29,21 +29,21 @@ public class SocketThread extends Thread {
 		this.closeBT = closeBT;
 	}
 	public void run() {
-		// È£½ºÆ®ÀÏ ½Ã
+		// í˜¸ìŠ¤íŠ¸ì¼ ì‹œ
 		if(socket.toString() == "Host" && socket.OpenServer())
 		{
 			GameManager GM = new GameManager(GAME_MODE.NETWORKHOST, getSocket());
-			new Game(GM);		// ³×Æ®¿öÅ© È£½ºÆ®·Î °ÔÀÓ »ı¼º
-			frame.dispose();	// ¿¬°á Ã¢ ´İ±â
+			new Game(GM);		// ë„¤íŠ¸ì›Œí¬ í˜¸ìŠ¤íŠ¸ë¡œ ê²Œì„ ìƒì„±
+			frame.dispose();	// ì—°ê²° ì°½ ë‹«ê¸°
 		}
-		// Å¬¶óÀÌ¾ğÆ®ÀÏ ½Ã
+		// í´ë¼ì´ì–¸íŠ¸ì¼ ì‹œ
 		else if(socket.toString() == "Client" && socket.JoinServer(hostIP, connectLog, closeBT))
 		{
 			GameManager GM = new GameManager(GAME_MODE.NETWORKGUEST, getSocket());
-			new Game(GM);		// ³×Æ®¿öÅ© °Ô½ºÆ®·Î °ÔÀÓ »ı¼º
-			frame.dispose();	// ¿¬°á Ã¢ ´İ±â
+			new Game(GM);		// ë„¤íŠ¸ì›Œí¬ ê²ŒìŠ¤íŠ¸ë¡œ ê²Œì„ ìƒì„±
+			frame.dispose();	// ì—°ê²° ì°½ ë‹«ê¸°
 		}
 	}
-	// ¼ÒÄÏ ¹İÈ¯
+	// ì†Œì¼“ ë°˜í™˜
 	public NetWorkSocket getSocket() { return socket; }
 }

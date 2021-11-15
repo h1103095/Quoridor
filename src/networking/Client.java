@@ -8,17 +8,17 @@ import java.util.Scanner;
 import javax.swing.*;
 
 /*
- * ³×Æ®¿öÅ© °ÔÀÓ¿¡ Âü¿©ÇÏ´Â °Ô½ºÆ®
+ * ë„¤íŠ¸ì›Œí¬ ê²Œì„ì— ì°¸ì—¬í•˜ëŠ” ê²ŒìŠ¤íŠ¸
  */
 
 public class Client extends NetWorkSocket{
-	private Socket socket;			// Åë½ÅÀ» À§ÇÑ ¼ÒÄÏ
-	private byte[] bytes = new byte[20];			// µ¥ÀÌÅÍ¸¦ ¹Ş±â À§ÇÑ º¯¼ö
-	private String receiveMessage;	// ¹ŞÀº µ¥ÀÌÅÍ
-	private String sendMessage;		// º¸³¾ µ¥ÀÌÅÍ
-	private OutputStream os;		// µ¥ÀÌÅÍ¸¦ º¸³»±â À§ÇÑ ½ºÆ®¸²
-	private InputStream is;			// µ¥ÀÌÅÍ¸¦ ¹Ş±â À§ÇÑ ½ºÆ®¸²
-	private InetAddress hostIP;		// È£½ºÆ® IP
+	private Socket socket;			// í†µì‹ ì„ ìœ„í•œ ì†Œì¼“
+	private byte[] bytes = new byte[20];			// ë°ì´í„°ë¥¼ ë°›ê¸° ìœ„í•œ ë³€ìˆ˜
+	private String receiveMessage;	// ë°›ì€ ë°ì´í„°
+	private String sendMessage;		// ë³´ë‚¼ ë°ì´í„°
+	private OutputStream os;		// ë°ì´í„°ë¥¼ ë³´ë‚´ê¸° ìœ„í•œ ìŠ¤íŠ¸ë¦¼
+	private InputStream is;			// ë°ì´í„°ë¥¼ ë°›ê¸° ìœ„í•œ ìŠ¤íŠ¸ë¦¼
+	private InetAddress hostIP;		// í˜¸ìŠ¤íŠ¸ IP
 
 
 	public Client() {
@@ -32,51 +32,51 @@ public class Client extends NetWorkSocket{
 			hostIP = InetAddress.getByName(HostIP);
 			bytes = new byte[20];
 			
-			connectLog.append(HostIP + "¿¡ ¿¬°á ¿äÃ»...\n");
-			socket.connect(new InetSocketAddress(hostIP, 8888)); // ¼­¹ö ¿¬°á
-			connectLog.append("¿¬°á ¼º°ø!\n");
+			connectLog.append(HostIP + "ì— ì—°ê²° ìš”ì²­...\n");
+			socket.connect(new InetSocketAddress(hostIP, 8888)); // ì„œë²„ ì—°ê²°
+			connectLog.append("ì—°ê²° ì„±ê³µ!\n");
 
-			// µ¥ÀÌÅÍ º¸³»±â
+			// ë°ì´í„° ë³´ë‚´ê¸°
 			os = socket.getOutputStream();
 			sendMessage = "Message From Client";
 			bytes = sendMessage.getBytes("UTF-8");
 
 			os.write(bytes, 0, bytes.length);
 			os.flush();
-			System.out.println("µ¥ÀÌÅÍ º¸³»±â ¼º°ø");
-			connectLog.append("µ¥ÀÌÅÍ º¸³»±â ¼º°ø\n");
+			System.out.println("ë°ì´í„° ë³´ë‚´ê¸° ì„±ê³µ");
+			connectLog.append("ë°ì´í„° ë³´ë‚´ê¸° ì„±ê³µ\n");
 
-			// µ¥ÀÌÅÍ ¹Ş±â
+			// ë°ì´í„° ë°›ê¸°
 			is = socket.getInputStream();
 
 			int readByteCount = is.read(bytes);
 			receiveMessage = new String(bytes, 0 , readByteCount, "UTF-8");
-			System.out.println("µ¥ÀÌÅÍ ¹Ş±â ¼º°ø: " + receiveMessage);
-			connectLog.append("µ¥ÀÌÅÍ ¹Ş±â ¼º°ø\n");
+			System.out.println("ë°ì´í„° ë°›ê¸° ì„±ê³µ: " + receiveMessage);
+			connectLog.append("ë°ì´í„° ë°›ê¸° ì„±ê³µ\n");
 			sc.close();
 			
 			return true;
 			
 		} catch (UnknownHostException e) {
-			System.out.println("¿¬°á ½ÇÆĞ. ipÁÖ¼Ò¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä.");
-			connectLog.append("¿¬°á ½ÇÆĞ. ipÁÖ¼Ò¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä.\n");
+			System.out.println("ì—°ê²° ì‹¤íŒ¨. ipì£¼ì†Œë¥¼ í™•ì¸í•´ ì£¼ì„¸ìš”.");
+			connectLog.append("ì—°ê²° ì‹¤íŒ¨. ipì£¼ì†Œë¥¼ í™•ì¸í•´ ì£¼ì„¸ìš”.\n");
 			closeBT.setEnabled(true);
 			CloseSocket();
 			return false;
 		} catch (ConnectException e) {
-			System.out.println("¿¬°á ½ÇÆĞ. ipÁÖ¼Ò¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä.");
-			connectLog.append("¿¬°á ½ÇÆĞ. ipÁÖ¼Ò¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä.\n");
+			System.out.println("ì—°ê²° ì‹¤íŒ¨. ipì£¼ì†Œë¥¼ í™•ì¸í•´ ì£¼ì„¸ìš”.");
+			connectLog.append("ì—°ê²° ì‹¤íŒ¨. ipì£¼ì†Œë¥¼ í™•ì¸í•´ ì£¼ì„¸ìš”.\n");
 			closeBT.setEnabled(true);
 			CloseSocket();
 			return false;
 		} catch (SocketException e) {
-			System.out.println("¼ÒÄÏ ¿À·ù ¹ß»ı");
-			connectLog.append("¼ÒÄÏ ¿À·ù ¹ß»ı\n");
+			System.out.println("ì†Œì¼“ ì˜¤ë¥˜ ë°œìƒ");
+			connectLog.append("ì†Œì¼“ ì˜¤ë¥˜ ë°œìƒ\n");
 			closeBT.setEnabled(true);
 			CloseSocket();
 		} catch (IOException e) {
-			System.out.println("µ¥ÀÌÅÍ ÀÔÃâ·Â ¹®Á¦ ¹ß»ı");
-			connectLog.append("µ¥ÀÌÅÍ ÀÔÃâ·Â ¹®Á¦ ¹ß»ı\n");
+			System.out.println("ë°ì´í„° ì…ì¶œë ¥ ë¬¸ì œ ë°œìƒ");
+			connectLog.append("ë°ì´í„° ì…ì¶œë ¥ ë¬¸ì œ ë°œìƒ\n");
 			closeBT.setEnabled(true);
 			e.printStackTrace();
 			CloseSocket();
@@ -85,7 +85,7 @@ public class Client extends NetWorkSocket{
 		return false;
 	}
 	
-	// µ¥ÀÌÅÍ º¸³»±â
+	// ë°ì´í„° ë³´ë‚´ê¸°
 	public synchronized void SendData(String msg) {
 		try {
 			System.out.println("Send: " + msg);
@@ -99,7 +99,7 @@ public class Client extends NetWorkSocket{
 		}
 	}
 	
-	// µ¥ÀÌÅÍ ¹Ş±â
+	// ë°ì´í„° ë°›ê¸°
 	public synchronized String ReceiveData() {
 		try {
 			is = socket.getInputStream();
@@ -113,14 +113,14 @@ public class Client extends NetWorkSocket{
 		}
 	}
 	
-	// ¼ÒÄÏ ´İ±â
+	// ì†Œì¼“ ë‹«ê¸°
 	public void CloseSocket() {
 		try {
 			if (!socket.isClosed()) {
 				socket.close();
 				is.close();
 				os.close();
-				System.out.println("³×Æ®¿öÅ© ¿¬°áÀ» ²÷½À´Ï´Ù...");
+				System.out.println("ë„¤íŠ¸ì›Œí¬ ì—°ê²°ì„ ëŠìŠµë‹ˆë‹¤...");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -135,13 +135,11 @@ public class Client extends NetWorkSocket{
 
 	@Override
 	public boolean OpenServer() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public String GetHostIP() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

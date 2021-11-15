@@ -13,29 +13,29 @@ import enums.GAME_MODE;
 
 
 /*
- * °ÔÀÓÀÌ ÁøÇàµÇ´Â ÇÁ·¹ÀÓ°ú ±× ±¸¼º¿ä¼Ò
+ * ê²Œì„ì´ ì§„í–‰ë˜ëŠ” í”„ë ˆì„ê³¼ ê·¸ êµ¬ì„±ìš”ì†Œ
  */
 
 /*
  * buttonPanel
  * gamePanel
  * InfoPanel
- * ·Î ±¸¼ºµÊ
+ * ë¡œ êµ¬ì„±ë¨
  */
 
-// °ÔÀÓ È­¸é ±¸¼º
+// ê²Œì„ í™”ë©´ êµ¬ì„±
 public class Game extends JFrame{
-	private GameManager GM;												// °ÔÀÓÀ» Á¾ÇÕÀûÀ¸·Î °ü¸®ÇÏ´Â °ÔÀÓ ¸Å´ÏÀú
-	private GamePanel gamePanel;										// °ÔÀÓ È­¸éÀ» Ãâ·ÂÇÏ´Â ÆĞ³Î
-	private ButtonPanel buttonPanel;									// ¹öÆ°À» Ãâ·ÂÇÏ´Â ÆĞ³Î
-	private InfoPanel infoPanel;										// ÅÏ Á¤º¸¸¦ Ãâ·ÂÇÏ´Â ÆĞ³Î
-	private GameSound move_sound = new GameSound("sounds/move.wav");	// ÀÌµ¿ »ç¿îµå
-	private GameSound wall_sound = new GameSound("sounds/wall.wav");	// º® »ç¿îµå
+	private GameManager GM;												// ê²Œì„ì„ ì¢…í•©ì ìœ¼ë¡œ ê´€ë¦¬í•˜ëŠ” ê²Œì„ ë§¤ë‹ˆì €
+	private GamePanel gamePanel;										// ê²Œì„ í™”ë©´ì„ ì¶œë ¥í•˜ëŠ” íŒ¨ë„
+	private ButtonPanel buttonPanel;									// ë²„íŠ¼ì„ ì¶œë ¥í•˜ëŠ” íŒ¨ë„
+	private InfoPanel infoPanel;										// í„´ ì •ë³´ë¥¼ ì¶œë ¥í•˜ëŠ” íŒ¨ë„
+	private GameSound move_sound = new GameSound("sounds/move.wav");	// ì´ë™ ì‚¬ìš´ë“œ
+	private GameSound wall_sound = new GameSound("sounds/wall.wav");	// ë²½ ì‚¬ìš´ë“œ
 	
 	public Game(GameManager gm) {
 		this.GM = gm;
 		
-		/* È­¸é ±¸¼º */
+		/* í™”ë©´ êµ¬ì„± */
 		setTitle("game");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Container contentPane = getContentPane();
@@ -43,7 +43,7 @@ public class Game extends JFrame{
 		infoPanel = new InfoPanel(GM);
 		gamePanel = new GamePanel(GM, this);
 		
-		// ÆĞ³Îµé ÇÕÄ¡±â
+		// íŒ¨ë„ë“¤ í•©ì¹˜ê¸°
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setBackground(new Color(150, 50, 0));
 		
@@ -55,7 +55,7 @@ public class Game extends JFrame{
 		setVisible(true);
 	}
 	
-	// °ÔÀÓ ³» »ç¿îµå
+	// ê²Œì„ ë‚´ ì‚¬ìš´ë“œ
 	class GameSound{
 		File file;
 		GameSound(String root) { 
@@ -73,26 +73,26 @@ public class Game extends JFrame{
 					Clip clip = AudioSystem.getClip();
 					clip.open(inputStream);
 					FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			        float volume = (float)((GM.GetVolume()/2) + 10) / 20;					// ¼³Á¤ º¼·ı
-			        float range = control.getMaximum() - control.getMinimum();	// ¹üÀ§ °è»ê
-			        float result = (range * volume) + control.getMinimum();		// ÃÖÁ¾ º¼·ı°ª
-			        control.setValue(result);									// º¼·ı ¼³Á¤
-					clip.start();												// ¼Ò¸® Àç»ı
+			        float volume = (float)((GM.GetVolume()/2) + 10) / 20;					// ì„¤ì • ë³¼ë¥¨
+			        float range = control.getMaximum() - control.getMinimum();	// ë²”ìœ„ ê³„ì‚°
+			        float result = (range * volume) + control.getMinimum();		// ìµœì¢… ë³¼ë¥¨ê°’
+			        control.setValue(result);									// ë³¼ë¥¨ ì„¤ì •
+					clip.start();												// ì†Œë¦¬ ì¬ìƒ
 				} catch(Exception e)
 				{
-					System.out.println("»ç¿îµå Ãâ·Â ¿À·ù");
+					System.out.println("ì‚¬ìš´ë“œ ì¶œë ¥ ì˜¤ë¥˜");
 				}
 			}
 		}
 			
 	}
 	
-	// °ÔÀÓ È­¸é¿¡¼­ »ó´ÜÀÇ ¹öÆ° ÆĞ³Î
+	// ê²Œì„ í™”ë©´ì—ì„œ ìƒë‹¨ì˜ ë²„íŠ¼ íŒ¨ë„
 	class ButtonPanel extends JPanel {
 		JButton[] menuButtons = new JButton[5];
 		GameManager GM;
 		GAME_MODE gameMode;
-		private Frame Game; // Ã¢À» ´İ±â À§ÇÑ º¯¼ö
+		private Frame Game; // ì°½ì„ ë‹«ê¸° ìœ„í•œ ë³€ìˆ˜
 		
 		ButtonPanel(GameManager gm, Frame game) {
 			this.Game = game;
@@ -100,9 +100,9 @@ public class Game extends JFrame{
 			this.gameMode = GM.GetGameMode();
 			setBackground(new Color(150, 50, 0));
 			
-			// ¸Ş´º ÆĞ³Î ¹öÆ° ¹èÄ¡
+			// ë©”ë‰´ íŒ¨ë„ ë²„íŠ¼ ë°°ì¹˜
 			setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-			String[] menubtStrings = {"Àå¾Ö¹°", "Back", "Next", "ÀúÀå", "±â±Ç" };
+			String[] menubtStrings = {"ì¥ì• ë¬¼", "Back", "Next", "ì €ì¥", "ê¸°ê¶Œ" };
 			
 			BtnListener listener = new BtnListener();
 			
@@ -112,7 +112,7 @@ public class Game extends JFrame{
 				this.add(menuButtons[i]); 
 			}
 			
-			// ³×Æ®¿öÅ© °ÔÀÓÀÏ ½Ã
+			// ë„¤íŠ¸ì›Œí¬ ê²Œì„ì¼ ì‹œ
 			if(gameMode == GAME_MODE.NETWORKHOST || gameMode == GAME_MODE.NETWORKGUEST)
 			{
 				menuButtons[1].setEnabled(false);
@@ -129,7 +129,7 @@ public class Game extends JFrame{
 		
 		class BtnListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == menuButtons[0]) {			// Àå¾Ö¹°
+				if(e.getSource() == menuButtons[0]) {			// ì¥ì• ë¬¼
 					GM.ChangePutMode();
 					Game.repaint();
 				}else if(e.getSource() == menuButtons[1]) {		// prev
@@ -142,32 +142,32 @@ public class Game extends JFrame{
 					gamePanel.moveTurn(msg, false);
 					msg = GM.GetNextTurn();
 					gamePanel.moveTurn(msg, false);
-				}else if(e.getSource() == menuButtons[3]) {		// ÀúÀå
+				}else if(e.getSource() == menuButtons[3]) {		// ì €ì¥
 					String defaultFileName;
 					defaultFileName = GM.GetFileName();
-					String fileName= JOptionPane.showInputDialog("ÀúÀåÇÒ ÆÄÀÏ¸íÀ» ÀÔ·ÂÇÏ¼¼¿ä.", defaultFileName);
+					String fileName= JOptionPane.showInputDialog("ì €ì¥í•  íŒŒì¼ëª…ì„ ì…ë ¥í•˜ì„¸ìš”.", defaultFileName);
 					if(fileName != null)
 					{
 						GM.Save(fileName, false);
 						new Menu();
 						Game.dispose();
 					}
-				}else if(e.getSource() == menuButtons[4]) {		// ±â±Ç
-					int give_up= JOptionPane.showConfirmDialog(null, "Á¤¸»·Î ±â±ÇÇÏ½Ã°Ú½À´Ï±î?", "Àá±ñ", JOptionPane.YES_NO_OPTION);
+				}else if(e.getSource() == menuButtons[4]) {		// ê¸°ê¶Œ
+					int give_up= JOptionPane.showConfirmDialog(null, "ì •ë§ë¡œ ê¸°ê¶Œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "ì ê¹", JOptionPane.YES_NO_OPTION);
 					if(give_up == JOptionPane.YES_OPTION)
 					{
 						if(gameMode == GAME_MODE.NETWORKHOST || gameMode == GAME_MODE.NETWORKGUEST)
 							GM.SendData("Give up");
 						if(GM.GetTurn() == false)
 						{
-							JOptionPane.showMessageDialog(null, GM.p1.getPlayerName() + " ½Â¸®", "°ÔÀÓ °á°ú", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, GM.p1.getPlayerName() + " ìŠ¹ë¦¬", "ê²Œì„ ê²°ê³¼", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
 							new Menu();
 							GM.Save(GM.GetDate(), true);
 							Game.dispose();
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, GM.p2.getPlayerName() + " ½Â¸®", "°ÔÀÓ °á°ú", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, GM.p2.getPlayerName() + " ìŠ¹ë¦¬", "ê²Œì„ ê²°ê³¼", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
 							new Menu();
 							GM.Save(GM.GetDate(), true);
 							Game.dispose();
@@ -179,23 +179,23 @@ public class Game extends JFrame{
 
 		
 		public void checkbtAvailable() {
-			if(GM.GetTurn() == true)						// °ËÁ¤ ÅÏ
+			if(GM.GetTurn() == true)						// ê²€ì • í„´
 			{
-				if(gameMode == GAME_MODE.NETWORKHOST)		// ³×Æ®¿öÅ© È£½ºÆ®ÀÏ ¶§
+				if(gameMode == GAME_MODE.NETWORKHOST)		// ë„¤íŠ¸ì›Œí¬ í˜¸ìŠ¤íŠ¸ì¼ ë•Œ
 				{
-					if(GM.p1.getWallNum() == 0)				// ¼³Ä¡ °¡´ÉÇÑ º®ÀÇ ¼ö°¡ 0ÀÏ ¶§
-						menuButtons[0].setEnabled(false);	// Àå¾Ö¹° ¹öÆ° ºñÈ°¼ºÈ­
+					if(GM.p1.getWallNum() == 0)				// ì„¤ì¹˜ ê°€ëŠ¥í•œ ë²½ì˜ ìˆ˜ê°€ 0ì¼ ë•Œ
+						menuButtons[0].setEnabled(false);	// ì¥ì• ë¬¼ ë²„íŠ¼ ë¹„í™œì„±í™”
 					else
-						menuButtons[0].setEnabled(true);	// Àå¾Ö¹° ¹öÆ° È°¼ºÈ­
-					menuButtons[4].setEnabled(true);		// ±â±Ç ¹öÆ° È°¼ºÈ­
+						menuButtons[0].setEnabled(true);	// ì¥ì• ë¬¼ ë²„íŠ¼ í™œì„±í™”
+					menuButtons[4].setEnabled(true);		// ê¸°ê¶Œ ë²„íŠ¼ í™œì„±í™”
 				}
 				else if(gameMode == GAME_MODE.NETWORKGUEST)
 				{
-					menuButtons[0].setEnabled(false);		// Àå¾Ö¹° ¹öÆ° ºñÈ°¼ºÈ­
-					menuButtons[4].setEnabled(false);		// ±â±Ç ¹öÆ° ºñÈ°¼ºÈ­
+					menuButtons[0].setEnabled(false);		// ì¥ì• ë¬¼ ë²„íŠ¼ ë¹„í™œì„±í™”
+					menuButtons[4].setEnabled(false);		// ê¸°ê¶Œ ë²„íŠ¼ ë¹„í™œì„±í™”
 				}
 				
-				else										// 1ÀÎ ¶Ç´Â 2ÀÎ ¸ğµå
+				else										// 1ì¸ ë˜ëŠ” 2ì¸ ëª¨ë“œ
 				{
 					if(GM.p1.getWallNum() == 0)				
 						menuButtons[0].setEnabled(false);
@@ -204,19 +204,19 @@ public class Game extends JFrame{
 					if(gameMode == GAME_MODE.SINGLE)
 					{
 						if(GM.GetSelectTurn() <= 2)
-							menuButtons[1].setEnabled(false);	// ÀÌÀü ¹öÆ° ºñÈ°¼ºÈ­
+							menuButtons[1].setEnabled(false);	// ì´ì „ ë²„íŠ¼ ë¹„í™œì„±í™”
 						else
-							menuButtons[1].setEnabled(true);	// ÀÌÀü ¹öÆ° È°¼ºÈ­
+							menuButtons[1].setEnabled(true);	// ì´ì „ ë²„íŠ¼ í™œì„±í™”
 						if(GM.GetTurnCount() > GM.GetSelectTurn())
-							menuButtons[2].setEnabled(true);	// ´ÙÀ½ ¹öÆ° È°¼ºÈ­
+							menuButtons[2].setEnabled(true);	// ë‹¤ìŒ ë²„íŠ¼ í™œì„±í™”
 						else
-							menuButtons[2].setEnabled(false);	// ´ÙÀ½ ¹öÆ° ºñÈ°¼ºÈ­
+							menuButtons[2].setEnabled(false);	// ë‹¤ìŒ ë²„íŠ¼ ë¹„í™œì„±í™”
 					}
 				}
 			}
-			else											// ÇÏ¾ç ÅÏ
+			else											// í•˜ì–‘ í„´
 			{
-				if(gameMode == GAME_MODE.NETWORKGUEST)		// ³×Æ®¿öÅ© ¸ğµåÀÏ ‹š
+				if(gameMode == GAME_MODE.NETWORKGUEST)		// ë„¤íŠ¸ì›Œí¬ ëª¨ë“œì¼ ë–„
 				{
 					if(GM.p2.getWallNum() == 0)
 						menuButtons[0].setEnabled(false);
@@ -231,18 +231,18 @@ public class Game extends JFrame{
 				}
 				else
 				{
-					if(GM.p2.getWallNum() == 0)				// 1ÀÎ ¶Ç´Â 2ÀÎ ¸ğµå
+					if(GM.p2.getWallNum() == 0)				// 1ì¸ ë˜ëŠ” 2ì¸ ëª¨ë“œ
 						menuButtons[0].setEnabled(false);
 					else
 						menuButtons[0].setEnabled(true);
-					menuButtons[1].setEnabled(false);		// ÀÌÀü ¹öÆ° ºñÈ°¼ºÈ­
-					menuButtons[2].setEnabled(false);		// ´ÙÀ½ ¹öÆ° ºñÈ°¼ºÈ­
+					menuButtons[1].setEnabled(false);		// ì´ì „ ë²„íŠ¼ ë¹„í™œì„±í™”
+					menuButtons[2].setEnabled(false);		// ë‹¤ìŒ ë²„íŠ¼ ë¹„í™œì„±í™”
 				}
 			}
 		}
 	}
 
-	// °ÔÀÓÀÌ ÁøÇàµÇ´Â ÆĞ³Î
+	// ê²Œì„ì´ ì§„í–‰ë˜ëŠ” íŒ¨ë„
 	class GamePanel extends JPanel{
 		GameManager GM;
 		NetWorkThread netThread;
@@ -250,10 +250,10 @@ public class Game extends JFrame{
 		Point[] availablePoints;
 		private Frame Game;
 		boolean turn;
-		int wallNum = -1; // ¹üÀ§ (100 ~ 288) ½ÊÀÇ ÀÚ¸® ¼ö¿Í ÀÏÀÇ ÀÚ¸® ¼ö´Â ÁÂÇ¥»óÀÇ À§Ä¡ ³ªÅ¸³¿, 8º¸´Ù Å©Áö ¾ÊÀ½. 8ÀÏ ½Ã 7·Î ¹Ù²Ù¾î °è»ê
+		int wallNum = -1; // ë²”ìœ„ (100 ~ 288) ì‹­ì˜ ìë¦¬ ìˆ˜ì™€ ì¼ì˜ ìë¦¬ ìˆ˜ëŠ” ì¢Œí‘œìƒì˜ ìœ„ì¹˜ ë‚˜íƒ€ëƒ„, 8ë³´ë‹¤ í¬ì§€ ì•ŠìŒ. 8ì¼ ì‹œ 7ë¡œ ë°”ê¾¸ì–´ ê³„ì‚°
 		
 		GamePanel(GameManager gm,  Frame game) {
-			this.GM = gm; // °ÔÀÓ ¸Ş´ÏÀú ºÒ·¯¿È
+			this.GM = gm; // ê²Œì„ ë©”ë‹ˆì € ë¶ˆëŸ¬ì˜´
 			this.gameMode = GM.GetGameMode();
 			this.Game = game;
 			
@@ -272,33 +272,33 @@ public class Game extends JFrame{
 					GM.Record(msg);
 				}
 			}
-			else if(gameMode == GAME_MODE.NETWORKHOST || gameMode == GAME_MODE.NETWORKGUEST) // ³×Æ®¿öÅ© °ÔÀÓÀÏ ½Ã
+			else if(gameMode == GAME_MODE.NETWORKHOST || gameMode == GAME_MODE.NETWORKGUEST) // ë„¤íŠ¸ì›Œí¬ ê²Œì„ì¼ ì‹œ
 			{
-				netThread = new NetWorkThread(GM.GetSocket());							// Åë½Å À§ÇÑ ¾²·¹µå »ı¼º
+				netThread = new NetWorkThread(GM.GetSocket());							// í†µì‹  ìœ„í•œ ì“°ë ˆë“œ ìƒì„±
 				if((gameMode == GAME_MODE.NETWORKHOST && GM.GetTurn() == false) || (gameMode == GAME_MODE.NETWORKGUEST && GM.GetTurn() == true))
-				{																			// ³×Æ®¿öÅ© °ÔÀÓ¿¡¼­ ½ÃÀÛ ½Ã ÀÚ½ÅÀÇ ÅÏÀÌ ¾Æ´Ò ½Ã
-					netThread.start();														// »ó´ë·ÎºÎÅÍ »ó´ëÀÇ Çàµ¿ ¹Ş¾Æ¿È
-					availablePoints = GM.GetAvailablePoint();								// ÀÌµ¿ °¡´ÉÇÑ À§Ä¡ Ç¥½Ã. ÀÌ »óÅÂ¿¡¼­´Â ÀÌµ¿ °¡´ÉÇÑ À§Ä¡°¡ Ç¥½ÃµÇÁö ¾Ê°Ô ÇÏ±â À§ÇÔ
-					buttonPanel.checkbtAvailable();											// ¹öÆ°ÀÇ °¡´É ¿©ºÎ ¼³Á¤
+				{																			// ë„¤íŠ¸ì›Œí¬ ê²Œì„ì—ì„œ ì‹œì‘ ì‹œ ìì‹ ì˜ í„´ì´ ì•„ë‹ ì‹œ
+					netThread.start();														// ìƒëŒ€ë¡œë¶€í„° ìƒëŒ€ì˜ í–‰ë™ ë°›ì•„ì˜´
+					availablePoints = GM.GetAvailablePoint();								// ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ í‘œì‹œ. ì´ ìƒíƒœì—ì„œëŠ” ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ê°€ í‘œì‹œë˜ì§€ ì•Šê²Œ í•˜ê¸° ìœ„í•¨
+					buttonPanel.checkbtAvailable();											// ë²„íŠ¼ì˜ ê°€ëŠ¥ ì—¬ë¶€ ì„¤ì •
 				}
 			}
 		}
 		
-		// µ¥ÀÌÅÍ¸¦ ¹Ş±â À§ÇÑ ¾²·¹µå
-		// ¾²·¹µå¸¦ »ı¼ºÇÏÁö ¾ÊÀ» ½Ã ÇÁ·Î±×·¥ÀÌ °è¼Ó ´ë±â »óÅÂ·Î À¯ÁöµÊ
+		// ë°ì´í„°ë¥¼ ë°›ê¸° ìœ„í•œ ì“°ë ˆë“œ
+		// ì“°ë ˆë“œë¥¼ ìƒì„±í•˜ì§€ ì•Šì„ ì‹œ í”„ë¡œê·¸ë¨ì´ ê³„ì† ëŒ€ê¸° ìƒíƒœë¡œ ìœ ì§€ë¨
 		class NetWorkThread extends Thread {
-			NetWorkSocket socket;							// ¼­¹ö ¶Ç´Â Å¬¶óÀÌ¾ğÆ®
+			NetWorkSocket socket;							// ì„œë²„ ë˜ëŠ” í´ë¼ì´ì–¸íŠ¸
 			NetWorkThread(NetWorkSocket socket) {
 				this.socket = socket;
 			}
 			public void run() {
 				System.out.println("!");
-				String turnInfo = socket.ReceiveData();		// ¼ÒÄÏÀ¸·ÎºÎÅÍ µ¥ÀÌÅÍ ¹Ş¾Æ¿È
-				if(turnInfo.length() <= 7)					// Ã¹ ÅÏÀÌ Å¬¶óÀÌ¾ğÆ®ÀÏ ½Ã ¼­¹ö¿¡¼­ ÅÏ Á¤º¸°¡ ¿ÏÀüÈ÷ ¹Ş¾ÆÁöÁö ¾Ê´Â ¿À·ù Á¸Àç
-				{											// ±× ¿À·ù¸¦ ÇØ°áÇÏ±â À§ÇÑ ÄÚµå
-					turnInfo += socket.ReceiveData();		// ÅÏ Á¤º¸°¡ ¿ÏÀüÈ÷ ¹Ş¾ÆÁöÁö ¾ÊÀ» ½Ã ³²Àº Á¤º¸¸¦ ÀÌ¾î¼­ ¹ŞÀ½
+				String turnInfo = socket.ReceiveData();		// ì†Œì¼“ìœ¼ë¡œë¶€í„° ë°ì´í„° ë°›ì•„ì˜´
+				if(turnInfo.length() <= 7)					// ì²« í„´ì´ í´ë¼ì´ì–¸íŠ¸ì¼ ì‹œ ì„œë²„ì—ì„œ í„´ ì •ë³´ê°€ ì™„ì „íˆ ë°›ì•„ì§€ì§€ ì•ŠëŠ” ì˜¤ë¥˜ ì¡´ì¬
+				{											// ê·¸ ì˜¤ë¥˜ë¥¼ í•´ê²°í•˜ê¸° ìœ„í•œ ì½”ë“œ
+					turnInfo += socket.ReceiveData();		// í„´ ì •ë³´ê°€ ì™„ì „íˆ ë°›ì•„ì§€ì§€ ì•Šì„ ì‹œ ë‚¨ì€ ì •ë³´ë¥¼ ì´ì–´ì„œ ë°›ìŒ
 				}
-				updateTurn(turnInfo);						// ÅÏ Á¤º¸·Î ÅÏ ¾÷µ¥ÀÌÆ®. »ó´ë¹æÀÇ Çàµ¿¿¡ ÀÇÇÑ °ÔÀÓ »óÈ²À» Àû¿ëÇÏ±â À§ÇÔ
+				updateTurn(turnInfo);						// í„´ ì •ë³´ë¡œ í„´ ì—…ë°ì´íŠ¸. ìƒëŒ€ë°©ì˜ í–‰ë™ì— ì˜í•œ ê²Œì„ ìƒí™©ì„ ì ìš©í•˜ê¸° ìœ„í•¨
 				return;
 			}
 		}
@@ -307,11 +307,11 @@ public class Game extends JFrame{
 		class MyMouseListener implements MouseListener, MouseMotionListener {
 
 			MyMouseListener() {
-				availablePoints = GM.GetAvailablePoint();	// ÀÌµ¿ °¡´ÉÇÑ À§Ä¡ ¹Ş¾Æ¿È
-				turn = GM.GetTurn();						// ÇöÀç ÅÏ ¹Ş¾Æ¿È
+				availablePoints = GM.GetAvailablePoint();	// ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ ë°›ì•„ì˜´
+				turn = GM.GetTurn();						// í˜„ì¬ í„´ ë°›ì•„ì˜´
 			}
 			
-			// ¸¶¿ì½º°¡ ´­·ÈÀ» ¶§
+			// ë§ˆìš°ìŠ¤ê°€ ëˆŒë ¸ì„ ë•Œ
 			public void mousePressed(MouseEvent e) {
 				Point p = e.getPoint();
 				turn = GM.GetTurn();
@@ -324,12 +324,12 @@ public class Game extends JFrame{
 				else
 					prevPosition = Integer.toString(GM.p2.getPoint().x) + " " + Integer.toString(GM.p2.getPoint().y);
 				if((gameMode == GAME_MODE.NETWORKHOST && turn == false) || (gameMode == GAME_MODE.NETWORKGUEST && turn == true))
-				{	// ³×Æ®¿öÅ© °ÔÀÓÀÌ¸é¼­ ³ªÀÇ ÅÏÀÌ ¾Æ´Ò ½Ã
-					// ¾Æ¹«°Íµµ ¾ÈÇÔ
+				{	// ë„¤íŠ¸ì›Œí¬ ê²Œì„ì´ë©´ì„œ ë‚˜ì˜ í„´ì´ ì•„ë‹ ì‹œ
+					// ì•„ë¬´ê²ƒë„ ì•ˆí•¨
 				}
-				else	// ´Ù¸¥ ¸ğµç °æ¿ì
+				else	// ë‹¤ë¥¸ ëª¨ë“  ê²½ìš°
 				{
-					availablePoints = GM.GetAvailablePoint();	// ÀÌµ¿ °¡´ÉÇÑ À§Ä¡ ¹Ş¾Æ¿È
+					availablePoints = GM.GetAvailablePoint();	// ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ ë°›ì•„ì˜´
 					
 					if(GM.GetPutMode() == true)
 					{
@@ -349,29 +349,29 @@ public class Game extends JFrame{
 					}
 					else
 					{
-						// ÀÌµ¿ °¡´ÉÇÑ À§Ä¡ÀÎÁö È®ÀÎ
+						// ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ì¸ì§€ í™•ì¸
 						for(int i = 0; i < 4; i++)
 						{
-							// ÀÌµ¿ ºÒ°¡´ÉÇÑ À§Ä¡´Â (9, 9)·Î ÀúÀåµÇ¾î ÀÖÀ½
+							// ì´ë™ ë¶ˆê°€ëŠ¥í•œ ìœ„ì¹˜ëŠ” (9, 9)ë¡œ ì €ì¥ë˜ì–´ ìˆìŒ
 							if(availablePoints[i].x != 9 && availablePoints[i].y != 9)
 							{
-								// ¸¶¿ì½º°¡ Ä­ ¾È¿¡ µé¾îÀÖÀ» ¶§
+								// ë§ˆìš°ìŠ¤ê°€ ì¹¸ ì•ˆì— ë“¤ì–´ìˆì„ ë•Œ
 								if(p.x >= availablePoints[i].x*38 && p.x <= (availablePoints[i].x + 1) *38 &&
 										p.y >= availablePoints[i].y*38 && p.y <= (availablePoints[i].y + 1) *38)
 								{
-									// ÇÃ·¹ÀÌ¾î À§Ä¡ Á¤º¸ º¯°æ
+									// í”Œë ˆì´ì–´ ìœ„ì¹˜ ì •ë³´ ë³€ê²½
 									if(turn == true)
 										GM.p1.movePlayer(new Point(availablePoints[i].x, availablePoints[i].y));
 									else
 										GM.p2.movePlayer(new Point(availablePoints[i].x, availablePoints[i].y));
 									
-									// È­¸é ´Ù½Ã ±×¸®±â
+									// í™”ë©´ ë‹¤ì‹œ ê·¸ë¦¬ê¸°
 									repaint();
 									
-									// ÅÏ ¹øÈ£ ¼³Á¤ ¹× °ÔÀÓ ±â·Ï ÀÏºÎ »èÁ¦
+									// í„´ ë²ˆí˜¸ ì„¤ì • ë° ê²Œì„ ê¸°ë¡ ì¼ë¶€ ì‚­ì œ
 									GM.SetTurnCount();
 									
-									// ´ÙÀ½ ÅÏÀ¸·Î ³Ñ±è
+									// ë‹¤ìŒ í„´ìœ¼ë¡œ ë„˜ê¹€
 									GM.NextTurn();
 									buttonPanel.checkbtAvailable();
 									
@@ -382,33 +382,33 @@ public class Game extends JFrame{
 									
 									move_sound.play();
 									
-									// ÀÌµ¿Àº ÇÑ¹ø¸¸ ÇÏ¹Ç·Î ¶Ç ¹İº¹ÇÒ ÇÊ¿ä ¾øÀ½
+									// ì´ë™ì€ í•œë²ˆë§Œ í•˜ë¯€ë¡œ ë˜ ë°˜ë³µí•  í•„ìš” ì—†ìŒ
 									break;
 								}
 							}
 						}
 					}
-					//½Â¸® ¿©ºÎ °Ë»ç				
+					//ìŠ¹ë¦¬ ì—¬ë¶€ ê²€ì‚¬				
 					if(GM.GameOver())
 					{
-						GM.Record(msg);	// Á¤º¸ ÀúÀå
+						GM.Record(msg);	// ì •ë³´ ì €ì¥
 						if(gameMode == GAME_MODE.NETWORKHOST || gameMode == GAME_MODE.NETWORKGUEST)
 						{
-							GM.SendData(msg);				// µ¥ÀÌÅÍ º¸³»±â
-							GM.GetSocket().CloseSocket();	// ¼ÒÄÏ ´İ±â
+							GM.SendData(msg);				// ë°ì´í„° ë³´ë‚´ê¸°
+							GM.GetSocket().CloseSocket();	// ì†Œì¼“ ë‹«ê¸°
 							game_over = true;
 						}
 						GM.Save(GM.GetDate(), true);
 						game_over = true;
 						if(turn == true)
 						{
-							JOptionPane.showMessageDialog(null, GM.p2.getPlayerName() + " ½Â¸®", "°ÔÀÓ °á°ú", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, GM.p2.getPlayerName() + " ìŠ¹ë¦¬", "ê²Œì„ ê²°ê³¼", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
 							new Menu();
 							Game.dispose();
 						}
 						else
 						{
-							JOptionPane.showMessageDialog(null, GM.p1.getPlayerName() + " ½Â¸®", "°ÔÀÓ °á°ú", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, GM.p1.getPlayerName() + " ìŠ¹ë¦¬", "ê²Œì„ ê²°ê³¼", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
 							new Menu();
 							Game.dispose();
 						}
@@ -418,13 +418,13 @@ public class Game extends JFrame{
 					{
 						if(gameMode == GAME_MODE.SINGLE)
 						{
-							if(turn == false && game_over == false) // AI ÅÏÀÌ°í °ÔÀÓÀÌ ³¡³ªÁö ¾Ê¾ÒÀ» °æ¿ì
-							{										// == ³»°¡ µ¹À» µÎ°í ³­ ÈÄ
-								GM.Record(msg);						// ÅÏ Á¤º¸ ±â·Ï
-								msg = GM.p2.AIBehavior();			// AIÀÇ Çàµ¿ ¹Ş¾Æ¿È
-								updateTurn(msg);					// AIÀÇ Çàµ¿ ½ÇÇà
-								GM.Record(msg);						// AIÀÇ Çàµ¿ ±â·Ï
-													// ÅÏ ¼ö¿Í °ÔÀÓ ·Î±×¸¦ ¾÷µ¥ÀÌÆ®
+							if(turn == false && game_over == false) // AI í„´ì´ê³  ê²Œì„ì´ ëë‚˜ì§€ ì•Šì•˜ì„ ê²½ìš°
+							{										// == ë‚´ê°€ ëŒì„ ë‘ê³  ë‚œ í›„
+								GM.Record(msg);						// í„´ ì •ë³´ ê¸°ë¡
+								msg = GM.p2.AIBehavior();			// AIì˜ í–‰ë™ ë°›ì•„ì˜´
+								updateTurn(msg);					// AIì˜ í–‰ë™ ì‹¤í–‰
+								GM.Record(msg);						// AIì˜ í–‰ë™ ê¸°ë¡
+													// í„´ ìˆ˜ì™€ ê²Œì„ ë¡œê·¸ë¥¼ ì—…ë°ì´íŠ¸
 							}
 						}
 						else if((gameMode == GAME_MODE.NETWORKHOST || gameMode == GAME_MODE.NETWORKGUEST) && !game_over)
@@ -443,7 +443,7 @@ public class Game extends JFrame{
 			}
 			
 			
-			// ¸¶¿ì½º°¡ ¿òÁ÷¿´À» ¶§
+			// ë§ˆìš°ìŠ¤ê°€ ì›€ì§ì˜€ì„ ë•Œ
 			public void mouseMoved(MouseEvent e) {
 				Point p = e.getPoint();
 
@@ -462,11 +462,11 @@ public class Game extends JFrame{
 			public void mouseDragged(MouseEvent e) { }
 		}
 		
-		// ÅÏ ÀÌµ¿½Ã È£ÃâµÇ´Â ÇÔ¼ö
+		// í„´ ì´ë™ì‹œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
 		public void moveTurn(String turnInfo, boolean moveToPrev) {
 			if(moveToPrev == true)
 			{
-				if(turnInfo.substring(6, 10).equals("Wall"))	// º® »ı¼º
+				if(turnInfo.substring(6, 10).equals("Wall"))	// ë²½ ìƒì„±
 				{
 					int wallNum = Integer.valueOf(turnInfo.substring(11, 14));
 					if(turnInfo.substring(0, 5).equals("Black"))
@@ -475,7 +475,7 @@ public class Game extends JFrame{
 						GM.DeleteWallNum(wallNum, false);
 					infoPanel.UpdateWallLabel();
 				}
-				else if(turnInfo.substring(6, 10).equals("Move"))	// ÀÌµ¿
+				else if(turnInfo.substring(6, 10).equals("Move"))	// ì´ë™
 				{
 					int moveX = Integer.valueOf(turnInfo.substring(11,12));
 					int moveY = Integer.valueOf(turnInfo.substring(13,14));
@@ -519,15 +519,15 @@ public class Game extends JFrame{
 			repaint();
 		}
 		
-		// NetWorkThread¿¡¼­ È£Ãâ, »ó´ë¹æÀÇ ÅÏ Á¤º¸¸¦ ¹Ş¾Æ¿Í¼­ °ÔÀÓ ¾÷µ¥ÀÌÆ®
+		// NetWorkThreadì—ì„œ í˜¸ì¶œ, ìƒëŒ€ë°©ì˜ í„´ ì •ë³´ë¥¼ ë°›ì•„ì™€ì„œ ê²Œì„ ì—…ë°ì´íŠ¸
 		public void updateTurn(String turnInfo) {
-			if(turnInfo.substring(0,4).equals("Wall"))		// º® »ı¼º
+			if(turnInfo.substring(0,4).equals("Wall"))		// ë²½ ìƒì„±
 			{
 				int wallNum = Integer.valueOf(turnInfo.substring(5, 8));
 				GM.PutWallNum(wallNum, turn);
 				infoPanel.UpdateWallLabel();
 			}
-			else if(turnInfo.substring(0,4).equals("Move"))	// ÀÌµ¿
+			else if(turnInfo.substring(0,4).equals("Move"))	// ì´ë™
 			{
 				int moveX = Integer.valueOf(turnInfo.substring(5,6));
 				int moveY = Integer.valueOf(turnInfo.substring(7,8));
@@ -537,19 +537,19 @@ public class Game extends JFrame{
 					GM.p2.movePlayer(new Point(moveX, moveY));
 			}
 			
-			if(GM.GameOver())	// °ÔÀÓÀÌ ³¡³µ´ÂÁö °Ë»ç
+			if(GM.GameOver())	// ê²Œì„ì´ ëë‚¬ëŠ”ì§€ ê²€ì‚¬
 			{
 				repaint();
 				if(turn == true)
 				{
-					JOptionPane.showMessageDialog(null, GM.p1.getPlayerName() + " ½Â¸®", "°ÔÀÓ °á°ú", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, GM.p1.getPlayerName() + " ìŠ¹ë¦¬", "ê²Œì„ ê²°ê³¼", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
 					GM.Save(GM.GetDate(), true);
 					new Menu();
 					Game.dispose();
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, GM.p2.getPlayerName() + " ½Â¸®", "°ÔÀÓ °á°ú", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, GM.p2.getPlayerName() + " ìŠ¹ë¦¬", "ê²Œì„ ê²°ê³¼", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
 					GM.Save(GM.GetDate(), true);
 					new Menu();
 					Game.dispose();	
@@ -557,18 +557,18 @@ public class Game extends JFrame{
 				if(gameMode == GAME_MODE.NETWORKGUEST || gameMode == GAME_MODE.NETWORKHOST)
 					GM.GetSocket().CloseSocket();
 			}
-			else if(turnInfo.equals("Give up"))	// »ó´ë°¡ Ç×º¹Çß´ÂÁö °Ë»ç
+			else if(turnInfo.equals("Give up"))	// ìƒëŒ€ê°€ í•­ë³µí–ˆëŠ”ì§€ ê²€ì‚¬
 			{
 				if(turn == false)
 				{
-					JOptionPane.showMessageDialog(null, GM.p1.getPlayerName() + " ½Â¸®", "°ÔÀÓ °á°ú", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, GM.p1.getPlayerName() + " ìŠ¹ë¦¬", "ê²Œì„ ê²°ê³¼", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
 					GM.Save(GM.GetDate(), true);
 					new Menu();
 					Game.dispose();
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, GM.p2.getPlayerName() + " ½Â¸®", "°ÔÀÓ °á°ú", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, GM.p2.getPlayerName() + " ìŠ¹ë¦¬", "ê²Œì„ ê²°ê³¼", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
 					GM.Save(GM.GetDate(), true);
 					new Menu();
 					Game.dispose();
@@ -585,28 +585,28 @@ public class Game extends JFrame{
 			repaint();
 		}
 		
-		// °ÔÀÓ ÆÇ ±×¸®±â
+		// ê²Œì„ íŒ ê·¸ë¦¬ê¸°
 		public void paintComponent(Graphics g) {
 			setBackground(new Color(150, 50, 0));
 			super.paintComponent(g);
 			
-			// ¼± ±×¸®±â
+			// ì„  ê·¸ë¦¬ê¸°
 			g.setColor(Color.BLACK);
 			for(int i = 1; i < 10; i++) {
-				g.drawLine(0, 38*i, 38*9, 38*i); // °¡·Î¼±
+				g.drawLine(0, 38*i, 38*9, 38*i); // ê°€ë¡œì„ 
 			}
 			for(int i = 1; i < 9; i++) {
-				g.drawLine(38*i, 0, 38*i, 38*9); // ¼¼·Î¼±
+				g.drawLine(38*i, 0, 38*i, 38*9); // ì„¸ë¡œì„ 
 			}
 			
-			// ÇÃ·¹ÀÌ¾î ±×¸®±â
+			// í”Œë ˆì´ì–´ ê·¸ë¦¬ê¸°
 			drawPlayer(g, 1);
 			drawPlayer(g, 2);
 
-			// º® ±×¸®±â
+			// ë²½ ê·¸ë¦¬ê¸°
 			drawWall(g);
 			
-			// ÀÌµ¿ °¡´ÉÇÑ À§Ä¡ ±×¸®±â
+			// ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ ê·¸ë¦¬ê¸°
 			if(GM.GetPutMode() == false)
 			{
 				drawAvailablePoint(g);
@@ -617,14 +617,14 @@ public class Game extends JFrame{
 			}
 		}
 		
-		// ÇÃ·¹ÀÌ¾î ±×¸®±â
+		// í”Œë ˆì´ì–´ ê·¸ë¦¬ê¸°
 		public void drawPlayer(Graphics g, int playerNum) {
-			// Èò»ö ÇÃ·¹ÀÌ¾î
+			// í°ìƒ‰ í”Œë ˆì´ì–´
 			if(playerNum == 1) {
 				g.setColor(Color.BLACK);
 				g.fillOval(GM.p1.getPoint().x*38, GM.p1.getPoint().y*38, 38, 38);
 			}
-			// °ËÀº»ö ÇÃ·¹ÀÌ¾î
+			// ê²€ì€ìƒ‰ í”Œë ˆì´ì–´
 			else if(playerNum == 2) {
 				g.setColor(Color.WHITE);
 				g.fillOval(GM.p2.getPoint().x*38, GM.p2.getPoint().y*38, 38, 38);
@@ -632,7 +632,7 @@ public class Game extends JFrame{
 			
 		}
 		
-		// º® ±×¸®±â
+		// ë²½ ê·¸ë¦¬ê¸°
 		public void drawWall(Graphics g) {
 			g.setColor(Color.YELLOW);
 			
@@ -641,17 +641,17 @@ public class Game extends JFrame{
 				for(int j = 0; j < 8; j++) {
 					if(WallPoints[0][j][i])
 					{
-						g.fillRect(38*j, 38*(i+1) - 2, 76, 3); // °¡·Îº®
+						g.fillRect(38*j, 38*(i+1) - 2, 76, 3); // ê°€ë¡œë²½
 					}
 					if(WallPoints[1][j][i])
 					{
-						g.fillRect(38*(j+1) - 2, 38*i, 3, 76); // ¼¼·Îº®
+						g.fillRect(38*(j+1) - 2, 38*i, 3, 76); // ì„¸ë¡œë²½
 					}
 				}
 			}
 		}
 		
-		// ÀÌµ¿ °¡´ÉÇÑ À§Ä¡¸¦ Ç¥½ÃÇØÁÖ´Â ÇÔ¼ö
+		// ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ë¥¼ í‘œì‹œí•´ì£¼ëŠ” í•¨ìˆ˜
 		public void drawAvailablePoint(Graphics g) {
 			g.setColor(Color.LIGHT_GRAY);
 			Point[] availablePoints = GM.GetAvailablePoint();
@@ -667,11 +667,11 @@ public class Game extends JFrame{
 			}
 		}
 		
-		// ¼³Ä¡ °¡´ÉÇÑ º®À» Ç¥½ÃÇØÁÖ´Â ÇÔ¼ö
+		// ì„¤ì¹˜ ê°€ëŠ¥í•œ ë²½ì„ í‘œì‹œí•´ì£¼ëŠ” í•¨ìˆ˜
 		public void drawAvailableWall(Graphics g) {
 			g.setColor(new Color(0, 0, 255, 100));
 			
-			// ÇöÀç ¸¶¿ì½º À§Ä¡¿¡ ÇØ´çÇÏ´Â º®ÀÇ ¹øÈ£¸¦ ºÒ·¯¿Í ÀúÀå
+			// í˜„ì¬ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì— í•´ë‹¹í•˜ëŠ” ë²½ì˜ ë²ˆí˜¸ë¥¼ ë¶ˆëŸ¬ì™€ ì €ì¥
 			boolean isVertical;
 			int vWallNum = wallNum%10;
 			int hWallNum = (wallNum/10)%10;
@@ -692,20 +692,20 @@ public class Game extends JFrame{
 						if(isVertical)
 						{
 							if(j == vWallNum && i == hWallNum && !wallPoint[0][j][i] &&
-									!wallPoint[0][(j-1) < 0 ? 0 : (j-1)][i] && !wallPoint[0][(j+1) > 7 ? 7 : (j+1)][i] && // ¾ç ¿·À¸·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
-									!wallPoint[1][j][i]) // ¼¼·Î·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
+									!wallPoint[0][(j-1) < 0 ? 0 : (j-1)][i] && !wallPoint[0][(j+1) > 7 ? 7 : (j+1)][i] && // ì–‘ ì˜†ìœ¼ë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
+									!wallPoint[1][j][i]) // ì„¸ë¡œë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
 							{
-								g.fillRect(38*j, 38*(i+1) - 2, 76, 5); // °¡·Îº®
+								g.fillRect(38*j, 38*(i+1) - 2, 76, 5); // ê°€ë¡œë²½
 								break;
 							}
 						}
 						else
 						{
 							if(j == vWallNum && i == hWallNum && !wallPoint[1][j][i] &&
-									!wallPoint[1][j][(i-1) < 0 ? 0 : (i-1)] && !wallPoint[1][j][(i+1) > 7 ? 7 : (i+1)] && // À§¾Æ·¡·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
-									!wallPoint[0][j][i]) // °¡·Î·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
+									!wallPoint[1][j][(i-1) < 0 ? 0 : (i-1)] && !wallPoint[1][j][(i+1) > 7 ? 7 : (i+1)] && // ìœ„ì•„ë˜ë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
+									!wallPoint[0][j][i]) // ê°€ë¡œë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
 							{
-								g.fillRect(38*(j+1) - 2, 38*i, 5, 76); // ¼¼·Îº®
+								g.fillRect(38*(j+1) - 2, 38*i, 5, 76); // ì„¸ë¡œë²½
 								break;
 							}
 						}
@@ -715,7 +715,7 @@ public class Game extends JFrame{
 		}
 	}
 
-	// °ÔÀÓ ÇÏ´Ü¿¡ Á¤º¸¸¦ ³ªÅ¸³»ÁÖ´Â ÆĞ³Î
+	// ê²Œì„ í•˜ë‹¨ì— ì •ë³´ë¥¼ ë‚˜íƒ€ë‚´ì£¼ëŠ” íŒ¨ë„
 	class InfoPanel extends JPanel {
 		private GameManager GM;
 		JLabel wallLabelp1;
@@ -727,19 +727,19 @@ public class Game extends JFrame{
 			this.GM = gm; 
 			setLayout(new BorderLayout());
 			
-			// °ËÀº»ö Walls ¶óº§
+			// ê²€ì€ìƒ‰ Walls ë¼ë²¨
 			wallLabelp1 = new JLabel("Walls: " + GM.p1.getWallNum());
-			wallLabelp1.setFont(new Font("µ¸¿ò", Font.ITALIC, 15));
+			wallLabelp1.setFont(new Font("ë‹ì›€", Font.ITALIC, 15));
 			wallLabelp1.setForeground(Color.BLACK);
 			wallLabelp1.setSize(100, 30);
 
-			// ÇÏ¾á»ö Walls ¶óº§
+			// í•˜ì–€ìƒ‰ Walls ë¼ë²¨
 			wallLabelp2 = new JLabel("Walls: " + GM.p2.getWallNum());
-			wallLabelp2.setFont(new Font("µ¸¿ò", Font.ITALIC, 15));
+			wallLabelp2.setFont(new Font("ë‹ì›€", Font.ITALIC, 15));
 			wallLabelp2.setForeground(Color.WHITE);
 			wallLabelp2.setSize(100, 30);
 			
-			// ÇöÀç ÅÏ ¶óº§
+			// í˜„ì¬ í„´ ë¼ë²¨
 			if(GM.GetTurn() == true) {
 				turnLabel = new JLabel("BLACK");
 				turnLabel.setForeground(Color.BLACK);
@@ -748,11 +748,11 @@ public class Game extends JFrame{
 				turnLabel = new JLabel("WHITE");
 				turnLabel.setForeground(Color.WHITE);
 			}
-			turnLabel.setFont(new Font("µ¸¿ò", Font.ITALIC | Font.BOLD, 25));
+			turnLabel.setFont(new Font("ë‹ì›€", Font.ITALIC | Font.BOLD, 25));
 			turnLabel.setSize(160, 50);
 			turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			
-			// Á¤º¸ ÆĞ³Î ¹èÄ¡
+			// ì •ë³´ íŒ¨ë„ ë°°ì¹˜
 			this.add(wallLabelp1, BorderLayout.WEST);
 			this.add(turnLabel, BorderLayout.CENTER);
 			this.add(wallLabelp2, BorderLayout.EAST);

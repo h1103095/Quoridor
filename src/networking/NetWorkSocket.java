@@ -3,13 +3,13 @@ package networking;
 import javax.swing.*;
 
 /* 
- * È£½ºÆ®¿Í Å¬¶óÀÌ¾ğÆ®ÀÇ »óÀ§ Å¬·¡½º
+ * í˜¸ìŠ¤íŠ¸ì™€ í´ë¼ì´ì–¸íŠ¸ì˜ ìƒìœ„ í´ë˜ìŠ¤
  */
 public abstract class NetWorkSocket {
-	public abstract void SendData(String msg);		// µ¥ÀÌÅÍ º¸³»±â
-	public abstract String ReceiveData();			// µ¥ÀÌÅÍ ¹Ş±â
-	public abstract void CloseSocket();				// ¼ÒÄÏ ´İ±â
-	public abstract boolean OpenServer();			// ¼­¹ö ¿­±â
-	public abstract boolean JoinServer(String HostIP, JTextArea connectLogTA, JButton closeBT);	// ¼­¹ö¿¡ µé¾î°¡±â
-	public abstract String GetHostIP();				// È£½ºÆ® IP ¾ò±â
+	public abstract void SendData(String msg);		// ë°ì´í„° ë³´ë‚´ê¸°
+	public abstract String ReceiveData();			// ë°ì´í„° ë°›ê¸°
+	public abstract void CloseSocket();				// ì†Œì¼“ ë‹«ê¸°
+	public abstract boolean OpenServer();			// ì„œë²„ ì—´ê¸°
+	public abstract boolean JoinServer(String HostIP, JTextArea connectLogTA, JButton closeBT);	// ì„œë²„ì— ë“¤ì–´ê°€ê¸°
+	public abstract String GetHostIP();				// í˜¸ìŠ¤íŠ¸ IP ì–»ê¸°
 }

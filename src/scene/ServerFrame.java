@@ -8,16 +8,16 @@ import networking.SocketThread;
 import networking.Server;
 
 /*
- * ³×Æ®¿öÅ© °ÔÀÓ »ı¼º ½Ã ³ªÅ¸³ª´Â ÇÁ·¹ÀÓ
+ * ë„¤íŠ¸ì›Œí¬ ê²Œì„ ìƒì„± ì‹œ ë‚˜íƒ€ë‚˜ëŠ” í”„ë ˆì„
  */
 
-// ³×Æ®¿öÅ© °ÔÀÓ »ı¼º ¹öÆ° Å¬¸¯½Ã »ı±â´Â Ã¢
+// ë„¤íŠ¸ì›Œí¬ ê²Œì„ ìƒì„± ë²„íŠ¼ í´ë¦­ì‹œ ìƒê¸°ëŠ” ì°½
 public class ServerFrame extends JFrame{
 	private SocketThread server;
 	private Frame hostFrame;
 	ServerFrame() {
 		hostFrame = this;
-		setTitle("³×Æ®¿öÅ© °ÔÀÓ »ı¼º");
+		setTitle("ë„¤íŠ¸ì›Œí¬ ê²Œì„ ìƒì„±");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Container contentPane = getContentPane();
 		
@@ -26,10 +26,10 @@ public class ServerFrame extends JFrame{
 		server = new SocketThread(new Server(), hostFrame);
 		
 		String ipNum = server.getSocket().GetHostIP();
-		contentPane.add(new JLabel("È£½ºÆ® ipÁÖ¼Ò : " + ipNum));
-		contentPane.add(new JLabel("°ÔÀÓ Âü¿©¸¦ ±â´Ù¸®´Â ÁßÀÔ´Ï´Ù..."));
+		contentPane.add(new JLabel("í˜¸ìŠ¤íŠ¸ ipì£¼ì†Œ : " + ipNum));
+		contentPane.add(new JLabel("ê²Œì„ ì°¸ì—¬ë¥¼ ê¸°ë‹¤ë¦¬ëŠ” ì¤‘ì…ë‹ˆë‹¤..."));
 		server.start();
-		JButton bt = new JButton("Ãë¼Ò");
+		JButton bt = new JButton("ì·¨ì†Œ");
 		bt.addActionListener(new BtnListener());
 		contentPane.add(bt);
 		
@@ -40,8 +40,8 @@ public class ServerFrame extends JFrame{
 
 	class BtnListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if(((JButton)e.getSource()).getText() == "Ãë¼Ò") {
-				server.interrupt();	// ½º·¹µå Á¾·á
+			if(((JButton)e.getSource()).getText() == "ì·¨ì†Œ") {
+				server.interrupt();	// ìŠ¤ë ˆë“œ ì¢…ë£Œ
 				new Menu();
 				hostFrame.dispose();
 			}

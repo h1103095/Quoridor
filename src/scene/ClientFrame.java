@@ -8,30 +8,30 @@ import networking.SocketThread;
 import networking.Client;
 
 /*
- * ³×Æ®¿öÅ© °ÔÀÓ Âü°¡ ½Ã ³ªÅ¸³ª´Â ÇÁ·¹ÀÓ
- * Å¬¶óÀÌ¾ğÆ® Å¬·¡½º¸¦ Æ÷ÇÔÇÏ°í ÀÖÀ½
+ * ë„¤íŠ¸ì›Œí¬ ê²Œì„ ì°¸ê°€ ì‹œ ë‚˜íƒ€ë‚˜ëŠ” í”„ë ˆì„
+ * í´ë¼ì´ì–¸íŠ¸ í´ë˜ìŠ¤ë¥¼ í¬í•¨í•˜ê³  ìˆìŒ
  */
 
-// °ÔÀÓ Âü¿© ½Ã »ı±â´Â Ã¢
+// ê²Œì„ ì°¸ì—¬ ì‹œ ìƒê¸°ëŠ” ì°½
 public class ClientFrame extends JFrame{
-	JTextField ipTF; 	// IPÁÖ¼Ò¸¦ ÀÔ·ÂÇÏ´Â ÅØ½ºÆ® ÇÊµå
-	JButton connectBT;	// Á¢¼Ó ¹öÆ°
-	JButton closeBT;	// µ¹¾Æ°¡±â ¹öÆ°
-	JTextArea connectLogTA; // Åë½Å ·Î±× Ã¢
+	JTextField ipTF; 	// IPì£¼ì†Œë¥¼ ì…ë ¥í•˜ëŠ” í…ìŠ¤íŠ¸ í•„ë“œ
+	JButton connectBT;	// ì ‘ì† ë²„íŠ¼
+	JButton closeBT;	// ëŒì•„ê°€ê¸° ë²„íŠ¼
+	JTextArea connectLogTA; // í†µì‹  ë¡œê·¸ ì°½
 	SocketThread client;
-	Frame clientFrame;	// Ã¢ Á¾·á¸¦ À§ÇÑ °´Ã¼
+	Frame clientFrame;	// ì°½ ì¢…ë£Œë¥¼ ìœ„í•œ ê°ì²´
 	ClientFrame() {
 		clientFrame = this;
-		setTitle("³×Æ®¿öÅ© °ÔÀÓ Âü¿©");
+		setTitle("ë„¤íŠ¸ì›Œí¬ ê²Œì„ ì°¸ì—¬");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Container contentPane = getContentPane();
 		
 		contentPane.setLayout(new FlowLayout());
 		
 		ipTF = new JTextField(12);
-		connectBT = new JButton("Á¢¼Ó");
+		connectBT = new JButton("ì ‘ì†");
 		connectBT.addActionListener(new BtnListener());
-		closeBT = new JButton("Ãë¼Ò");
+		closeBT = new JButton("ì·¨ì†Œ");
 		closeBT.addActionListener(new BtnListener());
 		connectLogTA = new JTextArea(12, 20); 
 		
@@ -47,7 +47,7 @@ public class ClientFrame extends JFrame{
 	class BtnListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JButton b = (JButton)e.getSource();
-			if(b.getText() == "Á¢¼Ó") {
+			if(b.getText() == "ì ‘ì†") {
 				String ip = ipTF.getText();
 				if(!ip.isEmpty())
 				{

@@ -3,15 +3,15 @@ package object;
 import java.awt.*;
 
 /*
- * ÇÃ·¹ÀÌ¾îÀÇ Á¤º¸
+ * í”Œë ˆì´ì–´ì˜ ì •ë³´
  */
 
 public class Player {
 	private Point p; // player point
-	private int playernum; // ÇÃ·¹ÀÌ¾î ¹øÈ£
-	protected int wallNum; // º®ÀÇ °³¼ö
-	private String playerName;	// ÇÃ·¹ÀÌ¾î¸í
-	protected GameManager GM;	// °ÔÀÓ ¸Å´ÏÀú
+	private int playernum; // í”Œë ˆì´ì–´ ë²ˆí˜¸
+	protected int wallNum; // ë²½ì˜ ê°œìˆ˜
+	private String playerName;	// í”Œë ˆì´ì–´ëª…
+	protected GameManager GM;	// ê²Œì„ ë§¤ë‹ˆì €
 	
 	Player(int pnum, GameManager gm, int wallNum, String playerName) {
 		this.playernum = pnum;
@@ -19,7 +19,7 @@ public class Player {
 		this.wallNum = wallNum;
 		this.playerName = playerName;
 		
-		// ÃÊ±â À§Ä¡ ¼³Á¤
+		// ì´ˆê¸° ìœ„ì¹˜ ì„¤ì •
 		this.p = new Point(4, 0);
 		if(playernum == 1) {
 			this.p.y = 8;
@@ -29,61 +29,61 @@ public class Player {
 		}
 		
 	}
-	public int getPlayerNum() { return playernum; }		// ÇÃ·¹ÀÌ¾î ¹øÈ£ ¹İÈ¯. 1¹øÀÌ °ËÁ¤, 2¹øÀÌ ÇÏ¾ç
-	public Point getPoint() { return p; }				// ÇÃ·¹ÀÌ¾î À§Ä¡ ¹İÈ¯
-	public int getWallNum() { return wallNum; }			// »ı¼º °¡´ÉÇÑ º®ÀÇ ¼ö ¹İÈ¯
-	public void minusWallNum() { wallNum--; }			// º®ÀÇ ¼ö °¨¼Ò
-	public void plusWallNum() { wallNum++; }			// º®ÀÇ ¼ö Áõ°¡
-	public void movePlayer(Point p) { this.p = p; } 	// ÇÃ·¹ÀÌ¾î ÀÌµ¿
-	public void setPlayerName(String playerName) { this.playerName = playerName; }	// ÇÃ·¹ÀÌ¾î ÀÌ¸§ ¼³Á¤
-	public String getPlayerName() { return playerName; }							// ÇÃ·¹ÀÌ¾î ÀÌ¸§ ¹İÈ¯
+	public int getPlayerNum() { return playernum; }		// í”Œë ˆì´ì–´ ë²ˆí˜¸ ë°˜í™˜. 1ë²ˆì´ ê²€ì •, 2ë²ˆì´ í•˜ì–‘
+	public Point getPoint() { return p; }				// í”Œë ˆì´ì–´ ìœ„ì¹˜ ë°˜í™˜
+	public int getWallNum() { return wallNum; }			// ìƒì„± ê°€ëŠ¥í•œ ë²½ì˜ ìˆ˜ ë°˜í™˜
+	public void minusWallNum() { wallNum--; }			// ë²½ì˜ ìˆ˜ ê°ì†Œ
+	public void plusWallNum() { wallNum++; }			// ë²½ì˜ ìˆ˜ ì¦ê°€
+	public void movePlayer(Point p) { this.p = p; } 	// í”Œë ˆì´ì–´ ì´ë™
+	public void setPlayerName(String playerName) { this.playerName = playerName; }	// í”Œë ˆì´ì–´ ì´ë¦„ ì„¤ì •
+	public String getPlayerName() { return playerName; }							// í”Œë ˆì´ì–´ ì´ë¦„ ë°˜í™˜
 	
-	public String AIBehavior() { return ""; } // AIÀÇ Çàµ¿À» °áÁ¤ÇÏ°í StringÀ¸·Î ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	public String AIBehavior() { return ""; } // AIì˜ í–‰ë™ì„ ê²°ì •í•˜ê³  Stringìœ¼ë¡œ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
 	
-	// ÀÌµ¿ °¡´ÉÇÑ À§Ä¡¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
-	public Point[] updateAvailablePlace(boolean[][][] wallPoints, Point opponentP) { // º®ÀÇ À§Ä¡¿Í »ó´ë À§Ä¡¸¦ ¹Ş¾Æ¿È
+	// ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
+	public Point[] updateAvailablePlace(boolean[][][] wallPoints, Point opponentP) { // ë²½ì˜ ìœ„ì¹˜ì™€ ìƒëŒ€ ìœ„ì¹˜ë¥¼ ë°›ì•„ì˜´
 		
 		Point[] availablePoints = new Point[4];
 		
-		// ÇÃ·¹ÀÌ¾î À§Ä¡°¡ 0ÀÏ¶§¿Í 8ÀÏ¶§ º®À» °è»êÇÏ±â ½±°Ô ÇÏ±â À§ÇÑ º¯¼ö
+		// í”Œë ˆì´ì–´ ìœ„ì¹˜ê°€ 0ì¼ë•Œì™€ 8ì¼ë•Œ ë²½ì„ ê³„ì‚°í•˜ê¸° ì‰½ê²Œ í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
 		int pymin = 0;
 		int pymax = 8;
 		int pxmin = 0;
 		int pxmax = 8;
 		
-		int pnum = 0; // ÀÌµ¿ °¡´ÉÇÑ À§Ä¡ °³¼ö
+		int pnum = 0; // ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ ê°œìˆ˜
 		
 		if(p.y <= 0) pymin = 0; else pymin = p.y - 1;
 		if(p.y >= 8) pymax = 7; else pymax = p.y;
 		if(p.x <= 0) pxmin = 0; else pxmin = p.x - 1;
 		if(p.x >= 8) pxmax = 7; else pxmax = p.x;
 		
-		// ¿À¸¥ÂÊ ÀÌµ¿ °¡´É ¿©ºÎ
+		// ì˜¤ë¥¸ìª½ ì´ë™ ê°€ëŠ¥ ì—¬ë¶€
 		if(p.x < 8) { 
-			if(wallPoints[1][p.x][pymin] == false && wallPoints[1][p.x][pymax] == false) // ¿À¸¥ÂÊ¿¡ º®ÀÌ ¾øÀ» ¶§
+			if(wallPoints[1][p.x][pymin] == false && wallPoints[1][p.x][pymax] == false) // ì˜¤ë¥¸ìª½ì— ë²½ì´ ì—†ì„ ë•Œ
 			{
-				if(opponentP.x == p.x + 1 && opponentP.y == p.y && p.x < 8) // »ó´ë¶û ºÙ¾î ÀÖÀ¸¸é¼­ °Ç³Ê ¶Û ¼ö ÀÖ´Â »óÈ²ÀÏ ¶§
+				if(opponentP.x == p.x + 1 && opponentP.y == p.y && p.x < 8) // ìƒëŒ€ë‘ ë¶™ì–´ ìˆìœ¼ë©´ì„œ ê±´ë„ˆ ë›¸ ìˆ˜ ìˆëŠ” ìƒí™©ì¼ ë•Œ
 				{
 					if(wallPoints[1][(p.x + 1 > 7)? 7 : p.x + 1][pymin] == false && wallPoints[1][(p.x + 1 > 7)? 7 : p.x + 1][pymax] == false)
 					{
-						if(p.x + 2 <= 8)	// ¶Ù¾î³Ñ¾úÀ» ¶§ ¸ÊÀ» ¹ş¾î³ªÁö ¾Ê´Â °æ¿ì
+						if(p.x + 2 <= 8)	// ë›°ì–´ë„˜ì—ˆì„ ë•Œ ë§µì„ ë²—ì–´ë‚˜ì§€ ì•ŠëŠ” ê²½ìš°
 							availablePoints[pnum++] = new Point(p.x + 2, p.y);
 						else
-							availablePoints[pnum++] = new Point(9, 9); // ¸ÊÀ» ¹ş¾î³ª´Â °æ¿ì (9, 9)´ëÀÔ
+							availablePoints[pnum++] = new Point(9, 9); // ë§µì„ ë²—ì–´ë‚˜ëŠ” ê²½ìš° (9, 9)ëŒ€ì…
 					}
-					else availablePoints[pnum++] = new Point(9, 9); // ÀÌµ¿ÇÒ ¼ö ¾ø´Ù´Â ÀÇ¹Ì·Î (9, 9)¸¦ ´ëÀÔ
+					else availablePoints[pnum++] = new Point(9, 9); // ì´ë™í•  ìˆ˜ ì—†ë‹¤ëŠ” ì˜ë¯¸ë¡œ (9, 9)ë¥¼ ëŒ€ì…
 				}	
 				else
 					availablePoints[pnum++] = new Point(p.x + 1, p.y);
 			}
 			else
-				availablePoints[pnum++] = new Point(9, 9); // ÀÌµ¿ÇÒ ¼ö ¾ø´Ù´Â ÀÇ¹Ì·Î (9, 9)¸¦ ´ëÀÔ
+				availablePoints[pnum++] = new Point(9, 9); // ì´ë™í•  ìˆ˜ ì—†ë‹¤ëŠ” ì˜ë¯¸ë¡œ (9, 9)ë¥¼ ëŒ€ì…
 				// availablePlace[p.x + 1][p.y] = true;
 		}
 		else
 			availablePoints[pnum++] = new Point(9, 9);
 		
-		// ¿ŞÂÊ ÀÌµ¿ °¡´É ¿©ºÎ
+		// ì™¼ìª½ ì´ë™ ê°€ëŠ¥ ì—¬ë¶€
 		if(p.x > 0) {
 			if(wallPoints[1][p.x - 1][pymin] == false && wallPoints[1][p.x - 1][pymax] == false)
 			{
@@ -96,7 +96,7 @@ public class Player {
 						else
 							availablePoints[pnum++] = new Point(9, 9);
 					}
-					else availablePoints[pnum++] = new Point(9, 9); // ÀÌµ¿ÇÒ ¼ö ¾ø´Ù´Â ÀÇ¹Ì·Î (9, 9)¸¦ ´ëÀÔ
+					else availablePoints[pnum++] = new Point(9, 9); // ì´ë™í•  ìˆ˜ ì—†ë‹¤ëŠ” ì˜ë¯¸ë¡œ (9, 9)ë¥¼ ëŒ€ì…
 				}
 				else
 					availablePoints[pnum++] = new Point(p.x - 1, p.y);
@@ -108,7 +108,7 @@ public class Player {
 		else
 			availablePoints[pnum++] = new Point(9, 9);
 		
-		// ¾Æ·¡ÂÊ ÀÌµ¿ °¡´É ¿©ºÎ
+		// ì•„ë˜ìª½ ì´ë™ ê°€ëŠ¥ ì—¬ë¶€
 		if(p.y < 8) {
 			if(wallPoints[0][pxmin][p.y] == false && wallPoints[0][pxmax][p.y] == false)
 			{
@@ -121,7 +121,7 @@ public class Player {
 						else
 							availablePoints[pnum++] = new Point(9, 9);
 					}
-					else availablePoints[pnum++] = new Point(9, 9); // ÀÌµ¿ÇÒ ¼ö ¾ø´Ù´Â ÀÇ¹Ì·Î (9, 9)¸¦ ´ëÀÔ
+					else availablePoints[pnum++] = new Point(9, 9); // ì´ë™í•  ìˆ˜ ì—†ë‹¤ëŠ” ì˜ë¯¸ë¡œ (9, 9)ë¥¼ ëŒ€ì…
 				}
 				else
 					availablePoints[pnum++] = new Point(p.x, p.y + 1);
@@ -133,7 +133,7 @@ public class Player {
 		else
 			availablePoints[pnum++] = new Point(9, 9);
 		
-		// À§ÂÊ ÀÌµ¿ °¡´É ¿©ºÎ
+		// ìœ„ìª½ ì´ë™ ê°€ëŠ¥ ì—¬ë¶€
 		if(p.y > 0) {
 			if(wallPoints[0][pxmin][p.y - 1] == false && wallPoints[0][pxmax][p.y - 1] == false)
 			{
@@ -146,7 +146,7 @@ public class Player {
 						else
 							availablePoints[pnum++] = new Point(9, 9);
 					}
-					else availablePoints[pnum++] = new Point(9, 9); // ÀÌµ¿ÇÒ ¼ö ¾ø´Ù´Â ÀÇ¹Ì·Î (9, 9)¸¦ ´ëÀÔ
+					else availablePoints[pnum++] = new Point(9, 9); // ì´ë™í•  ìˆ˜ ì—†ë‹¤ëŠ” ì˜ë¯¸ë¡œ (9, 9)ë¥¼ ëŒ€ì…
 				}
 				else
 				availablePoints[pnum++] = new Point(p.x, p.y - 1);

@@ -3,7 +3,7 @@ package object;
 import java.awt.Point;
 
 /*
- * ÀÎ°øÁö´É
+ * ì¸ê³µì§€ëŠ¥
  */
 
 public class AI extends Player{
@@ -13,29 +13,29 @@ public class AI extends Player{
 	}
 	
 	public String AIBehavior() {
-		int wallOrMove = (int)(Math.random()*3);	// 1/3È®·ü·Î º® »ı¼º, 2/3È®·ü·Î ÀÌµ¿
+		int wallOrMove = (int)(Math.random()*3);	// 1/3í™•ë¥ ë¡œ ë²½ ìƒì„±, 2/3í™•ë¥ ë¡œ ì´ë™
 		int putwallNum = 0;
 		
-		if(wallNum <= 0)	// »ı¼º °¡´ÉÇÑ º®ÀÌ ¾øÀ» ½Ã Ç×»ó ÀÌµ¿
+		if(wallNum <= 0)	// ìƒì„± ê°€ëŠ¥í•œ ë²½ì´ ì—†ì„ ì‹œ í•­ìƒ ì´ë™
 		{
 			wallOrMove = 1;
 		}
 		
-		if(wallOrMove == 0)	// º® »ı¼º
+		if(wallOrMove == 0)	// ë²½ ìƒì„±
 		{
 			while(true) {
 				boolean isVertical;
-				putwallNum = (int)(Math.random()*2) + 1;				// °¡·Î, ¼¼·Î °áÁ¤
-				putwallNum = putwallNum*10 + (int)(Math.random()*8);	// °¡·ÎÃà °áÁ¤
-				putwallNum = putwallNum*10 + (int)(Math.random()*8);	// ¼¼·ÎÃà °áÁ¤
+				putwallNum = (int)(Math.random()*2) + 1;				// ê°€ë¡œ, ì„¸ë¡œ ê²°ì •
+				putwallNum = putwallNum*10 + (int)(Math.random()*8);	// ê°€ë¡œì¶• ê²°ì •
+				putwallNum = putwallNum*10 + (int)(Math.random()*8);	// ì„¸ë¡œì¶• ê²°ì •
 				
 				int vWallNum = putwallNum%10;
 				int hWallNum = (putwallNum/10)%10;
 				boolean wallPoint[][][] = GM.GetWallPoint();
 				
 				if(putwallNum / 100 == 1)
-					isVertical = true;		// °¡·Î
-				else isVertical = false;	// ¼¼·Î
+					isVertical = true;		// ê°€ë¡œ
+				else isVertical = false;	// ì„¸ë¡œ
 				
 				vWallNum = ((vWallNum > 7) ? 7 : vWallNum);
 				hWallNum = ((hWallNum > 7) ? 7 : hWallNum);
@@ -45,20 +45,20 @@ public class AI extends Player{
 						if(isVertical)
 						{
 							if(j == vWallNum && i == hWallNum && !wallPoint[0][j][i] &&
-									!wallPoint[0][(j-1) < 0 ? 0 : (j-1)][i] && !wallPoint[0][(j+1) > 7 ? 7 : (j+1)][i] && // ¾ç ¿·À¸·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
-									!wallPoint[1][j][i]) // ¼¼·Î·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
+									!wallPoint[0][(j-1) < 0 ? 0 : (j-1)][i] && !wallPoint[0][(j+1) > 7 ? 7 : (j+1)][i] && // ì–‘ ì˜†ìœ¼ë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
+									!wallPoint[1][j][i]) // ì„¸ë¡œë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
 							{
-								return "Wall " + Integer.toString(putwallNum);			// ±â·ÏÇÒ ³»¿ë
+								return "Wall " + Integer.toString(putwallNum);			// ê¸°ë¡í•  ë‚´ìš©
 								//break;
 							}
 						}
 						else
 						{
 							if(j == vWallNum && i == hWallNum && !wallPoint[1][j][i] &&
-									!wallPoint[1][j][(i-1) < 0 ? 0 : (i-1)] && !wallPoint[1][j][(i+1) > 7 ? 7 : (i+1)] && // À§¾Æ·¡·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
-									!wallPoint[0][j][i]) // °¡·Î·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
+									!wallPoint[1][j][(i-1) < 0 ? 0 : (i-1)] && !wallPoint[1][j][(i+1) > 7 ? 7 : (i+1)] && // ìœ„ì•„ë˜ë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
+									!wallPoint[0][j][i]) // ê°€ë¡œë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
 							{
-								return "Wall " + Integer.toString(putwallNum);			// ±â·ÏÇÒ ³»¿ë
+								return "Wall " + Integer.toString(putwallNum);			// ê¸°ë¡í•  ë‚´ìš©
 								//break;
 							}
 						}
@@ -67,8 +67,8 @@ public class AI extends Player{
 			}
 
 		}
-		else {				// ÀÌµ¿
-			String prevPosition = Integer.toString(getPoint().x) + " " + Integer.toString(getPoint().y);	// ÀÌÀü À§Ä¡ ¾òÀ½
+		else {				// ì´ë™
+			String prevPosition = Integer.toString(getPoint().x) + " " + Integer.toString(getPoint().y);	// ì´ì „ ìœ„ì¹˜ ì–»ìŒ
 			
 			Point[] availablePoints = GM.GetAvailablePoint();
 			
@@ -82,25 +82,25 @@ public class AI extends Player{
 	
 	private int GetDirection() {
 		int randomDirection = (int)(Math.random()*10);
-		int MoveP = 0; // 0~3±îÁö ¿À¸¥ÂÊ, ¿ŞÂÊ, ¾Æ·¡ÂÊ, À§ÂÊ
+		int MoveP = 0; // 0~3ê¹Œì§€ ì˜¤ë¥¸ìª½, ì™¼ìª½, ì•„ë˜ìª½, ìœ„ìª½
 		switch(randomDirection) {
 		case 0:
 		case 1:
 		case 2:
 		case 3:
-			MoveP = 2;	// 4/10 È®·ü·Î ¾Æ·¡
+			MoveP = 2;	// 4/10 í™•ë¥ ë¡œ ì•„ë˜
 			break;
 		case 4:
 		case 5:
 		case 6:
-			MoveP = 0;	// 3/10 È®·ü·Î ¿À¸¥ÂÊ
+			MoveP = 0;	// 3/10 í™•ë¥ ë¡œ ì˜¤ë¥¸ìª½
 			break;
 		case 7:
 		case 8:
-			MoveP = 1;	// 2/10 È®·ü·Î ¿ŞÂÊ
+			MoveP = 1;	// 2/10 í™•ë¥ ë¡œ ì™¼ìª½
 			break;
 		case 9:
-			MoveP = 3;	// 1/10 È®·ü·Î À§ÂÊ
+			MoveP = 3;	// 1/10 í™•ë¥ ë¡œ ìœ„ìª½
 			break;
 		}
 		System.out.println(MoveP);

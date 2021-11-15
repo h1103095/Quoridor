@@ -3,9 +3,9 @@ package scene;
 import java.awt.*;
 import javax.swing.*;
 
-//¹è°æ ÆĞ³Î
+//ë°°ê²½ íŒ¨ë„
 public class BackgroundPanel extends JPanel {
-	ImageIcon icon = new ImageIcon("images/quoridor.jpg");		// ½ÃÀÛ È­¸é ¹è°æ ÀÌ¹ÌÁö
+	ImageIcon icon = new ImageIcon("images/quoridor.jpg");		// ì‹œì‘ í™”ë©´ ë°°ê²½ ì´ë¯¸ì§€
 	Image img = icon.getImage();
 	
 	public void paintComponent(Graphics g) {

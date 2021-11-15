@@ -15,10 +15,10 @@ import enums.GAME_MODE;
 
 
 /*
- * º¹±â°¡ ÁøÇàµÇ´Â ÇÁ·¹ÀÓ°ú ±× ±¸¼º¿ä¼Ò
+ * ë³µê¸°ê°€ ì§„í–‰ë˜ëŠ” í”„ë ˆì„ê³¼ ê·¸ êµ¬ì„±ìš”ì†Œ
  */
 
-// º¹±â È­¸é ±¸¼º
+// ë³µê¸° í™”ë©´ êµ¬ì„±
 public class Replay extends JFrame{
 	private GameManager GM;
 	private GamePanel gamePanel;
@@ -31,7 +31,7 @@ public class Replay extends JFrame{
 	public Replay(GameManager gm) {
 		this.GM = gm;
 		
-		/* È­¸é ±¸¼º */
+		/* í™”ë©´ êµ¬ì„± */
 		setTitle("Replay");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		//setContentPane();
@@ -43,7 +43,7 @@ public class Replay extends JFrame{
 		contentPane.setLayout(null);
 		contentPane.add(gamePanel);
 		
-		// ÆĞ³Îµé ÇÕÄ¡±â
+		// íŒ¨ë„ë“¤ í•©ì¹˜ê¸°
 		contentPane.setLayout(new BorderLayout());
 		contentPane.setBackground(new Color(150, 50, 0));
 		
@@ -72,14 +72,14 @@ public class Replay extends JFrame{
 					Clip clip = AudioSystem.getClip();
 					clip.open(inputStream);
 					FloatControl control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			        float volume = (float)((GM.GetVolume()/2) + 10) / 20;					// ¼³Á¤ º¼·ı
-			        float range = control.getMaximum() - control.getMinimum();	// ¹üÀ§ °è»ê
-			        float result = (range * volume) + control.getMinimum();		// ÃÖÁ¾ º¼·ı°ª
-			        control.setValue(result);									// º¼·ı ¼³Á¤
-					clip.start();												// ¼Ò¸® Àç»ı
+			        float volume = (float)((GM.GetVolume()/2) + 10) / 20;					// ì„¤ì • ë³¼ë¥¨
+			        float range = control.getMaximum() - control.getMinimum();	// ë²”ìœ„ ê³„ì‚°
+			        float result = (range * volume) + control.getMinimum();		// ìµœì¢… ë³¼ë¥¨ê°’
+			        control.setValue(result);									// ë³¼ë¥¨ ì„¤ì •
+					clip.start();												// ì†Œë¦¬ ì¬ìƒ
 				} catch(Exception e)
 				{
-					System.out.println("»ç¿îµå Ãâ·Â ¿À·ù");
+					System.out.println("ì‚¬ìš´ë“œ ì¶œë ¥ ì˜¤ë¥˜");
 				}
 			}
 		}
@@ -90,7 +90,7 @@ public class Replay extends JFrame{
 		JButton[] menuButtons = new JButton[3];
 		GameManager GM;
 		GAME_MODE gameMode;
-		private Frame Game; // Ã¢À» ´İ±â À§ÇÑ º¯¼ö
+		private Frame Game; // ì°½ì„ ë‹«ê¸° ìœ„í•œ ë³€ìˆ˜
 		
 		ButtonPanel(GameManager gm, Frame game) {
 			this.Game = game;
@@ -98,9 +98,9 @@ public class Replay extends JFrame{
 			this.gameMode = GM.GetGameMode();
 			setBackground(new Color(150, 50, 0));
 			
-			// ¸Ş´º ÆĞ³Î ¹öÆ° ¹èÄ¡
+			// ë©”ë‰´ íŒ¨ë„ ë²„íŠ¼ ë°°ì¹˜
 			setLayout(new FlowLayout(FlowLayout.LEFT, 3, 0));
-			String[] menubtStrings = {"¾ÕÀ¸·Î", "Áß´Ü", "µÚ·Î"};
+			String[] menubtStrings = {"ì•ìœ¼ë¡œ", "ì¤‘ë‹¨", "ë’¤ë¡œ"};
 			
 			BtnListener listener = new BtnListener();
 			
@@ -124,30 +124,30 @@ public class Replay extends JFrame{
 		
 		class BtnListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == menuButtons[0]) {			// ¾ÕÀ¸·Î
+				if(e.getSource() == menuButtons[0]) {			// ì•ìœ¼ë¡œ
 					String msg = GM.GetNextTurn();
 					GM.ChangeTurn();
 					gamePanel.moveTurn(msg, false);
-				}else if(e.getSource() == menuButtons[1]) {		// Àç»ı || Áß´Ü || Á¾·á
-					if(menuButtons[1].getText().equals("Àç»ı"))		// Àç»ı
+				}else if(e.getSource() == menuButtons[1]) {		// ì¬ìƒ || ì¤‘ë‹¨ || ì¢…ë£Œ
+					if(menuButtons[1].getText().equals("ì¬ìƒ"))		// ì¬ìƒ
 					{
 						gamePanel.th = new Thread(new ReplayThread());
 						gamePanel.th.start();
-						menuButtons[1].setText("Á¾·á");
+						menuButtons[1].setText("ì¢…ë£Œ");
 					}
-					else if(menuButtons[1].getText().equals("Áß´Ü"))	// Áß´Ü
+					else if(menuButtons[1].getText().equals("ì¤‘ë‹¨"))	// ì¤‘ë‹¨
 					{
 						gamePanel.th.interrupt();
-						menuButtons[1].setText("Àç»ı");
+						menuButtons[1].setText("ì¬ìƒ");
 					}
-					else											// Á¾·á
+					else											// ì¢…ë£Œ
 					{
 						gamePanel.th.interrupt();
 						new Menu();
 						Game.dispose();
 					}
 					
-				}else if(e.getSource() == menuButtons[2]) {		// µÚ·Î
+				}else if(e.getSource() == menuButtons[2]) {		// ë’¤ë¡œ
 					String msg = GM.GetPrevTurn();
 					gamePanel.moveTurn(msg, true);
 					GM.ChangeTurn();
@@ -155,7 +155,7 @@ public class Replay extends JFrame{
 			}
 		}
 
-		// ¹öÆ°ÀÌ »ç¿ë °¡´ÉÇÑÁö¸¦ Ã¼Å©ÇÏ´Â ÇÔ¼ö
+		// ë²„íŠ¼ì´ ì‚¬ìš© ê°€ëŠ¥í•œì§€ë¥¼ ì²´í¬í•˜ëŠ” í•¨ìˆ˜
 		public void checkbtAvailable() {
 			if(GM.GetSelectTurn() == 1)
 				menuButtons[2].setEnabled(false);
@@ -164,7 +164,7 @@ public class Replay extends JFrame{
 			if(GM.GetSelectTurn() == GM.GetTurnCount())
 			{
 				menuButtons[0].setEnabled(false);
-				menuButtons[1].setText("Àç»ı");
+				menuButtons[1].setText("ì¬ìƒ");
 				gamePanel.th.interrupt();
 			}
 			else
@@ -172,7 +172,7 @@ public class Replay extends JFrame{
 		}
 	}
 	
-	// ¸®ÇÃ·¹ÀÌ¸¦ À§ÇÑ ½º·¹µå
+	// ë¦¬í”Œë ˆì´ë¥¼ ìœ„í•œ ìŠ¤ë ˆë“œ
 	class ReplayThread implements Runnable {
 		public void run() {
 			while(true) {
@@ -193,19 +193,19 @@ public class Replay extends JFrame{
 		}
 	}
 
-	// °ÔÀÓÀÌ ÁøÇàµÇ´Â ÆĞ³Î
+	// ê²Œì„ì´ ì§„í–‰ë˜ëŠ” íŒ¨ë„
 	class GamePanel extends JPanel{
 		GameManager GM;
 		InfoPanel infoPanel;
 		ButtonPanel buttonPanel;
 		private Frame Game;
 		boolean turn;
-		int wallNum = -1; // ¹üÀ§ (100 ~ 288) ½ÊÀÇ ÀÚ¸® ¼ö¿Í ÀÏÀÇ ÀÚ¸® ¼ö´Â ÁÂÇ¥»óÀÇ À§Ä¡ ³ªÅ¸³¿, 8º¸´Ù Å©Áö ¾ÊÀ½. 8ÀÏ ½Ã 7·Î ¹Ù²Ù¾î °è»ê
+		int wallNum = -1; // ë²”ìœ„ (100 ~ 288) ì‹­ì˜ ìë¦¬ ìˆ˜ì™€ ì¼ì˜ ìë¦¬ ìˆ˜ëŠ” ì¢Œí‘œìƒì˜ ìœ„ì¹˜ ë‚˜íƒ€ëƒ„, 8ë³´ë‹¤ í¬ì§€ ì•ŠìŒ. 8ì¼ ì‹œ 7ë¡œ ë°”ê¾¸ì–´ ê³„ì‚°
 		Thread th;
 		
 		GamePanel(GameManager gm, InfoPanel infoPanel, ButtonPanel buttonPanel, Frame game) {
-			this.GM = gm; // °ÔÀÓ ¸Ş´ÏÀú ºÒ·¯¿È
-			this.infoPanel = infoPanel; // Á¤º¸ ÆĞ³Î ºÒ·¯¿È
+			this.GM = gm; // ê²Œì„ ë©”ë‹ˆì € ë¶ˆëŸ¬ì˜´
+			this.infoPanel = infoPanel; // ì •ë³´ íŒ¨ë„ ë¶ˆëŸ¬ì˜´
 			this.buttonPanel = buttonPanel;
 			this.Game = game;
 			th = new Thread(new ReplayThread());
@@ -275,36 +275,36 @@ public class Replay extends JFrame{
 			repaint();
 		}
 		
-		// °ÔÀÓ ÆÇ ±×¸®±â
+		// ê²Œì„ íŒ ê·¸ë¦¬ê¸°
 		public void paintComponent(Graphics g) {
 			setBackground(new Color(150, 50, 0));
 			super.paintComponent(g);
 			
-			// ¼± ±×¸®±â
+			// ì„  ê·¸ë¦¬ê¸°
 			g.setColor(Color.BLACK);
 			for(int i = 1; i < 10; i++) {
-				g.drawLine(0, 38*i, 38*9, 38*i); // °¡·Î¼±
+				g.drawLine(0, 38*i, 38*9, 38*i); // ê°€ë¡œì„ 
 			}
 			for(int i = 1; i < 9; i++) {
-				g.drawLine(38*i, 0, 38*i, 38*9); // ¼¼·Î¼±
+				g.drawLine(38*i, 0, 38*i, 38*9); // ì„¸ë¡œì„ 
 			}
 			
-			// ÇÃ·¹ÀÌ¾î ±×¸®±â
+			// í”Œë ˆì´ì–´ ê·¸ë¦¬ê¸°
 			drawPlayer(g, 1);
 			drawPlayer(g, 2);
 
-			// º® ±×¸®±â
+			// ë²½ ê·¸ë¦¬ê¸°
 			drawWall(g);
 		}
 		
-		// ÇÃ·¹ÀÌ¾î ±×¸®±â
+		// í”Œë ˆì´ì–´ ê·¸ë¦¬ê¸°
 		public void drawPlayer(Graphics g, int playerNum) {
-			// Èò»ö ÇÃ·¹ÀÌ¾î
+			// í°ìƒ‰ í”Œë ˆì´ì–´
 			if(playerNum == 1) {
 				g.setColor(Color.BLACK);
 				g.fillOval(GM.p1.getPoint().x*38, GM.p1.getPoint().y*38, 38, 38);
 			}
-			// °ËÀº»ö ÇÃ·¹ÀÌ¾î
+			// ê²€ì€ìƒ‰ í”Œë ˆì´ì–´
 			else if(playerNum == 2) {
 				g.setColor(Color.WHITE);
 				g.fillOval(GM.p2.getPoint().x*38, GM.p2.getPoint().y*38, 38, 38);
@@ -312,7 +312,7 @@ public class Replay extends JFrame{
 			
 		}
 		
-		// º® ±×¸®±â
+		// ë²½ ê·¸ë¦¬ê¸°
 		public void drawWall(Graphics g) {
 			g.setColor(Color.YELLOW);
 			
@@ -321,18 +321,18 @@ public class Replay extends JFrame{
 				for(int j = 0; j < 8; j++) {
 					if(WallPoints[0][j][i])
 					{
-						g.fillRect(38*j, 38*(i+1) - 2, 76, 3); // °¡·Îº®
+						g.fillRect(38*j, 38*(i+1) - 2, 76, 3); // ê°€ë¡œë²½
 					}
 					if(WallPoints[1][j][i])
 					{
-						g.fillRect(38*(j+1) - 2, 38*i, 3, 76); // ¼¼·Îº®
+						g.fillRect(38*(j+1) - 2, 38*i, 3, 76); // ì„¸ë¡œë²½
 					}
 				}
 			}
 		}
 	}
 
-	// °ÔÀÓ ÇÏ´Ü¿¡ Á¤º¸¸¦ ³ªÅ¸³»ÁÖ´Â ÆĞ³Î
+	// ê²Œì„ í•˜ë‹¨ì— ì •ë³´ë¥¼ ë‚˜íƒ€ë‚´ì£¼ëŠ” íŒ¨ë„
 	class InfoPanel extends JPanel {
 		private GameManager GM;
 		JLabel wallLabelp1;
@@ -344,19 +344,19 @@ public class Replay extends JFrame{
 			this.GM = gm; 
 			setLayout(new BorderLayout());
 			
-			// °ËÀº»ö Walls ¶óº§
+			// ê²€ì€ìƒ‰ Walls ë¼ë²¨
 			wallLabelp1 = new JLabel("Walls: " + GM.p1.getWallNum());
-			wallLabelp1.setFont(new Font("µ¸¿ò", Font.ITALIC, 15));
+			wallLabelp1.setFont(new Font("ë‹ì›€", Font.ITALIC, 15));
 			wallLabelp1.setForeground(Color.BLACK);
 			wallLabelp1.setSize(100, 30);
 
-			// ÇÏ¾á»ö Walls ¶óº§
+			// í•˜ì–€ìƒ‰ Walls ë¼ë²¨
 			wallLabelp2 = new JLabel("Walls: " + GM.p2.getWallNum());
-			wallLabelp2.setFont(new Font("µ¸¿ò", Font.ITALIC, 15));
+			wallLabelp2.setFont(new Font("ë‹ì›€", Font.ITALIC, 15));
 			wallLabelp2.setForeground(Color.WHITE);
 			wallLabelp2.setSize(100, 30);
 			
-			// ÇöÀç ÅÏ ¶óº§
+			// í˜„ì¬ í„´ ë¼ë²¨
 			if(GM.GetTurn() == true) {
 				turnLabel = new JLabel("BLACK");
 				turnLabel.setForeground(Color.BLACK);
@@ -365,11 +365,11 @@ public class Replay extends JFrame{
 				turnLabel = new JLabel("WHITE");
 				turnLabel.setForeground(Color.WHITE);
 			}
-			turnLabel.setFont(new Font("µ¸¿ò", Font.ITALIC | Font.BOLD, 25));
+			turnLabel.setFont(new Font("ë‹ì›€", Font.ITALIC | Font.BOLD, 25));
 			turnLabel.setSize(160, 50);
 			turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			
-			// Á¤º¸ ÆĞ³Î ¹èÄ¡
+			// ì •ë³´ íŒ¨ë„ ë°°ì¹˜
 			this.add(wallLabelp1, BorderLayout.WEST);
 			this.add(turnLabel, BorderLayout.CENTER);
 			this.add(wallLabelp2, BorderLayout.EAST);

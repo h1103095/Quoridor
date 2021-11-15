@@ -14,16 +14,16 @@ import object.GameManager;
 import enums.GAME_MODE;
 
 /*
- * ¸Ç Ã³À½ °ÔÀÓ ½ÇÇà ½Ã ³ªÅ¸³ª´Â ÇÁ·¹ÀÓ°ú ±× ±¸¼º¿ä¼Ò
+ * ë§¨ ì²˜ìŒ ê²Œì„ ì‹¤í–‰ ì‹œ ë‚˜íƒ€ë‚˜ëŠ” í”„ë ˆì„ê³¼ ê·¸ êµ¬ì„±ìš”ì†Œ
  */
 
 
 
-// ¸Ş´º ÇÁ·¹ÀÓ
+// ë©”ë‰´ í”„ë ˆì„
 public class Menu extends JFrame{
 	public Menu() {
-		Point appSize = new Point(1000, 600);	// Ã¢ »çÀÌÁî
-		Point menuSize = new Point(400, 400);	// ¹öÆ° ºÎºĞ »çÀÌÁî
+		Point appSize = new Point(1000, 600);	// ì°½ ì‚¬ì´ì¦ˆ
+		Point menuSize = new Point(400, 400);	// ë²„íŠ¼ ë¶€ë¶„ ì‚¬ì´ì¦ˆ
 		
 		setTitle("Quoridor");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,7 +35,7 @@ public class Menu extends JFrame{
 		
 		MenuPanel mp = new MenuPanel(this);
 		mp.setLayout(new GridLayout(8, 1, 0, 3));
-		mp.setLocation((appSize.x - menuSize.x)/2, (appSize.y - menuSize.y)/2);	// ¹öÆ°µé À§Ä¡¸¦ Ã¢ÀÇ Áß¾ÓÀ¸·Î ¼³Á¤
+		mp.setLocation((appSize.x - menuSize.x)/2, (appSize.y - menuSize.y)/2);	// ë²„íŠ¼ë“¤ ìœ„ì¹˜ë¥¼ ì°½ì˜ ì¤‘ì•™ìœ¼ë¡œ ì„¤ì •
 		mp.setSize(menuSize.x, menuSize.y);
 		
 		contentPane.setLayout(null);
@@ -49,11 +49,11 @@ public class Menu extends JFrame{
 	}
 
 
-	// ¹öÆ° ÆĞ³Î
+	// ë²„íŠ¼ íŒ¨ë„
 	class MenuPanel extends JPanel {
 		String[] menuLabels = {
-				"1ÀÎ¿ë °ÔÀÓ", "2ÀÎ¿ë °ÔÀÓ", "2ÀÎ¿ë ³×Æ®¿öÅ© °ÔÀÓ (°ÔÀÓ»ı¼º)", "2ÀÎ¿ë ³×Æ®¿öÅ© °ÔÀÓ (°ÔÀÓÂü¿©)",
-				"ÀÌÀü°ÔÀÓ Load", "ÀÌÀü°ÔÀÓ º¹±â", "È¯°æ¼³Á¤", "Á¾·á"
+				"1ì¸ìš© ê²Œì„", "2ì¸ìš© ê²Œì„", "2ì¸ìš© ë„¤íŠ¸ì›Œí¬ ê²Œì„ (ê²Œì„ìƒì„±)", "2ì¸ìš© ë„¤íŠ¸ì›Œí¬ ê²Œì„ (ê²Œì„ì°¸ì—¬)",
+				"ì´ì „ê²Œì„ Load", "ì´ì „ê²Œì„ ë³µê¸°", "í™˜ê²½ì„¤ì •", "ì¢…ë£Œ"
 		};
 		ImageIcon[] buttonIcons = {
 				new ImageIcon("images/SINGLE.png"), new ImageIcon("images/MULTY.png"), new ImageIcon("images/NetWork.jpg"),
@@ -77,31 +77,31 @@ public class Menu extends JFrame{
 		
 		class BtnListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == menuButtons[0]) { // 1ÀÎ¿ë °ÔÀÓ
+				if(e.getSource() == menuButtons[0]) { // 1ì¸ìš© ê²Œì„
 					GM = new GameManager(GAME_MODE.SINGLE);
 					new Game(GM);
-					Menu.dispose(); // ¸Ş´º ´İÀ½
+					Menu.dispose(); // ë©”ë‰´ ë‹«ìŒ
 				}
-				else if(e.getSource() == menuButtons[1]) { // 2ÀÎ¿ë °ÔÀÓ
+				else if(e.getSource() == menuButtons[1]) { // 2ì¸ìš© ê²Œì„
 					GM = new GameManager(GAME_MODE.MULTY);
 					new Game(GM);
 					Menu.dispose();
-				}else if(e.getSource()==menuButtons[2]) { // ³×Æ®¿öÅ© È£½ºÆ®
+				}else if(e.getSource()==menuButtons[2]) { // ë„¤íŠ¸ì›Œí¬ í˜¸ìŠ¤íŠ¸
 					new ServerFrame();
 					Menu.dispose();
 				}
-				else if(e.getSource()==menuButtons[3]) { // ³×Æ®¿öÅ© °Ô½ºÆ®
+				else if(e.getSource()==menuButtons[3]) { // ë„¤íŠ¸ì›Œí¬ ê²ŒìŠ¤íŠ¸
 					new ClientFrame();
 					Menu.dispose();
 				}
-				else if(e.getSource()==menuButtons[4]) { // °ÔÀÓ ·Îµå
+				else if(e.getSource()==menuButtons[4]) { // ê²Œì„ ë¡œë“œ
 					JFileChooser fc = new JFileChooser();
 					File file;
 					LoadSetting();
-					fc.setCurrentDirectory(new File(defaultIncompletedSaveDirectory));	// ¼¼ÀÌºê °æ·Î
-					fc.setFileFilter(new FileNameExtensionFilter("TXT File", "txt"));	// ÅØ½ºÆ® ÆÄÀÏ¸¸ º¸ÀÌµµ·Ï ¼³Á¤
+					fc.setCurrentDirectory(new File(defaultIncompletedSaveDirectory));	// ì„¸ì´ë¸Œ ê²½ë¡œ
+					fc.setFileFilter(new FileNameExtensionFilter("TXT File", "txt"));	// í…ìŠ¤íŠ¸ íŒŒì¼ë§Œ ë³´ì´ë„ë¡ ì„¤ì •
 					
-					int returnVal = fc.showOpenDialog(Menu.this);						// ÆÄÀÏ ¿©´Â Ã¢ »ı¼º
+					int returnVal = fc.showOpenDialog(Menu.this);						// íŒŒì¼ ì—¬ëŠ” ì°½ ìƒì„±
 					
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						file = fc.getSelectedFile();
@@ -111,10 +111,10 @@ public class Menu extends JFrame{
 						Menu.dispose();
 					}
 				}
-				else if(e.getSource()==menuButtons[5]) { // ¸®ÇÃ·¹ÀÌ
+				else if(e.getSource()==menuButtons[5]) { // ë¦¬í”Œë ˆì´
 					JFileChooser fc = new JFileChooser();
 					LoadSetting();
-					fc.setCurrentDirectory(new File(defaultCompletedSaveDirectory));	// Á¾·áµÈ °ÔÀÓ ¼¼ÀÌºê °æ·Î
+					fc.setCurrentDirectory(new File(defaultCompletedSaveDirectory));	// ì¢…ë£Œëœ ê²Œì„ ì„¸ì´ë¸Œ ê²½ë¡œ
 					fc.setFileFilter(new FileNameExtensionFilter("TXT File", "txt"));
 					
 					int returnVal = fc.showOpenDialog(Menu.this);
@@ -127,11 +127,11 @@ public class Menu extends JFrame{
 						Menu.dispose();
 					}
 				}
-				else if(e.getSource()==menuButtons[6]) { // È¯°æ¼³Á¤
+				else if(e.getSource()==menuButtons[6]) { // í™˜ê²½ì„¤ì •
 					new OptionFrame();
 					Menu.dispose();
 				}
-				else if(e.getSource()==menuButtons[7]) { // Á¾·á
+				else if(e.getSource()==menuButtons[7]) { // ì¢…ë£Œ
 					System.exit(0);
 				}
 			}
@@ -164,11 +164,4 @@ public class Menu extends JFrame{
 			}
 		}
 	}
-
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		new Menu();
-	}
-
 }

@@ -1,7 +1,7 @@
 package enums;
 
 /*
- * °ÔÀÓ ¸ğµå¸¦ Á¤ÀÇÇÏ±â À§ÇÑ enum
+ * ê²Œì„ ëª¨ë“œë¥¼ ì •ì˜í•˜ê¸° ìœ„í•œ enum
  */
 
 public enum GAME_MODE {

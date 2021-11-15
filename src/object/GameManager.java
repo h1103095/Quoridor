@@ -11,23 +11,23 @@ import enums.GAME_MODE;
 import networking.NetWorkSocket;
 
 /*
- * °ÔÀÓÀÇ Á¤º¸¸¦ °ü¸®ÇÏ´Â Å¬·¡½º
+ * ê²Œì„ì˜ ì •ë³´ë¥¼ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤
  */
 public class GameManager {
 	
-	private GAME_MODE gameMode; // Ã¹ È­¸é¿¡¼­ ¼±ÅÃÇÑ °ÔÀÓ ¸ğµå
-	private NetWorkSocket socket; // Åë½ÅÀ» À§ÇÑ º¯¼ö
+	private GAME_MODE gameMode; // ì²« í™”ë©´ì—ì„œ ì„ íƒí•œ ê²Œì„ ëª¨ë“œ
+	private NetWorkSocket socket; // í†µì‹ ì„ ìœ„í•œ ë³€ìˆ˜
 	
-	// ÇÃ·¹ÀÌ¾î
+	// í”Œë ˆì´ì–´
 	public Player p1;
 	public Player p2;
 	
-	private boolean turn; // turn == trueÀÏ ¶§ p1
-	private boolean putWall; // Àå¾Ö¹° ¹öÆ°À» ´­·¶´ÂÁö¿¡ ´ëÇÑ º¯¼ö
-	private int turnCount = 1; // ÇöÀç±îÁö ÁøÇàµÈ ÅÏÀ» ¼¼´Â º¯¼ö
+	private boolean turn; // turn == trueì¼ ë•Œ p1
+	private boolean putWall; // ì¥ì• ë¬¼ ë²„íŠ¼ì„ ëˆŒë €ëŠ”ì§€ì— ëŒ€í•œ ë³€ìˆ˜
+	private int turnCount = 1; // í˜„ì¬ê¹Œì§€ ì§„í–‰ëœ í„´ì„ ì„¸ëŠ” ë³€ìˆ˜
 	private int selectTurn = 1;
 	
-	// ¿É¼Ç ¼³Á¤µé
+	// ì˜µì…˜ ì„¤ì •ë“¤
 	private String playerName = "Player";
 	private String defaultCompletedSaveDirectory = "complete_save/";
 	private String defaultIncompletedSaveDirectory = "incomplete_save/";
@@ -36,41 +36,41 @@ public class GameManager {
 	
 	private String fileName = "";
 	
-	// º®
+	// ë²½
 	private boolean[][][] wallPoints = new boolean[2][8][8];
-	// [0][][] -> °¡·Îº®
-	// [1][][] -> ¼¼·Îº®
+	// [0][][] -> ê°€ë¡œë²½
+	// [1][][] -> ì„¸ë¡œë²½
 	
 	private Vector<String> gameLog = new Vector<String>();
 	
 	
-	// ½Ì±Û ¶Ç´Â ¸ÖÆ¼ÀÏ ¶§
+	// ì‹±ê¸€ ë˜ëŠ” ë©€í‹°ì¼ ë•Œ
 	public GameManager(GAME_MODE gameMode) {
-		LoadSetting();									// ¿É¼Ç¿¡¼­ ¼³Á¤ÇÑ ¼¼ÆÃ ÀúÀå
+		LoadSetting();									// ì˜µì…˜ì—ì„œ ì„¤ì •í•œ ì„¸íŒ… ì €ì¥
 		MakeDir(defaultCompletedSaveDirectory);
 		MakeDir(defaultIncompletedSaveDirectory);
 		this.gameMode = gameMode;
-		String gMode;									// °ÔÀÓ ¸ğµå¸¦ ÀúÀåÇÏ±â À§ÇÑ ½ºÆ®¸µ
+		String gMode;									// ê²Œì„ ëª¨ë“œë¥¼ ì €ì¥í•˜ê¸° ìœ„í•œ ìŠ¤íŠ¸ë§
 		p1 = new Player(1, this, wallNum, playerName);
 		System.out.println(gameMode);
 		if(gameMode == GAME_MODE.SINGLE)
 		{
-			p2 = new AI(2, this, wallNum, "AI");		// AI »ı¼º
-			gMode = "S";								// ¼¼ÀÌºê¿¡ ÀúÀåÇÒ °ÔÀÓ ¸ğµå ½ºÆ®¸µ
+			p2 = new AI(2, this, wallNum, "AI");		// AI ìƒì„±
+			gMode = "S";								// ì„¸ì´ë¸Œì— ì €ì¥í•  ê²Œì„ ëª¨ë“œ ìŠ¤íŠ¸ë§
 		}
 		else
 		{
-			p1.setPlayerName("BLACK");					// 2ÀÎ ¸ğµåÀÏ ¶§´Â ¼³Á¤ÇÑ ÀÌ¸§ ´ë½Å BLACK / WHITE·Î ÀÌ¸§ ¼³Á¤ 
+			p1.setPlayerName("BLACK");					// 2ì¸ ëª¨ë“œì¼ ë•ŒëŠ” ì„¤ì •í•œ ì´ë¦„ ëŒ€ì‹  BLACK / WHITEë¡œ ì´ë¦„ ì„¤ì • 
 			p2 = new Player(2, this, wallNum, "WHITE");
 			gMode = "M";
 		}
-		if((int)(Math.random()*2) == 0) turn = true;	// ½ÃÀÛ ÅÏÀ» ·£´ıÀ¸·Î °áÁ¤
+		if((int)(Math.random()*2) == 0) turn = true;	// ì‹œì‘ í„´ì„ ëœë¤ìœ¼ë¡œ ê²°ì •
 		else turn = false;
-		gameLog.add(new String("GMode " + gMode + " BStart " + turn + "\r\n"));	// °ÔÀÓ ½ÃÀÛ Á¤º¸ ÀúÀå(°ÔÀÓ¸ğµå, ½ÃÀÛÅÏ)
+		gameLog.add(new String("GMode " + gMode + " BStart " + turn + "\r\n"));	// ê²Œì„ ì‹œì‘ ì •ë³´ ì €ì¥(ê²Œì„ëª¨ë“œ, ì‹œì‘í„´)
 		fileName = GetDate();
 	}
 	
-	// ³×Æ®¿öÅ© °ÔÀÓÀÏ ¶§
+	// ë„¤íŠ¸ì›Œí¬ ê²Œì„ì¼ ë•Œ
 	public GameManager(GAME_MODE gamemode, NetWorkSocket socket) {
 		LoadSetting();
 		MakeDir(defaultCompletedSaveDirectory);
@@ -79,31 +79,31 @@ public class GameManager {
 		this.gameMode = gamemode;
 		System.out.println(gameMode);
 
-		if(gameMode == GAME_MODE.NETWORKHOST) // È£½ºÆ®ÀÏ ½Ã ÅÏÀ» Á¤ÇÔ
+		if(gameMode == GAME_MODE.NETWORKHOST) // í˜¸ìŠ¤íŠ¸ì¼ ì‹œ í„´ì„ ì •í•¨
 		{
 			wallNum = 10;
 			p1 = new Player(1, this, 10, playerName);
 			p2 = new Player(2, this, 10, "WHITE");
 			if((int)(Math.random()*2) == 0) turn = true;
 			else turn = false;
-			System.out.println("ÇÃ·¹ÀÌ¾î ÀÌ¸§À» º¸³À´Ï´Ù.");	
-			SendData((String)playerName);				// ÀÚ½ÅÀÇ ÇÃ·¹ÀÌ¾î ÀÌ¸§ º¸³»±â
-			String receivedData = ReceiveData();		// »ó´ë ÇÃ·¹ÀÌ¾î ÀÌ¸§ ¹Ş±â
-			p2.setPlayerName(receivedData);				// »ó´ë ÇÃ·¹ÀÌ¾î ÀÌ¸§ ¼³Á¤
-			System.out.println("ÅÏ Á¤º¸¸¦ º¸³À´Ï´Ù.");
-			SendData(Boolean.toString(turn)); // Á¤ÇØÁø ÅÏ Á¤º¸¸¦ »ó´ë¿¡°Ô º¸³¿
+			System.out.println("í”Œë ˆì´ì–´ ì´ë¦„ì„ ë³´ëƒ…ë‹ˆë‹¤.");	
+			SendData((String)playerName);				// ìì‹ ì˜ í”Œë ˆì´ì–´ ì´ë¦„ ë³´ë‚´ê¸°
+			String receivedData = ReceiveData();		// ìƒëŒ€ í”Œë ˆì´ì–´ ì´ë¦„ ë°›ê¸°
+			p2.setPlayerName(receivedData);				// ìƒëŒ€ í”Œë ˆì´ì–´ ì´ë¦„ ì„¤ì •
+			System.out.println("í„´ ì •ë³´ë¥¼ ë³´ëƒ…ë‹ˆë‹¤.");
+			SendData(Boolean.toString(turn)); // ì •í•´ì§„ í„´ ì •ë³´ë¥¼ ìƒëŒ€ì—ê²Œ ë³´ëƒ„
 		}
 		else if(gameMode == GAME_MODE.NETWORKGUEST)
 		{
 			wallNum = 10;
 			p1 = new Player(1, this, 10, "BLACK");
 			p2 = new Player(2, this, 10, playerName);
-			System.out.println("ÇÃ·¹ÀÌ¾î ÀÌ¸§À» ¹Ş½À´Ï´Ù.");
-			String receivedData = ReceiveData();	// »ó´ë ÇÃ·¹ÀÌ¾î ÀÌ¸§ ¹Ş±â
-			p1.setPlayerName(receivedData);			// »ó´ë ÇÃ·¹ÀÌ¾î ÀÌ¸§ ¼³Á¤
-			SendData(playerName);					// ÀÚ½ÅÀÇ ÇÃ·¹ÀÌ¾î ÀÌ¸§ º¸³»±â
-			System.out.println("ÅÏ Á¤º¸¸¦ ¹Ş½À´Ï´Ù.");
-			receivedData = ReceiveData(); // ÅÏ Á¤º¸¸¦ ¹ŞÀ½
+			System.out.println("í”Œë ˆì´ì–´ ì´ë¦„ì„ ë°›ìŠµë‹ˆë‹¤.");
+			String receivedData = ReceiveData();	// ìƒëŒ€ í”Œë ˆì´ì–´ ì´ë¦„ ë°›ê¸°
+			p1.setPlayerName(receivedData);			// ìƒëŒ€ í”Œë ˆì´ì–´ ì´ë¦„ ì„¤ì •
+			SendData(playerName);					// ìì‹ ì˜ í”Œë ˆì´ì–´ ì´ë¦„ ë³´ë‚´ê¸°
+			System.out.println("í„´ ì •ë³´ë¥¼ ë°›ìŠµë‹ˆë‹¤.");
+			receivedData = ReceiveData(); // í„´ ì •ë³´ë¥¼ ë°›ìŒ
 			if(receivedData.equals("true"))
 			{
 				turn = true;
@@ -114,16 +114,16 @@ public class GameManager {
 			{
 				System.out.println(receivedData);
 				
-				System.out.println("³×Æ®¿öÅ© ¿À·ù...\nÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù.");
+				System.out.println("ë„¤íŠ¸ì›Œí¬ ì˜¤ë¥˜...\ní”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.");
 				System.exit(0);
 			}
 		}
 		putWall = false;
-		gameLog.add(new String("GMode " + "N" + " BStart " + turn + "\r\n"));	// °ÔÀÓ ½ÃÀÛ Á¤º¸ ÀúÀå
+		gameLog.add(new String("GMode " + "N" + " BStart " + turn + "\r\n"));	// ê²Œì„ ì‹œì‘ ì •ë³´ ì €ì¥
 		fileName = GetDate();
 	}
 	
-	// °ÔÀÓ ·Îµå ¶Ç´Â ¸®ÇÃ·¹ÀÌ ½Ã
+	// ê²Œì„ ë¡œë“œ ë˜ëŠ” ë¦¬í”Œë ˆì´ ì‹œ
 	public GameManager(GAME_MODE gamemode, File file) {
 		MakeDir(defaultCompletedSaveDirectory);
 		MakeDir(defaultIncompletedSaveDirectory);
@@ -139,44 +139,45 @@ public class GameManager {
 				{
 					c = fin.read();
 					c = fin.read();
-					gameLog.add(temp + "\r\n");	// °ÔÀÓ ·Î±×¿¡ ÆÄÀÏ¿¡¼­ ºÒ·¯¿Â Á¤º¸ ÀúÀå
+					gameLog.add(temp + "\r\n");	// ê²Œì„ ë¡œê·¸ì— íŒŒì¼ì—ì„œ ë¶ˆëŸ¬ì˜¨ ì •ë³´ ì €ì¥
 					temp = "";
 				}
 				temp += (char)c;
 				turnCount++;
 			}
+			fin.close();
 			Iterator<String> it = gameLog.iterator();
 			String turnInfo = it.next();
 			System.out.println(turnInfo);
-			if(gameMode == GAME_MODE.LOADGAME)					// °ÔÀÓÀ» ·ÎµåÇÑ °æ¿ì(¸®ÇÃ·¹ÀÌ°¡ ¾Æ´Ò °æ¿ì)
+			if(gameMode == GAME_MODE.LOADGAME)					// ê²Œì„ì„ ë¡œë“œí•œ ê²½ìš°(ë¦¬í”Œë ˆì´ê°€ ì•„ë‹ ê²½ìš°)
 			{
-				if(turnInfo.substring(6, 7).equals("S"))		// ½Ì±Û ¸ğµåÀÏ °æ¿ì
+				if(turnInfo.substring(6, 7).equals("S"))		// ì‹±ê¸€ ëª¨ë“œì¼ ê²½ìš°
 					gameMode = GAME_MODE.SINGLE;
-				else if(turnInfo.substring(6, 7).equals("M"))	// ¸ÖÆ¼ ¸ğµåÀÏ °æ¿ì
+				else if(turnInfo.substring(6, 7).equals("M"))	// ë©€í‹° ëª¨ë“œì¼ ê²½ìš°
 					gameMode = GAME_MODE.MULTY;
 				fileName = file.getName().substring(0, file.getName().length()-4);
 				System.out.println(fileName);
 			}
-			if(turnInfo.substring(15, 19).equals("true"))		// ÅÏ Á¤º¸ ºÒ·¯¿À±â
+			if(turnInfo.substring(15, 19).equals("true"))		// í„´ ì •ë³´ ë¶ˆëŸ¬ì˜¤ê¸°
 				turn = true;
 			else
 				turn = false;
 			
 			p1 = new Player(1, this, wallNum, playerName);
-			if(gameMode == GAME_MODE.REPLAY)					// ¸®ÇÃ·¹ÀÌÇÏ´Â °æ¿ì
+			if(gameMode == GAME_MODE.REPLAY)					// ë¦¬í”Œë ˆì´í•˜ëŠ” ê²½ìš°
 			{
 				p1.setPlayerName("BLACK");
 				p2 = new Player(2, this, wallNum, "WHITE");
-			} else if(gameMode == GAME_MODE.SINGLE)				// ½Ì±Û ¸ğµåÀÏ °æ¿ì
+			} else if(gameMode == GAME_MODE.SINGLE)				// ì‹±ê¸€ ëª¨ë“œì¼ ê²½ìš°
 			{
 				p2 = new AI(2, this, wallNum, "AI");
 			}
-			else												// ¸ÖÆ¼ ¸ğµåÀÏ °æ¿ì
+			else												// ë©€í‹° ëª¨ë“œì¼ ê²½ìš°
 			{
 				p1.setPlayerName("BLACK");
 				p2 = new Player(2, this, wallNum, "WHITE");
 			}
-			if(gameMode != GAME_MODE.REPLAY)					// °ÔÀÓÀ» ·ÎµåÇÑ °æ¿ì(¸®ÇÃ·¹ÀÌ°¡ ¾Æ´Ò °æ¿ì)
+			if(gameMode != GAME_MODE.REPLAY)					// ê²Œì„ì„ ë¡œë“œí•œ ê²½ìš°(ë¦¬í”Œë ˆì´ê°€ ì•„ë‹ ê²½ìš°)
 			{
 				while(it.hasNext())
 				{
@@ -203,36 +204,36 @@ public class GameManager {
 					turn = !turn;
 				}
 			}
-			if(gameMode == GAME_MODE.REPLAY)					// ¸®ÇÃ·¹ÀÌÀÏ °æ¿ì ½ÃÀÛ ÅÏÀ» 1·Î Á¤ÇÔ
+			if(gameMode == GAME_MODE.REPLAY)					// ë¦¬í”Œë ˆì´ì¼ ê²½ìš° ì‹œì‘ í„´ì„ 1ë¡œ ì •í•¨
 				selectTurn = 1;
-			else												// °ÔÀÓÀ» ·ÎµåÇÑ °æ¿ì ½ÃÀÛ ÅÏÀ» ÁøÇàµÈ ¸¶Áö¸· ÅÏÀ¸·Î Á¤ÇÔ
+			else												// ê²Œì„ì„ ë¡œë“œí•œ ê²½ìš° ì‹œì‘ í„´ì„ ì§„í–‰ëœ ë§ˆì§€ë§‰ í„´ìœ¼ë¡œ ì •í•¨
 				selectTurn = gameLog.size();
 			turnCount = gameLog.size();
 			
 		} catch(IOException e) {
-			JOptionPane.showMessageDialog(null, "ÆÄÀÏÀ» ºÒ·¯¿À´Â °úÁ¤¿¡¼­ ¹®Á¦°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.", "·Îµå ¿À·ù", JOptionPane.OK_OPTION);
+			JOptionPane.showMessageDialog(null, "íŒŒì¼ì„ ë¶ˆëŸ¬ì˜¤ëŠ” ê³¼ì •ì—ì„œ ë¬¸ì œê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.", "ë¡œë“œ ì˜¤ë¥˜", JOptionPane.OK_OPTION);
 		}
 	}
 	
-	// º®ÀÇ À§Ä¡¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	// ë²½ì˜ ìœ„ì¹˜ë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
 	public boolean[][][] GetWallPoint() { return wallPoints; }
-	// °ÔÀÓ ¸ğµå¸¦ ¹İÈ¯
+	// ê²Œì„ ëª¨ë“œë¥¼ ë°˜í™˜
 	public GAME_MODE GetGameMode() { return gameMode; }
-	// ÅÏ Á¤º¸¸¦ ¹İÈ¯
+	// í„´ ì •ë³´ë¥¼ ë°˜í™˜
 	public boolean GetTurn() { return turn; }
-	// ÇöÀç ÅÏ ¼ö¸¦ ¹İÈ¯(ÀÌÀü¹öÆ°, ´ÙÀ½¹öÆ°¿¡ ÇÊ¿ä)
+	// í˜„ì¬ í„´ ìˆ˜ë¥¼ ë°˜í™˜(ì´ì „ë²„íŠ¼, ë‹¤ìŒë²„íŠ¼ì— í•„ìš”)
 	public int GetSelectTurn() { return selectTurn; }
-	// ÇöÀç±îÁö ÁøÇàµÈ ÅÏ ¼ö¸¦ ¹İÈ¯
+	// í˜„ì¬ê¹Œì§€ ì§„í–‰ëœ í„´ ìˆ˜ë¥¼ ë°˜í™˜
 	public int GetTurnCount() { return turnCount; }
-	// ÅÏÀ» ¹Ù²Ù´Â ÇÔ¼ö
+	// í„´ì„ ë°”ê¾¸ëŠ” í•¨ìˆ˜
 	public void ChangeTurn() { turn = !turn; }
-	// ÀÌÀü¹öÆ°À» ´©¸¥ ÈÄ ´Ù¸¥ À§Ä¡·Î ÀÌµ¿ ½Ã, µÚÀÇ º¤ÅÍ¸¦ Áö¿ì´Â ÇÔ¼ö
+	// ì´ì „ë²„íŠ¼ì„ ëˆ„ë¥¸ í›„ ë‹¤ë¥¸ ìœ„ì¹˜ë¡œ ì´ë™ ì‹œ, ë’¤ì˜ ë²¡í„°ë¥¼ ì§€ìš°ëŠ” í•¨ìˆ˜
 	public void SetTurnCount() {
 		System.out.println("TC, ST : " + turnCount + " " + selectTurn);
 		System.out.println(gameLog.size());
-		int glSize = gameLog.size();				// for¹®¿¡ »ç¿ëÇÏ±â À§ÇØ °ÔÀÓ ·Î±× »çÀÌÁî ÀúÀå
+		int glSize = gameLog.size();				// forë¬¸ì— ì‚¬ìš©í•˜ê¸° ìœ„í•´ ê²Œì„ ë¡œê·¸ ì‚¬ì´ì¦ˆ ì €ì¥
 		for(int i = selectTurn; i < glSize; i++) {
-			gameLog.remove(selectTurn);				// ÇöÀç ÅÏ ´ÙÀ½ÀÇ ¸ğµç ±â·Ï »èÁ¦
+			gameLog.remove(selectTurn);				// í˜„ì¬ í„´ ë‹¤ìŒì˜ ëª¨ë“  ê¸°ë¡ ì‚­ì œ
 			System.out.println("removed " + i);
 		}
 		for(int i = 0; i < gameLog.size(); i++)
@@ -243,50 +244,50 @@ public class GameManager {
 		System.out.println(turnCount + " " + selectTurn);
 		System.out.println();
 	}
-	// ´ÙÀ½ ÅÏ
+	// ë‹¤ìŒ í„´
 	public void NextTurn() {
 		turnCount++;
 		selectTurn++;
 		ChangeTurn();
 		putWall = false;
 	}
-	// ÀÌÀü ÅÏ Á¤º¸ ¹İÈ¯
+	// ì´ì „ í„´ ì •ë³´ ë°˜í™˜
 	public String GetPrevTurn() {
 		turn = !turn;
 		selectTurn --;
 		System.out.println(turnCount + " " + selectTurn);
 		return gameLog.elementAt(selectTurn);
 	}
-	// ´ÙÀ½ ÅÏ Á¤º¸ ¹İÈ¯
+	// ë‹¤ìŒ í„´ ì •ë³´ ë°˜í™˜
 	public String GetNextTurn() {
 		turn = !turn;
 		return gameLog.elementAt(selectTurn++);
 	}
-	// º¼·ı ¹İÈ¯
+	// ë³¼ë¥¨ ë°˜í™˜
 	public int GetVolume() { return volume; }
-	// ÆÄÀÏ¸í ºÒ·¯¿À±â
+	// íŒŒì¼ëª… ë¶ˆëŸ¬ì˜¤ê¸°
 	public String GetFileName() { return fileName; }
-	// Àå¾Ö¹° ¹öÆ°À» ´­·¶¾ú´ÂÁö¸¦ ¹İÈ¯
+	// ì¥ì• ë¬¼ ë²„íŠ¼ì„ ëˆŒë €ì—ˆëŠ”ì§€ë¥¼ ë°˜í™˜
 	public boolean GetPutMode() { return putWall; }
-	// Àå¾Ö¹° ¸ğµå, ÀÌµ¿ ¸ğµå¸¦ ÀüÈ¯ÇÏ´Â ÇÔ¼ö
+	// ì¥ì• ë¬¼ ëª¨ë“œ, ì´ë™ ëª¨ë“œë¥¼ ì „í™˜í•˜ëŠ” í•¨ìˆ˜
 	public void ChangePutMode() { putWall = !putWall; }
-	// ¼ÒÄÏÀ» ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	// ì†Œì¼“ì„ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
 	public NetWorkSocket GetSocket() { return socket; }
 	
-	// »ó´ë¿¡°Ô µ¥ÀÌÅÍ Àü¼Û
+	// ìƒëŒ€ì—ê²Œ ë°ì´í„° ì „ì†¡
 	public void SendData(String message) {
 		socket.SendData(message);
 	}
 	
-	// µ¥ÀÌÅÍ ¹Ş¾Æ¿À±â
+	// ë°ì´í„° ë°›ì•„ì˜¤ê¸°
 	public String ReceiveData() {
 		return socket.ReceiveData();
 	}
 	
-	// ¼¼ÆÃÀ» ºÒ·¯¿À´Â ÇÔ¼ö
+	// ì„¸íŒ…ì„ ë¶ˆëŸ¬ì˜¤ëŠ” í•¨ìˆ˜
 	public void LoadSetting() {
 		try {
-			FileReader fin = new FileReader("option/setting.txt");	// ¼¼ÆÃÀÌ ÀúÀåµÈ ÅØ½ºÆ® ÆÄÀÏ
+			FileReader fin = new FileReader("option/setting.txt");	// ì„¸íŒ…ì´ ì €ì¥ëœ í…ìŠ¤íŠ¸ íŒŒì¼
 			
 			int c, i = 0;
 			String[] options = new String[5];
@@ -304,7 +305,7 @@ public class GameManager {
 				temp += (char)c;
 			}
 			
-			playerName = options[0];								// ¼¼ÆÃÀ» ºÒ·¯¿È
+			playerName = options[0];								// ì„¸íŒ…ì„ ë¶ˆëŸ¬ì˜´
 			defaultCompletedSaveDirectory = options[1];
 			defaultIncompletedSaveDirectory = options[2];
 			volume = Integer.parseInt(options[3]);
@@ -316,9 +317,9 @@ public class GameManager {
 		}
 	}
 	
-	// ÀÌµ¿ °¡´ÉÇÑ À§Ä¡¸¦ Æ÷ÀÎÆ®·Î ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+	// ì´ë™ ê°€ëŠ¥í•œ ìœ„ì¹˜ë¥¼ í¬ì¸íŠ¸ë¡œ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
 	public Point[] GetAvailablePoint() {
-		Point[] availablePoints; // Å©±â 4ÀÇ ¹è¿­. ¿À¸¥ÂÊ, ¿ŞÂÊ, ¾Æ·¡ÂÊ, À§ÂÊ ¼ø
+		Point[] availablePoints; // í¬ê¸° 4ì˜ ë°°ì—´. ì˜¤ë¥¸ìª½, ì™¼ìª½, ì•„ë˜ìª½, ìœ„ìª½ ìˆœ
 		
 		if(turn == true) {
 			availablePoints = p1.updateAvailablePlace(wallPoints, p2.getPoint());
@@ -330,29 +331,29 @@ public class GameManager {
 		return availablePoints;
 	}
 	
-	// º®À» ³õ´Â ÇÔ¼ö
-	public boolean PutWallNum(int wallNum, boolean BTurn) {	// wallNumÀº ¼¼ ÀÚ¸® ¼ıÀÚ
+	// ë²½ì„ ë†“ëŠ” í•¨ìˆ˜
+	public boolean PutWallNum(int wallNum, boolean BTurn) {	// wallNumì€ ì„¸ ìë¦¬ ìˆ«ì
 		boolean isVertical;
-		int vWallNum = wallNum%10;	// ÀÏÀÇ ÀÚ¸® ¼ıÀÚ´Â °¡·ÎÀÇ À§Ä¡
-		int hWallNum = (wallNum/10)%10;	// ½ÊÀÇ ÀÚ¸® ¼ıÀÚ´Â ¼¼·ÎÀÇ À§Ä¡
+		int vWallNum = wallNum%10;	// ì¼ì˜ ìë¦¬ ìˆ«ìëŠ” ê°€ë¡œì˜ ìœ„ì¹˜
+		int hWallNum = (wallNum/10)%10;	// ì‹­ì˜ ìë¦¬ ìˆ«ìëŠ” ì„¸ë¡œì˜ ìœ„ì¹˜
 
 		vWallNum = (vWallNum > 7) ? 7 : vWallNum;
 		hWallNum = (hWallNum > 7) ? 7 : hWallNum;
 		System.out.println(vWallNum + ", " + hWallNum + " " + wallNum);
 		
-		if(wallNum / 100 == 1)	// ¹éÀÇ ÀÚ¸® ¼ıÀÚ´Â °¡·Îº®ÀÎÁö ¼¼·Îº®ÀÎÁö¸¦ °áÁ¤
+		if(wallNum / 100 == 1)	// ë°±ì˜ ìë¦¬ ìˆ«ìëŠ” ê°€ë¡œë²½ì¸ì§€ ì„¸ë¡œë²½ì¸ì§€ë¥¼ ê²°ì •
 			isVertical = true;
 		else isVertical = false;
 		
 		if(isVertical == true)
 		{
 			if(!wallPoints[0][vWallNum][hWallNum] && !wallPoints[0][(vWallNum-1) < 0 ? 0 : (vWallNum-1)][hWallNum] &&
-					!wallPoints[0][(vWallNum+1) > 7 ? 7 : (vWallNum+1)][hWallNum] && // ¾ç ¿·À¸·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
-					!wallPoints[1][vWallNum][hWallNum]) // ¼¼·Î·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
+					!wallPoints[0][(vWallNum+1) > 7 ? 7 : (vWallNum+1)][hWallNum] && // ì–‘ ì˜†ìœ¼ë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
+					!wallPoints[1][vWallNum][hWallNum]) // ì„¸ë¡œë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
 			{
 				wallPoints[0][vWallNum][hWallNum] = true;
 				if(BTurn == true)
-					p1.minusWallNum(); // ³õÀ» ¼ö ÀÖ´Â º®ÀÇ ¼ö °¨¼Ò
+					p1.minusWallNum(); // ë†“ì„ ìˆ˜ ìˆëŠ” ë²½ì˜ ìˆ˜ ê°ì†Œ
 				else
 					p2.minusWallNum();
 				return true;
@@ -361,8 +362,8 @@ public class GameManager {
 		else
 		{
 			if(!wallPoints[1][vWallNum][hWallNum] && !wallPoints[1][vWallNum][(hWallNum-1) < 0 ? 0 : (hWallNum-1)] &&
-					!wallPoints[1][vWallNum][(hWallNum+1) > 7 ? 7 : (hWallNum+1)] && // À§¾Æ·¡·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
-					!wallPoints[0][vWallNum][hWallNum]) // °¡·Î·Î °ãÄ¡°Ô ¼¼¿ï ¼ö ¾ø´Â º®
+					!wallPoints[1][vWallNum][(hWallNum+1) > 7 ? 7 : (hWallNum+1)] && // ìœ„ì•„ë˜ë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
+					!wallPoints[0][vWallNum][hWallNum]) // ê°€ë¡œë¡œ ê²¹ì¹˜ê²Œ ì„¸ìš¸ ìˆ˜ ì—†ëŠ” ë²½
 			{
 				wallPoints[1][vWallNum][hWallNum] = true;
 				if(BTurn == true)
@@ -375,17 +376,17 @@ public class GameManager {
 		return false;
 	}
 	
-	// º®À» Á¦°ÅÇÏ´Â ÇÔ¼ö
+	// ë²½ì„ ì œê±°í•˜ëŠ” í•¨ìˆ˜
 	public void DeleteWallNum(int wallNum, boolean BTurn) {
 		boolean isVertical;
-		int vWallNum = wallNum%10;	// ÀÏÀÇ ÀÚ¸® ¼ıÀÚ´Â °¡·ÎÀÇ À§Ä¡
-		int hWallNum = (wallNum/10)%10;	// ½ÊÀÇ ÀÚ¸® ¼ıÀÚ´Â ¼¼·ÎÀÇ À§Ä¡
+		int vWallNum = wallNum%10;	// ì¼ì˜ ìë¦¬ ìˆ«ìëŠ” ê°€ë¡œì˜ ìœ„ì¹˜
+		int hWallNum = (wallNum/10)%10;	// ì‹­ì˜ ìë¦¬ ìˆ«ìëŠ” ì„¸ë¡œì˜ ìœ„ì¹˜
 
 		vWallNum = (vWallNum > 7) ? 7 : vWallNum;
 		hWallNum = (hWallNum > 7) ? 7 : hWallNum;
 		System.out.println(vWallNum + ", " + hWallNum + " " + wallNum);
 		
-		if(wallNum / 100 == 1)	// ¹éÀÇ ÀÚ¸® ¼ıÀÚ´Â °¡·Îº®ÀÎÁö ¼¼·Îº®ÀÎÁö¸¦ °áÁ¤
+		if(wallNum / 100 == 1)	// ë°±ì˜ ìë¦¬ ìˆ«ìëŠ” ê°€ë¡œë²½ì¸ì§€ ì„¸ë¡œë²½ì¸ì§€ë¥¼ ê²°ì •
 			isVertical = true;
 		else isVertical = false;
 		
@@ -393,21 +394,21 @@ public class GameManager {
 		{
 			wallPoints[0][vWallNum][hWallNum] = false;
 			if(BTurn == true)
-				p1.plusWallNum();	// ³õÀ» ¼ö ÀÖ´Â º®ÀÇ ¼ö Áõ°¡
+				p1.plusWallNum();	// ë†“ì„ ìˆ˜ ìˆëŠ” ë²½ì˜ ìˆ˜ ì¦ê°€
 			else
-				p2.plusWallNum();	// ³õÀ» ¼ö ÀÖ´Â º®ÀÇ ¼ö Áõ°¡
+				p2.plusWallNum();	// ë†“ì„ ìˆ˜ ìˆëŠ” ë²½ì˜ ìˆ˜ ì¦ê°€
 		}
 		else
 		{
 			wallPoints[1][vWallNum][hWallNum] = false;
 			if(BTurn == true)
-				p1.plusWallNum();	// ³õÀ» ¼ö ÀÖ´Â º®ÀÇ ¼ö Áõ°¡
+				p1.plusWallNum();	// ë†“ì„ ìˆ˜ ìˆëŠ” ë²½ì˜ ìˆ˜ ì¦ê°€
 			else
-				p2.plusWallNum();	// ³õÀ» ¼ö ÀÖ´Â º®ÀÇ ¼ö Áõ°¡
+				p2.plusWallNum();	// ë†“ì„ ìˆ˜ ìˆëŠ” ë²½ì˜ ìˆ˜ ì¦ê°€
 		}
 	}
 
-	// °ÔÀÓ ¿À¹öÀÎÁö °Ë»ç
+	// ê²Œì„ ì˜¤ë²„ì¸ì§€ ê²€ì‚¬
 	public boolean GameOver() { 
 		if(p1.getPoint().y == 0 || p2.getPoint().y == 8)
 		{
@@ -416,7 +417,7 @@ public class GameManager {
 		return false;
 	}
 	
-	// °ÔÀÓ Á¤º¸ ±â·Ï
+	// ê²Œì„ ì •ë³´ ê¸°ë¡
 	public void Record(String log)
 	{
 		if(turn == false)
@@ -425,7 +426,7 @@ public class GameManager {
 			gameLog.add("White " + log + "\r\n");
 	}
 	
-	// °ÔÀÓ ÀúÀå
+	// ê²Œì„ ì €ì¥
 	public void Save(String fileName, boolean completed)
 	{
 		FileWriter fout = null;
@@ -439,11 +440,11 @@ public class GameManager {
 					fout.write(gameLog.get(i));
 				fout.close();
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "ÀúÀåÇÏ´Â °úÁ¤¿¡¼­ ¹®Á¦°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.", "ÀúÀå ¿À·ù", JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(null, "ì €ì¥í•˜ëŠ” ê³¼ì •ì—ì„œ ë¬¸ì œê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.", "ì €ì¥ ì˜¤ë¥˜", JOptionPane.OK_OPTION);
 			}
 	}
 	
-	// Æú´õ »ı¼º
+	// í´ë” ìƒì„±
 	public void MakeDir(String dirName)
 	{
 		File Folder = new File(dirName);

@@ -6,61 +6,61 @@ import javax.swing.*;
 import java.awt.*;
 
 /*
- * ³×Æ®¿öÅ© °ÔÀÓÀ» »ı¼ºÇÏ´Â È£½ºÆ®
+ * ë„¤íŠ¸ì›Œí¬ ê²Œì„ì„ ìƒì„±í•˜ëŠ” í˜¸ìŠ¤íŠ¸
  */
 
 public class Server extends NetWorkSocket{
-	private ServerSocket serverSocket;	// ¼­¹ö ¼ÒÄÏ
-	private Socket socket;				// Åë½ÅÀ» À§ÇÑ ¼ÒÄÏ
-	private byte[] bytes = new byte[20];				// µ¥ÀÌÅÍ¸¦ ¹Ş±â À§ÇÑ º¯¼ö
-	private String receiveMessage;		// ¹ŞÀº µ¥ÀÌÅÍ
-	private String sendMessage;			// º¸³¾ µ¥ÀÌÅÍ
-	private OutputStream os;			// µ¥ÀÌÅÍ¸¦ º¸³»±â À§ÇÑ ½ºÆ®¸²
-	private InputStream is;				// µ¥ÀÌÅÍ¸¦ ¹Ş±â À§ÇÑ ½ºÆ®¸²
-	private InetAddress ia;				// ÀÚ½ÅÀÇ ÁÖ¼Ò¸¦ ¾ò±â À§ÇÑ º¯¼ö
-	private Frame LoadingFrame;			// Ã¢ Á¾·á¸¦ À§ÇÑ °´Ã¼
+	private ServerSocket serverSocket;	// ì„œë²„ ì†Œì¼“
+	private Socket socket;				// í†µì‹ ì„ ìœ„í•œ ì†Œì¼“
+	private byte[] bytes = new byte[20];				// ë°ì´í„°ë¥¼ ë°›ê¸° ìœ„í•œ ë³€ìˆ˜
+	private String receiveMessage;		// ë°›ì€ ë°ì´í„°
+	private String sendMessage;			// ë³´ë‚¼ ë°ì´í„°
+	private OutputStream os;			// ë°ì´í„°ë¥¼ ë³´ë‚´ê¸° ìœ„í•œ ìŠ¤íŠ¸ë¦¼
+	private InputStream is;				// ë°ì´í„°ë¥¼ ë°›ê¸° ìœ„í•œ ìŠ¤íŠ¸ë¦¼
+	private InetAddress ia;				// ìì‹ ì˜ ì£¼ì†Œë¥¼ ì–»ê¸° ìœ„í•œ ë³€ìˆ˜
+	private Frame LoadingFrame;			// ì°½ ì¢…ë£Œë¥¼ ìœ„í•œ ê°ì²´
 
-	// È£½ºÆ®ÀÇ ipÁÖ¼Ò¸¦ ¹İÈ¯
+	// í˜¸ìŠ¤íŠ¸ì˜ ipì£¼ì†Œë¥¼ ë°˜í™˜
 	public String GetHostIP() {
 		String ipNum;
 		try {
 			ipNum = InetAddress.getLocalHost().getHostAddress();
 		} catch (IOException e) {
 			e.printStackTrace();
-			return "¿À·ù·Î ÀÎÇØ È£½ºÆ®ÀÇ ÁÖ¼Ò¸¦ Ãâ·ÂÇÒ ¼ö ¾ø½À´Ï´Ù.";
+			return "ì˜¤ë¥˜ë¡œ ì¸í•´ í˜¸ìŠ¤íŠ¸ì˜ ì£¼ì†Œë¥¼ ì¶œë ¥í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.";
 		}
 		return ipNum;
 	}
 	
-	// ¼­¹ö ¿­±â
+	// ì„œë²„ ì—´ê¸°
 	public boolean OpenServer() {
 		try {
 			ia = InetAddress.getLocalHost();
 			serverSocket = new ServerSocket();
-			serverSocket.bind(new InetSocketAddress(ia, 8888)); // ¼­¹ö ¿ÀÇÂ
+			serverSocket.bind(new InetSocketAddress(ia, 8888)); // ì„œë²„ ì˜¤í”ˆ
 			bytes = new byte[20];
 
-			System.out.println("¿¬°á ±â´Ù¸®´Â Áß...");
+			System.out.println("ì—°ê²° ê¸°ë‹¤ë¦¬ëŠ” ì¤‘...");
 			System.out.println(ia);
 			socket = serverSocket.accept();
 			InetSocketAddress isa = (InetSocketAddress) socket.getRemoteSocketAddress();
-			System.out.println("¿¬°á  ¼ö¶ô!" + isa.getHostName() + "/" + isa.getAddress());
+			System.out.println("ì—°ê²°  ìˆ˜ë½!" + isa.getHostName() + "/" + isa.getAddress());
 
-			// µ¥ÀÌÅÍ ¹Ş±â
+			// ë°ì´í„° ë°›ê¸°
 			is = socket.getInputStream();
 			
-			int readByteCount = is.read(bytes);		// Å¬¶óÀÌ¾ğÆ®·ÎºÎÅÍ È®ÀÎ µ¥ÀÌÅÍ ¹ŞÀ½
+			int readByteCount = is.read(bytes);		// í´ë¼ì´ì–¸íŠ¸ë¡œë¶€í„° í™•ì¸ ë°ì´í„° ë°›ìŒ
 			receiveMessage = new String(bytes, 0, readByteCount, "UTF-8");
-			System.out.println("µ¥ÀÌÅÍ ¹Ş±â ¼º°ø: " + receiveMessage);
+			System.out.println("ë°ì´í„° ë°›ê¸° ì„±ê³µ: " + receiveMessage);
 
-			// µ¥ÀÌÅÍ º¸³»±â
+			// ë°ì´í„° ë³´ë‚´ê¸°
 			os = socket.getOutputStream();
 			sendMessage = new String("Message From Host");
 			bytes = sendMessage.getBytes("UTF-8");
 
-			os.write(bytes, 0, bytes.length);		// Å¬¶óÀÌ¾ğÆ®·Î È®ÀÎ µ¥ÀÌÅÍ º¸³¿
+			os.write(bytes, 0, bytes.length);		// í´ë¼ì´ì–¸íŠ¸ë¡œ í™•ì¸ ë°ì´í„° ë³´ëƒ„
 			os.flush();
-			System.out.println("µ¥ÀÌÅÍ º¸³»±â ¼º°ø" + bytes);
+			System.out.println("ë°ì´í„° ë³´ë‚´ê¸° ì„±ê³µ" + bytes);
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -70,7 +70,7 @@ public class Server extends NetWorkSocket{
 		return false;
 	}
 	
-	// µ¥ÀÌÅÍ º¸³»±â
+	// ë°ì´í„° ë³´ë‚´ê¸°
 	public synchronized void SendData(String msg) {
 		try {
 			System.out.println("Send: " + msg);
@@ -84,7 +84,7 @@ public class Server extends NetWorkSocket{
 		}
 	}
 	
-	// µ¥ÀÌÅÍ ¹Ş±â
+	// ë°ì´í„° ë°›ê¸°
 	public synchronized String ReceiveData() {
 		try {
 			is = socket.getInputStream();
@@ -98,7 +98,7 @@ public class Server extends NetWorkSocket{
 		}
 	}
 	
-	// ¼ÒÄÏ ´İ±â
+	// ì†Œì¼“ ë‹«ê¸°
 	public void CloseSocket() {
 		try {
 			if (!serverSocket.isClosed()) {
@@ -106,7 +106,7 @@ public class Server extends NetWorkSocket{
 				socket.close();
 				is.close();
 				os.close();
-				System.out.println("¼­¹ö¸¦ ´İ½À´Ï´Ù.");
+				System.out.println("ì„œë²„ë¥¼ ë‹«ìŠµë‹ˆë‹¤.");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

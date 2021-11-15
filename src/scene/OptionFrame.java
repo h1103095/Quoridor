@@ -7,13 +7,13 @@ import java.io.*;
 import javax.swing.*;
 
 /*
- * °ÔÀÓ ¿É¼ÇÀ» º¯°æÇÏ´Â Ã¢
+ * ê²Œìž„ ì˜µì…˜ì„ ë³€ê²½í•˜ëŠ” ì°½
  */
 
 public class OptionFrame extends JFrame{
 	
 	OptionFrame() {
-		setTitle("È¯°æ¼³Á¤");
+		setTitle("í™˜ê²½ì„¤ì •");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(null);
@@ -38,15 +38,15 @@ public class OptionFrame extends JFrame{
 	}
 	
 	class OptionPanel extends JPanel {
-		String[] optionString = {"ÀÌ¸§ º¯°æ", "ÀúÀå µð·ºÅä¸® º¯°æ", "º¹±â¿ë °ÔÀÓ µð·ºÅä¸® º¯°æ", "È¿°úÀ½ Å©±â", "Àå¾Ö¹° °¹¼ö"};
+		String[] optionString = {"ì´ë¦„ ë³€ê²½", "ì €ìž¥ ë””ë ‰í† ë¦¬ ë³€ê²½", "ë³µê¸°ìš© ê²Œìž„ ë””ë ‰í† ë¦¬ ë³€ê²½", "íš¨ê³¼ìŒ í¬ê¸°", "ìž¥ì• ë¬¼ ê°¯ìˆ˜"};
 		JLabel[] optionLabels = new JLabel[5];
 		String[] defaultOptions = {"Player", "complete_save/", "incomplete_save/", "10", "10"};
 				
 		JTextField[] optionTexts = new JTextField[6];
-		JButton ClearCompletedSaveFiles = new JButton("¿Ï·áµÈ °ÔÀÓ ±â·Ï »èÁ¦");
-		JButton ClearIncompletedSaveFiles = new JButton("ÁøÇàÁßÀÎ °ÔÀÓ ±â·Ï »èÁ¦");
-		JButton OKbutton = new JButton("Àû¿ë");
-		JButton CANCELbutton = new JButton("´Ý±â");
+		JButton ClearCompletedSaveFiles = new JButton("ì™„ë£Œëœ ê²Œìž„ ê¸°ë¡ ì‚­ì œ");
+		JButton ClearIncompletedSaveFiles = new JButton("ì§„í–‰ì¤‘ì¸ ê²Œìž„ ê¸°ë¡ ì‚­ì œ");
+		JButton OKbutton = new JButton("ì ìš©");
+		JButton CANCELbutton = new JButton("ë‹«ê¸°");
 		
 		private Frame optionFrame;
 		
@@ -73,33 +73,33 @@ public class OptionFrame extends JFrame{
 		class BtnListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == ClearCompletedSaveFiles) {
-					int result = JOptionPane.showConfirmDialog(null, "Á¤¸» ¼¼ÀÌºê ÆÄÀÏÀ» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", "Confirm", JOptionPane.YES_NO_OPTION);
+					int result = JOptionPane.showConfirmDialog(null, "ì •ë§ ì„¸ì´ë¸Œ íŒŒì¼ì„ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "Confirm", JOptionPane.YES_NO_OPTION);
 					if(result == JOptionPane.YES_OPTION) {
 						ClearSaveFiles(true);
-						JOptionPane.showMessageDialog(null, "»èÁ¦µÇ¾ú½À´Ï´Ù.", "»èÁ¦ ¿Ï·á", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
+						JOptionPane.showMessageDialog(null, "ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.", "ì‚­ì œ ì™„ë£Œ", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
 					}
 				}
 				else if(e.getSource() == ClearIncompletedSaveFiles) {
-					int result = JOptionPane.showConfirmDialog(null, "Á¤¸» ¼¼ÀÌºê ÆÄÀÏÀ» »èÁ¦ÇÏ½Ã°Ú½À´Ï±î?", "Confirm", JOptionPane.YES_NO_OPTION);
+					int result = JOptionPane.showConfirmDialog(null, "ì •ë§ ì„¸ì´ë¸Œ íŒŒì¼ì„ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "Confirm", JOptionPane.YES_NO_OPTION);
 					if(result == JOptionPane.YES_OPTION) {
 						ClearSaveFiles(false);
-						JOptionPane.showMessageDialog(null, "»èÁ¦µÇ¾ú½À´Ï´Ù.", "»èÁ¦ ¿Ï·á", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
+						JOptionPane.showMessageDialog(null, "ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.", "ì‚­ì œ ì™„ë£Œ", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
 					}
 				}
 				else if(e.getSource() == OKbutton) {
 					if(Integer.parseInt(optionTexts[3].getText()) >= 0 && Integer.parseInt(optionTexts[3].getText()) <= 20) 
-						SaveSetting();			// ¿É¼Ç ÀúÀå
+						SaveSetting();			// ì˜µì…˜ ì €ìž¥
 					else
-						JOptionPane.showMessageDialog(null, "º¼·ý°ªÀ» 0¿¡¼­ 20 »çÀÌ·Î ¸ÂÃçÁÖ¼¼¿ä.", "¹üÀ§ ¿À·ù", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
+						JOptionPane.showMessageDialog(null, "ë³¼ë¥¨ê°’ì„ 0ì—ì„œ 20 ì‚¬ì´ë¡œ ë§žì¶°ì£¼ì„¸ìš”.", "ë²”ìœ„ ì˜¤ë¥˜", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
 				}
 				else if(e.getSource() == CANCELbutton) {
 					new Menu();
-					optionFrame.dispose();	// ¿É¼Ç ³ª°¡±â
+					optionFrame.dispose();	// ì˜µì…˜ ë‚˜ê°€ê¸°
 				}
 			}
 		}
 		
-		// ¿É¼Ç ÀúÀå
+		// ì˜µì…˜ ì €ìž¥
 		public void SaveSetting() {
 			FileWriter fout = null;
 			
@@ -113,14 +113,14 @@ public class OptionFrame extends JFrame{
 		
 				for(int i = 0; i < 5; i++)
 					fout.write(defaultOptions[i] + "\r\n");
-				JOptionPane.showMessageDialog(null, "Àû¿ëµÇ¾ú½À´Ï´Ù.", "¾Ë¸²", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(null, "ì ìš©ë˜ì—ˆìŠµë‹ˆë‹¤.", "ì•Œë¦¼", JOptionPane.INFORMATION_MESSAGE | JOptionPane.OK_OPTION);
 				fout.close();
 			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "ÀúÀåÇÏ´Â °úÁ¤¿¡¼­ ¹®Á¦°¡ ¹ß»ýÇÏ¿´½À´Ï´Ù.", "ÀúÀå ¿À·ù", JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(null, "ì €ìž¥í•˜ëŠ” ê³¼ì •ì—ì„œ ë¬¸ì œê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.", "ì €ìž¥ ì˜¤ë¥˜", JOptionPane.OK_OPTION);
 			}
 		}
 		
-		public void LoadSetting() {	// ÀúÀåµÈ ¿É¼ÇÀ» ºÒ·¯¿À´Â ÇÔ¼ö
+		public void LoadSetting() {	// ì €ìž¥ëœ ì˜µì…˜ì„ ë¶ˆëŸ¬ì˜¤ëŠ” í•¨ìˆ˜
 			try {
 				FileReader fin = new FileReader("option/setting.txt");
 				
@@ -140,11 +140,11 @@ public class OptionFrame extends JFrame{
 					temp += (char)c;
 				}
 				
-				defaultOptions[0] = options[0];	// ÇÃ·¹ÀÌ¾î ÀÌ¸§
-				defaultOptions[1] = options[1];	// ÀúÀå µð·ºÅä¸®
-				defaultOptions[2] = options[2];	// º¹±â¿ë ÀúÀå µð·ºÅä¸®
-				defaultOptions[3] = options[3];	// È¿°úÀ½ Å©±â
-				defaultOptions[4] = options[4];	// º®ÀÇ °³¼ö
+				defaultOptions[0] = options[0];	// í”Œë ˆì´ì–´ ì´ë¦„
+				defaultOptions[1] = options[1];	// ì €ìž¥ ë””ë ‰í† ë¦¬
+				defaultOptions[2] = options[2];	// ë³µê¸°ìš© ì €ìž¥ ë””ë ‰í† ë¦¬
+				defaultOptions[3] = options[3];	// íš¨ê³¼ìŒ í¬ê¸°
+				defaultOptions[4] = options[4];	// ë²½ì˜ ê°œìˆ˜
 				fin.close();
 			}
 			catch (IOException e) {
@@ -164,7 +164,7 @@ public class OptionFrame extends JFrame{
 				int index = s.lastIndexOf(".txt");
 				if(index != -1)
 				{
-					System.out.println(f.getPath() + " »èÁ¦");
+					System.out.println(f.getPath() + " ì‚­ì œ");
 					f.delete();
 				}
 			}
