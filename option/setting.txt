@@ -1,5 +1,0 @@
-Player
-complete_save/
-incomplete_save/
-10
-10
