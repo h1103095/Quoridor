@@ -24,7 +24,7 @@ public class ReplayThread extends GameThread {
             Thread.sleep(1000);
             while(!Thread.currentThread().isInterrupted()) {
                 if(!pause) {
-                    if(gameState.CanMoveToNext()) {
+                    if(gameState.CheckCanMoveToNext()) {
                         gameState.MoveToNextTurn();
                     } else if(giveUp && !giveUpPaneAppeared) {
                         String msg = gameState.getCurrentPlayer().getPlayerName() + "(" + gameState.getCurrentPlayer().getPlayerColor().toString() + ")이(가) 항복하였습니다.";

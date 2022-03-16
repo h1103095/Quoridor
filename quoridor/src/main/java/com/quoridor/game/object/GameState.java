@@ -85,6 +85,7 @@ public class GameState{
 		return winner;
 	}
 
+	// 게임 기록 받아오기
 	public void setHistory(Vector<TurnInfo> history) {
 		assert (actionHistory.size() == 0);
 		this.actionHistory = history;
@@ -97,11 +98,13 @@ public class GameState{
 		updateAvailableMoves();
 	}
 
+	// 플레이어 위치 초기화
 	public void InitializePlayerPoint() {
 		blackPlayer.Move(new Point(4, 8));
 		whitePlayer.Move(new Point(4, 0));
 	}
 
+	// 벽 초기화
 	public void InitializeWalls() {
 		for(int k=0; k < 2; k++) {
 			for(int i=0; i < 8; i++) {
@@ -113,6 +116,7 @@ public class GameState{
 		}
 	}
 
+	// 현재 플레이어 초기 설정
 	public void InitializeCurrentPlayer() {
 		if(startColor == PLAYER_COLOR.BLACK) {
 			currentPlayer = blackPlayer;
@@ -145,6 +149,7 @@ public class GameState{
 		opponentPlayer = (currentPlayer == blackPlayer) ? whitePlayer : blackPlayer;
 	}
 
+	// 행동을 한 다음 그 이후 차례로 저장된 행동 제거
 	public void UpdateHistory() {
         // 현재 턴 이후 기록 제거
         // 되돌리기를 한 다음 돌을 놓을 경우를 위해서 필요
@@ -154,6 +159,7 @@ public class GameState{
 		}
 	}
 
+	// 턴 행동 저장
 	public void AddHistory(TurnInfo turnInfo) {
 		actionHistory.add(turnInfo);
 	}
@@ -170,7 +176,8 @@ public class GameState{
 		return actionHistory.get(currentTurnCount);
 	}
 
-	public boolean CanMoveToPrev() {
+	// 저장된 이전 턴 행동이 있는지 확인
+	public boolean CheckCanMoveToPrev() {
 		if(gameMode == GAME_MODE.REPLAY) {
 			if(currentTurnCount > 0) {
 				return true;
@@ -186,7 +193,8 @@ public class GameState{
 		}
 	}
 
-	public boolean CanMoveToNext() {
+	// 저장된 다음 턴 행동이 있는지 확인
+	public boolean CheckCanMoveToNext() {
 		if(currentTurnCount < getTurnCountSize()) {
 			return true;
 		} else {
@@ -194,6 +202,7 @@ public class GameState{
 		}
 	}
 
+	// 저장된 이전 턴 행동 실행
 	public void MoveToPrevTurn() {
 		for(int i=0; i < numOfRepetitionsToMoveTurn; i++) {
 			ChangeTurn();
@@ -209,6 +218,7 @@ public class GameState{
 		updateAvailableMoves();
 	}
 
+	// 저장된 다음 턴 행동 실행
 	public void MoveToNextTurn() {
 		for(int i=0; i < numOfRepetitionsToMoveTurn; i++) {
 			TurnInfo nextTurnInfo = getCurrentTurnInfo();
@@ -220,6 +230,7 @@ public class GameState{
 		updateAvailableMoves();
 	}
 
+	// 저장된 턴 행동 모두 실행
 	public void MoveToLastTurn() {
 		for(int i=0; i < getTurnCountSize(); i++) {
 			TurnInfo nextTurnInfo = getCurrentTurnInfo();
@@ -231,6 +242,7 @@ public class GameState{
 		updateAvailableMoves();
 	}
 
+	// 행동을 게임에 적용
     public void ApplyAction(GameAction action) {
 		if(action.getActionMode().isWallMode()) {
 			PutWall(action);
@@ -241,7 +253,7 @@ public class GameState{
 		}
 	}
 
-    	// 벽을 놓는 함수
+    // 벽을 놓는 함수
 	public void PutWall(GameAction action) {
 		boolean vertical = action.isVertical();
 		int yPos = action.getPoint().y;
@@ -325,13 +337,15 @@ public class GameState{
 		}
 	}
 
+	// 현재 플레이어가 항복하는 함수
 	public void GiveUp() {
 		winner = opponentPlayer.getPlayerName();
 		gameOver = true;
 		giveUp = true;
 	}
 
-	public boolean isAvailableWall(GameAction action) {
+	// 가능한 벽 놓기 행동인지 검사
+	public boolean CheckAvailableWall(GameAction action) {
 		int yPos = action.getPoint().y;
 		int xPos = action.getPoint().x;
 
@@ -342,9 +356,10 @@ public class GameState{
 		}
 	}
 
-	public boolean isAvailableAction(GameAction action) {
+	// 가능한 행동인지 검사
+	public boolean CheckAvailableAction(GameAction action) {
 		if(action.getActionMode() == ACTION_MODE.WALL_MODE) {
-			return isAvailableWall(action);
+			return CheckAvailableWall(action);
 		} else {
 			boolean available = false;
 			for(int i=0; i < availableMoves.size(); i++) {
@@ -358,6 +373,7 @@ public class GameState{
 		}
 	}
 
+	// 가능한 이동 목록 업데이트
 	public void updateAvailableMoves() {
 		availableMoves.clear();
 		Point currentPlayerPoint = currentPlayer.getPoint();

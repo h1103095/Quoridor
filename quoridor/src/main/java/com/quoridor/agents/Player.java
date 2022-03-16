@@ -29,7 +29,7 @@ public class Player {
 	public PLAYER_COLOR getPlayerColor() { return playerColor; }
 	public Point getPoint() { return point; }
 	public int getNumRemainWalls() { return numWalls; }
-	public boolean isWallRemains() { return numWalls > 0; }
+	public boolean CheckWallRemains() { return numWalls > 0; }
 	public void DecreaseNumWalls() { numWalls--; }
 	public void IncreaseNumWalls() { numWalls++; }
 	public void Move(Point p) { this.point = p; }
@@ -41,7 +41,7 @@ public class Player {
 		queue.clear();
 		do {
 			action = queue.take();
-		} while (!gameState.isAvailableAction(action));
+		} while (!gameState.CheckAvailableAction(action));
 		return action;
 	}
 }

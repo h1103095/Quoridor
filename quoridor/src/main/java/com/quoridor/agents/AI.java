@@ -35,7 +35,7 @@ public class AI extends Player{
 				int pointX = random.nextInt(8);
 
 				action = new GameAction(new Point(pointX, pointY), vertical);
-			} while (!gameState.isAvailableWall(action));
+			} while (!gameState.CheckAvailableWall(action));
 		} else {	// 이동
 			Vector<Point> availablePoints = gameState.getAvailableMoves();
 			

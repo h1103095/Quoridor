@@ -11,9 +11,9 @@ public class MyLogger {
 	Logger logger = Logger.getLogger("mylogger");
 	private static MyLogger instance = new MyLogger();
 	
-	public static final String errorLog = "log.txt";
-	public static final String warningLog = "warning.txt";
-	public static final String fineLog = "fine.txt";
+	public static final String errorLog = "logs/error.txt";
+	public static final String warningLog = "logs/warning.txt";
+	public static final String fineLog = "logs/fine.txt";
 	
 	private FileHandler logFile = null;
 	private FileHandler warningFile = null;

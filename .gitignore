@@ -7,9 +7,7 @@ config.properties
 target
 completed_save
 incompleted_save
-fine.txt
-log.txt
-warning.txt
+logs
 
 ### Java ###
 # Compiled class file

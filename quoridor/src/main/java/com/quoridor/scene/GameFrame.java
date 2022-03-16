@@ -133,7 +133,7 @@ public class GameFrame extends JFrame{
 				this.add(menuButtons[i]); 
 			}
 
-			checkbtAvailable();
+			CheckButtonAvailable();
 		}
 		
 		class BtnListener implements ActionListener {
@@ -175,7 +175,7 @@ public class GameFrame extends JFrame{
 			}
 		}
 		
-		public void checkbtAvailable() {
+		public void CheckButtonAvailable() {
 			if(gameMode == GAME_MODE.NETWORK_HOST || gameMode == GAME_MODE.NETWORK_GUEST) {	// 네트워크 호스트일 때
 				if(gameManager.isLocalPlayerTurn()) { // 본인의 차례일 때
 					if(gameState.getCurrentPlayer().getNumRemainWalls() == 0) {			// 설치 가능한 벽의 수가 0일 때
@@ -189,20 +189,20 @@ public class GameFrame extends JFrame{
 					giveupButton.setEnabled(false);
 				}
 			} else {								// 1인 또는 2인 모드, REPLAY 모드(장애물 버튼, 항복 버튼 없음)
-				if(gameState.getCurrentPlayer().isWallRemains()) {
+				if(gameState.getCurrentPlayer().CheckWallRemains()) {
 					wallButton.setEnabled(true);
 				} else {
 					wallButton.setEnabled(false);
 				}
 				giveupButton.setEnabled(true);
 
-				if(gameState.CanMoveToPrev()) {
+				if(gameState.CheckCanMoveToPrev()) {
 					prevButton.setEnabled(true);
 				} else {
 					prevButton.setEnabled(false);
 				}
 	
-				if(gameState.CanMoveToNext()) {
+				if(gameState.CheckCanMoveToNext()) {
 					nextButton.setEnabled(true);
 				} else {
 					nextButton.setEnabled(false);
@@ -293,7 +293,7 @@ public class GameFrame extends JFrame{
 		}
 
 		public void updatePanel() {
-			buttonPanel.checkbtAvailable();
+			buttonPanel.CheckButtonAvailable();
 			infoPanel.UpdateTurnLabel();
 			infoPanel.UpdateWallLabel();
 			repaint();
@@ -372,7 +372,7 @@ public class GameFrame extends JFrame{
 			int xPos = wallPoint.x;
 
 			if(yPos >= 0 && yPos <= 7 && xPos >= 0 && xPos <= 7) {
-				if(gameState.isAvailableWall(new GameAction(wallPoint, verticalWall))) {
+				if(gameState.CheckAvailableWall(new GameAction(wallPoint, verticalWall))) {
 					if(verticalWall) {
 						g.fillRect(38 * (xPos + 1) - 2, 38 * yPos, 5, 76);
 					} else {
