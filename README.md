@@ -1,7 +1,7 @@
 # Quoridor
 2학년 JAVA 프로그래밍 프로젝트
 ## 플레이 영상(2인 모드)
-<img src="readme_images/game_play.gif">
+<img src="readme_images/game_play.gif" width="360">
 
 ## 게임 방식
 - 마우스 클릭을 통해 돌을 주변 칸으로 움직이거나 장애물을 설치한다.  
