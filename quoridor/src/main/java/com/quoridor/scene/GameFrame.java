@@ -308,10 +308,12 @@ public class GameFrame extends JFrame{
 			drawWall(g);
 			
 			// 이동 가능한 위치 그리기
-			if(gameState.getActionMode().isWallMode()) {
-				drawAvailableWall(g);
-			} else {
-				drawAvailablePoint(g);
+			if(!gameState.isGameOver()) {
+				if(gameState.getActionMode().isWallMode()) {
+					drawAvailableWall(g);
+				} else {
+					drawAvailablePoint(g);
+				}
 			}
 		}
 
@@ -422,8 +424,13 @@ public class GameFrame extends JFrame{
 		}
 
 		public void UpdateTurnLabel() {
-			turnLabel.setText(gameState.getCurrentPlayer().getPlayerName());
-			turnLabel.setForeground(gameState.getCurrentPlayer().getPlayerColor().getColor());
+			if(!gameState.isGameOver()) {
+				turnLabel.setText(gameState.getCurrentPlayer().getPlayerName());
+				turnLabel.setForeground(gameState.getCurrentPlayer().getPlayerColor().getColor());
+			} else {
+				turnLabel.setText(gameState.getOpponentPlayer().getPlayerName() + " WIN!!");
+				turnLabel.setForeground(gameState.getOpponentPlayer().getPlayerColor().getColor());
+			}
 		}
 
 		public void UpdateWallLabel() {
