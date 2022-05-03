@@ -127,7 +127,7 @@ public class GameState{
 		}
 	}
 
-	// 턴을 진행하는 프로세스를 모두 실행하는 함수
+	// 한 턴의 프로세스를 모두 실행하는 함수
 	public void ProceedTurnAction(TurnInfo turnInfo) {
 		// History를 업데이트
 		// History에 현재 TurnInfo 추가

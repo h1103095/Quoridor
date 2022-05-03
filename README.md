@@ -45,10 +45,10 @@ ip 주소를 통해 클라이언트가 서버에 접속하여 게임을 진행�
 ### 완료된 게임 저장
 완료된 게임을 저장하였다가 복기할 수 있다.  
 ![게임 종료](./readme_images/win.png)
-#### 불러오기
-![불러오기](./readme_images/replay1.png)  
-![불러오기](./readme_images/replay2.png)  
-![불러오기](./readme_images/replay3.png) ![불러오기](./readme_images/replay4.png)  
+#### 복기
+![복기](./readme_images/replay1.png)  
+![복기](./readme_images/replay2.png)  
+![복기](./readme_images/replay3.png) ![복기](./readme_images/replay4.png)  
 
 ### 환경설정
 환경설정 창에서 게임 설정을 변경할 수 있다.  

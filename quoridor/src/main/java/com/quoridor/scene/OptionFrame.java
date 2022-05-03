@@ -185,9 +185,14 @@ public class OptionFrame extends JFrame{
 			} else {
 				subFiles = new File(saveFolder).listFiles();
 				for(int i = 0; i < subFiles.length; i++) {
-					File f = subFiles[i];
-					f.delete();
-					MyLogger.getInstance().info("저장된 파일을 제거하였습니다. 파일 경로: " + f.getPath());
+					File file = subFiles[i];
+					String fileName = file.getName();
+					String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+					if(ext.equals("data")) {
+						file.delete();
+						MyLogger.getInstance().info("저장된 파일을 제거하였습니다. 파일 경로: " + file.getPath());
+					}
 				}
 
 				JOptionPane.showMessageDialog(
