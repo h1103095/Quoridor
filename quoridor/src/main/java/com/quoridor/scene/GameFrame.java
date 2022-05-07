@@ -321,10 +321,10 @@ public class GameFrame extends JFrame{
 			setBackground(new Color(150, 50, 0));
 			// 선 그리기
 			g.setColor(Color.BLACK);
-			for(int i = 1; i < 10; i++) {
+			for(int i = 0; i < 10; i++) {
 				g.drawLine(0, 38*i, 38*9, 38*i); // 가로선
 			}
-			for(int i = 1; i < 9; i++) {
+			for(int i = 0; i < 10; i++) {
 				g.drawLine(38*i, 0, 38*i, 38*9); // 세로선
 			}
 		}
