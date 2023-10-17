@@ -29,19 +29,19 @@ public class Player {
 	public PLAYER_COLOR getPlayerColor() { return playerColor; }
 	public Point getPoint() { return point; }
 	public int getNumRemainWalls() { return numWalls; }
-	public boolean CheckWallRemains() { return numWalls > 0; }
-	public void DecreaseNumWalls() { numWalls--; }
-	public void IncreaseNumWalls() { numWalls++; }
-	public void Move(Point p) { this.point = p; }
+	public boolean checkWallRemains() { return numWalls > 0; }
+	public void decreaseNumWalls() { numWalls--; }
+	public void increaseNumWalls() { numWalls++; }
+	public void move(Point p) { this.point = p; }
 	public void setPlayerName(String playerName) { this.playerName = playerName; }
 	public String getPlayerName() { return playerName; }
 
-	public GameAction SelectAction(GameState gameState) throws InterruptedException{
+	public GameAction selectAction(GameState gameState) throws InterruptedException{
 		GameAction action;
 		queue.clear();
 		do {
 			action = queue.take();
-		} while (!gameState.CheckAvailableAction(action));
+		} while (!gameState.checkAvailableAction(action));
 		return action;
 	}
 }

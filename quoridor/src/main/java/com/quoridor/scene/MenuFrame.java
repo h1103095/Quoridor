@@ -114,7 +114,7 @@ public class MenuFrame extends JFrame{
 					public void actionPerformed(ActionEvent e) {
 						JFileChooser fc = new JFileChooser();
 						File file;
-						fc.setCurrentDirectory(new File(optionManager.GetConfig(GAME_OPTION.INCOMPLETED_GAME_SAVE_DIRECTORY)));	// 세이브 경로
+						fc.setCurrentDirectory(new File(optionManager.getConfig(GAME_OPTION.INCOMPLETED_GAME_SAVE_DIRECTORY)));	// 세이브 경로
 						fc.setFileFilter(new FileNameExtensionFilter("DATA File", "data"));	// 텍스트 파일만 보이도록 설정
 						
 						int returnVal = fc.showOpenDialog(MenuFrame.this);	// 파일 여는 창 생성
@@ -134,7 +134,7 @@ public class MenuFrame extends JFrame{
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						JFileChooser fc = new JFileChooser();
-						fc.setCurrentDirectory(new File(optionManager.GetConfig(GAME_OPTION.COMPLETED_GAME_SAVE_DIRECTORY)));	// 종료된 게임 세이브 경로
+						fc.setCurrentDirectory(new File(optionManager.getConfig(GAME_OPTION.COMPLETED_GAME_SAVE_DIRECTORY)));	// 종료된 게임 세이브 경로
 						fc.setFileFilter(new FileNameExtensionFilter("DATA File", "data"));
 						
 						int returnVal = fc.showOpenDialog(MenuFrame.this);

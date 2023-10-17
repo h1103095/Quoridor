@@ -75,7 +75,7 @@ public class ServerFrame extends JFrame{
 		setVisible(true);
 	}
 
-	private void OpenServer() {
+	private void openServer() {
 		try {
 			server = new Server();
 			int port = Integer.parseInt(portTextField.getText());
@@ -84,7 +84,7 @@ public class ServerFrame extends JFrame{
 			connectLogTextField.append("호스트 ip주소: " + ipAddress + '\n');
 			connectLogTextField.append("다른 플레이어를 기다리는 중입니다...\n");
 
-			server.OpenServer(port, this);
+			server.openServer(port, this);
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(
 				null,
@@ -108,12 +108,12 @@ public class ServerFrame extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			Object clickedObject = e.getSource();
 			if(clickedObject == openServerButton) {
-				OpenServer();
+				openServer();
 				openServerButton.setEnabled(false);
 			} else if(clickedObject == cancelButton) {
 				// 메뉴 화면으로 이동
 				if(server != null) {
-					server.CloseSocket();
+					server.closeSocket();
 				}
 				new MenuFrame();
 				hostFrame.dispose();

@@ -22,8 +22,8 @@ public class NetworkGameThread extends GameThread {
         }
     }
 
-    public void GiveUp() {
-        networkObject.SendData(NETWORK_MSG_TYPE.GIVE_UP, "None");
+    public void giveUp() {
+        networkObject.sendData(NETWORK_MSG_TYPE.GIVE_UP, "None");
         if(this.isAlive()) {
             this.interrupt();
         }
@@ -43,13 +43,13 @@ public class NetworkGameThread extends GameThread {
             while(!gameState.isGameOver() && !Thread.currentThread().isInterrupted()) {
                 Player currentPlayer = gameState.getCurrentPlayer();
                 if(currentPlayer == localPlayer) {
-                    action = currentPlayer.SelectAction(gameState);
+                    action = currentPlayer.selectAction(gameState);
 
-                    networkObject.SendData(NETWORK_MSG_TYPE.ACTION, action.toString());
+                    networkObject.sendData(NETWORK_MSG_TYPE.ACTION, action.toString());
                     turnInfo = new TurnInfo(currentPlayer.getPlayerColor(), currentPlayer.getPoint(), action);
-                    gameState.ProceedTurnAction(turnInfo);
+                    gameState.proceedTurnAction(turnInfo);
                 } else {
-                    String msg = networkObject.ReceiveData();
+                    String msg = networkObject.receiveData();
                     msg = msg.split("/")[0];
                     String[] splitedMsg = msg.split(" ", 2);
                     String msgType = splitedMsg[0];
@@ -57,10 +57,10 @@ public class NetworkGameThread extends GameThread {
                     if(msgType.equals(NETWORK_MSG_TYPE.ACTION.toString()))  {
                         action = new GameAction(splitedMsg[1]);
                         turnInfo = new TurnInfo(currentPlayer.getPlayerColor(), currentPlayer.getPoint(), action);
-                        gameState.ProceedTurnAction(turnInfo);
+                        gameState.proceedTurnAction(turnInfo);
                     } else if(msgType.equals(NETWORK_MSG_TYPE.GIVE_UP.toString())) {
                         // 항복 처리
-                        gameState.GiveUp();
+                        gameState.giveUp();
                         this.interrupt();
                     } else {
                         MyLogger.getInstance().warning("네트워크 상대로부터 잘못된 값이 전송되었습니다.\n");
@@ -69,9 +69,9 @@ public class NetworkGameThread extends GameThread {
                 }
             }
 
-            networkObject.CloseSocket();
+            networkObject.closeSocket();
         } catch (InterruptedException e) {
-            networkObject.CloseSocket();
+            networkObject.closeSocket();
             MyLogger.getInstance().info("Thread interrupted.");
         }
     }

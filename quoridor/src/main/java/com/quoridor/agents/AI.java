@@ -17,7 +17,7 @@ public class AI extends Player{
 		super(playerColor, numWalls, playerName, null);
 	}
 	
-	public GameAction SelectAction(GameState gameState) {
+	public GameAction selectAction(GameState gameState) {
 		GameAction action;
 		Random random = new Random();
 
@@ -35,13 +35,13 @@ public class AI extends Player{
 				int pointX = random.nextInt(8);
 
 				action = new GameAction(new Point(pointX, pointY), vertical);
-			} while (!gameState.CheckAvailableWall(action));
+			} while (!gameState.checkAvailableWall(action));
 		} else {	// 이동
 			Vector<Point> availablePoints = gameState.getAvailableMoves();
 			
-			int MoveP = GetDirection();
+			int MoveP = getDirection();
 			while(MoveP >= availablePoints.size()) {
-				MoveP = GetDirection();
+				MoveP = getDirection();
 			}
 
 			action = new GameAction(availablePoints.get(MoveP));
@@ -50,7 +50,7 @@ public class AI extends Player{
 		return action;
 	}
 	
-	private int GetDirection() {
+	private int getDirection() {
 		int randomDirection = (int)(Math.random()*10);
 		int MoveP = 0; // 0~3까지 오른쪽, 왼쪽, 아래쪽, 위쪽
 		switch(randomDirection) {

@@ -21,9 +21,9 @@ public class LocalGameThread extends GameThread {
         try{
             while(!gameState.isGameOver() && !Thread.currentThread().isInterrupted()) {
                 Player currentPlayer = gameState.getCurrentPlayer();
-                GameAction action = currentPlayer.SelectAction(gameState);
+                GameAction action = currentPlayer.selectAction(gameState);
                 TurnInfo turnInfo = new TurnInfo(currentPlayer.getPlayerColor(), currentPlayer.getPoint(), action);
-                gameState.ProceedTurnAction(turnInfo);
+                gameState.proceedTurnAction(turnInfo);
             }
         } catch (InterruptedException e) {
             MyLogger.getInstance().info("Local Game Thread interrupted.");

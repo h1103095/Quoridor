@@ -31,10 +31,10 @@ import com.quoridor.utils.Utils;
  */
 public class GameManager {
 	private OptionManager optionManager = OptionManager.getInstance();
-	private String playerName = optionManager.GetConfig(GAME_OPTION.PLAYER_NAME);
-	private String completedSaveDirectory = optionManager.GetConfig(GAME_OPTION.COMPLETED_GAME_SAVE_DIRECTORY);
-	private String incompletedSaveDirectory = optionManager.GetConfig(GAME_OPTION.INCOMPLETED_GAME_SAVE_DIRECTORY);
-	private int numWalls = Integer.parseInt(optionManager.GetConfig(GAME_OPTION.NUM_WALLS));
+	private String playerName = optionManager.getConfig(GAME_OPTION.PLAYER_NAME);
+	private String completedSaveDirectory = optionManager.getConfig(GAME_OPTION.COMPLETED_GAME_SAVE_DIRECTORY);
+	private String incompletedSaveDirectory = optionManager.getConfig(GAME_OPTION.INCOMPLETED_GAME_SAVE_DIRECTORY);
+	private int numWalls = Integer.parseInt(optionManager.getConfig(GAME_OPTION.NUM_WALLS));
 
 	private GameFrame gameFrame;
 	private GameThread gameThread;
@@ -64,7 +64,7 @@ public class GameManager {
 		gameThread = new LocalGameThread(this.gameMode, blackPlayer, whitePlayer, startColor);
 		gameState = gameThread.getGameState();
 
-		StartGame();
+		startGame();
 	}
 
 	public GameManager(GAME_MODE gameMode, NetworkObject networkObject) {
@@ -77,16 +77,16 @@ public class GameManager {
 		Player whitePlayer;
 		String opponentPlayerName = "Opponent";
 
-		networkObject.SendData(NETWORK_MSG_TYPE.PLAYER_NAME, playerName);
+		networkObject.sendData(NETWORK_MSG_TYPE.PLAYER_NAME, playerName);
 
 		if(gameMode == GAME_MODE.NETWORK_HOST) {
 			// 벽의 개수, 시작 플레이어 정보를 보냄
 			startColor = getRandomStartPlayer();
-			networkObject.SendData(NETWORK_MSG_TYPE.NUM_WALLS, Integer.toString(numWalls));
-			networkObject.SendData(NETWORK_MSG_TYPE.FIRST_PLAYER, startColor.toString());
+			networkObject.sendData(NETWORK_MSG_TYPE.NUM_WALLS, Integer.toString(numWalls));
+			networkObject.sendData(NETWORK_MSG_TYPE.FIRST_PLAYER, startColor.toString());
 
 			// 상대 플레이어 이름을 받음
-			String msg = networkObject.ReceiveData();
+			String msg = networkObject.receiveData();
 			String[] msgArray = msg.split("/");
 			String[] splitedMsg = msgArray[0].split(" ", 2);
 
@@ -102,7 +102,7 @@ public class GameManager {
 			// 서버로부터 데이터를 받음
 			int receiveCount = 0;
 			while(receiveCount < 3) {
-				String msg = networkObject.ReceiveData();
+				String msg = networkObject.receiveData();
 				String[] msgArray = msg.split("/");
 				for(int i=0; i < msgArray.length; i++) {
 					String[] splitedMsg = msgArray[i].split(" ", 2);
@@ -132,7 +132,7 @@ public class GameManager {
 		gameThread = new NetworkGameThread(this.gameMode, blackPlayer, whitePlayer, startColor, networkObject);
 		gameState = gameThread.getGameState();
 
-		StartGame();
+		startGame();
 	}
 	
 	// 게임 로드 또는 리플레이 시
@@ -140,7 +140,7 @@ public class GameManager {
 		assert(gameMode == GAME_MODE.LOAD_GAME || gameMode == GAME_MODE.REPLAY);
 		this.gameMode = gameMode;
 		
-		SaveData saveData = Load(file);
+		SaveData saveData = load(file);
 		if(!saveData.isEmpty()) {
 			Player blackPlayer;
 			Player whitePlayer;
@@ -179,14 +179,14 @@ public class GameManager {
 					gameThread = new LocalGameThread(saveDataGameMode, blackPlayer, whitePlayer, startColor);
 					gameState = gameThread.getGameState();
 					gameState.setHistory(actionHistory);
-					gameState.MoveToLastTurn();
+					gameState.moveToLastTurn();
 				} else {
 					JOptionPane.showMessageDialog(null, "완료된 게임은 불러올 수 없습니다.", "불러오기 오류", JOptionPane.OK_OPTION);
 					return;
 				}
 			}
 			
-			StartGame();
+			startGame();
 		}
 	}
 
@@ -216,7 +216,7 @@ public class GameManager {
 		return startColor;
 	}
 
-	private void StartGame() {
+	private void startGame() {
 		gameThread.setDaemon(true);
 		gameThread.start();
 		gameFrame = new GameFrame(this, queue);
@@ -224,10 +224,10 @@ public class GameManager {
 	}
 
 	// 게임 저장
-	public void Save(String fileName, boolean completed)
+	public void save(String fileName, boolean completed)
 	{
-		Utils.MakeDir(completedSaveDirectory);
-		Utils.MakeDir(incompletedSaveDirectory);
+		Utils.makeDir(completedSaveDirectory);
+		Utils.makeDir(incompletedSaveDirectory);
 		if(fileName != null) {
 			try {
 				if(completed == false) {
@@ -250,7 +250,7 @@ public class GameManager {
 		}
 	}
 
-	public SaveData Load(File file) {
+	public SaveData load(File file) {
 		try {
 			FileInputStream fis = new FileInputStream(file);
 			ObjectInputStream ois = new ObjectInputStream(fis);

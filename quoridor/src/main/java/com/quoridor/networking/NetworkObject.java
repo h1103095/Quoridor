@@ -40,7 +40,7 @@ public class NetworkObject {
 		dataInputStream = new DataInputStream(inputStream);
 	}
 
-	public synchronized void SendData(NETWORK_MSG_TYPE msgType, String msg) {
+	public synchronized void sendData(NETWORK_MSG_TYPE msgType, String msg) {
 		try {
 			String str = msgType.toString() + " " + msg + "/";
 			outputStream.write(str.getBytes("UTF-8"));
@@ -50,7 +50,7 @@ public class NetworkObject {
 		}
 	}
 
-	public synchronized String ReceiveData() {
+	public synchronized String receiveData() {
 		try {
 			byte[] byteArr = new byte[100];
 			int readByteCount = inputStream.read(byteArr);
@@ -59,13 +59,13 @@ public class NetworkObject {
 			return data;
 		} catch (IOException e) {
 			MyLogger.getInstance().warning("네트워크 데이터를 받는 과정에서 에러 발생.");
-			this.CloseSocket();
+			this.closeSocket();
 		}
 		return null;
 	}
 
 	// 소켓 닫기
-	public void CloseSocket() {
+	public void closeSocket() {
 		try {
 			if(serverSocket != null && !serverSocket.isClosed()) {
 				serverSocket.close();

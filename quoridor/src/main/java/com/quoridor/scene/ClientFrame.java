@@ -91,12 +91,12 @@ public class ClientFrame extends JFrame{
 		setVisible(true);
 	}
 
-	private void JoinServer(String hostIP) {
+	private void joinServer(String hostIP) {
 		try {
 			int port = Integer.decode(portTextField.getText()).intValue();
 
 			client = new Client();
-			client.JoinServer(hostIP, port);
+			client.joinServer(hostIP, port);
 			new GameManager(GAME_MODE.NETWORK_GUEST, client);
 			this.dispose();
 		} catch (UnknownHostException e) {
@@ -128,7 +128,7 @@ public class ClientFrame extends JFrame{
 				String hostIP = hostIPTextField.getText();
 				if(!hostIP.isEmpty()) {
 					cancelButton.setEnabled(false);
-					JoinServer(hostIP);
+					joinServer(hostIP);
 				} else {
 					connectLogTextField.append("ip주소를 입력해 주세요.\n");
 				}
@@ -136,7 +136,7 @@ public class ClientFrame extends JFrame{
 				// 메뉴 화면으로 이동
 				new MenuFrame();
 				if(client != null) {
-					client.CloseSocket();
+					client.closeSocket();
 				}
 				clientFrame.dispose();
 			}

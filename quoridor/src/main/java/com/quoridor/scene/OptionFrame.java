@@ -44,8 +44,8 @@ public class OptionFrame extends JFrame{
 	class OptionPanel extends JPanel {
 		private OptionManager optionManager = OptionManager.getInstance();
 
-		private JLabel[] optionLabels = new JLabel[optionManager.GetNumConfig()];
-		private JTextField[] optionTexts = new JTextField[optionManager.GetNumConfig()];
+		private JLabel[] optionLabels = new JLabel[optionManager.getNumConfig()];
+		private JTextField[] optionTexts = new JTextField[optionManager.getNumConfig()];
 		private JButton ClearCompletedSaveFiles = new JButton("완료된 게임 기록 삭제");
 		private JButton ClearIncompletedSaveFiles = new JButton("진행중인 게임 기록 삭제");
 		private JButton OKbutton = new JButton("적용");
@@ -60,7 +60,7 @@ public class OptionFrame extends JFrame{
 
 			for (int i=0; i < gameOptions.length; i++) {
 				optionLabels[i] = new JLabel(gameOptions[i].toString());
-				optionTexts[i] = new JTextField(optionManager.GetConfig(gameOptions[i]), 20);
+				optionTexts[i] = new JTextField(optionManager.getConfig(gameOptions[i]), 20);
 				add(optionLabels[i]);
 				add(optionTexts[i]);
 			}
@@ -85,7 +85,7 @@ public class OptionFrame extends JFrame{
 						JOptionPane.YES_NO_OPTION
 					);
 					if(result == JOptionPane.YES_OPTION) {
-						ClearSaveFiles(true);
+						clearSaveFiles(true);
 					}
 				}
 				else if(e.getSource() == ClearIncompletedSaveFiles) {
@@ -96,7 +96,7 @@ public class OptionFrame extends JFrame{
 						JOptionPane.YES_NO_OPTION
 					);
 					if(result == JOptionPane.YES_OPTION) {
-						ClearSaveFiles(false);
+						clearSaveFiles(false);
 					}
 				}
 				else if(e.getSource() == OKbutton) {
@@ -105,7 +105,7 @@ public class OptionFrame extends JFrame{
 						int numWalls = Integer.parseInt(optionTexts[4].getText());
 						if(volume >= 0 && volume <= optionManager.MAX_VOLUME) {
 							if(numWalls >= 0 && numWalls <= optionManager.MAX_NUM_WALLS) {
-								SaveProperties();			// 옵션 저장
+								saveProperties();			// 옵션 저장
 							} else {
 								JOptionPane.showMessageDialog(
 									null,
@@ -139,12 +139,12 @@ public class OptionFrame extends JFrame{
 		}
 		
 		// 옵션 저장
-		public void SaveProperties() {
-			for(int i = 0; i < optionManager.GetNumConfig(); i++) {
-				optionManager.SetConfig(gameOptions[i], optionTexts[i].getText());
+		public void saveProperties() {
+			for(int i = 0; i < optionManager.getNumConfig(); i++) {
+				optionManager.setConfig(gameOptions[i], optionTexts[i].getText());
 			}
 			
-			if(optionManager.SaveConfig(Utils.configFilePath)) {
+			if(optionManager.saveConfig(Utils.configFilePath)) {
 				JOptionPane.showMessageDialog(
 					null,
 					"적용되었습니다.",
@@ -161,7 +161,7 @@ public class OptionFrame extends JFrame{
 			}
 		}
 
-		public void ClearSaveFiles(boolean completed) {
+		public void clearSaveFiles(boolean completed) {
 			File[] subFiles;
 			String saveFolder = "";
 			if(completed == true) {

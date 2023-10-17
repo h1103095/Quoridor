@@ -61,7 +61,7 @@ public class GameFrame extends JFrame{
 		gamePanelThread.start();
 	}
 
-	public void OpenMenuFrame() {
+	public void openMenuFrame() {
 		new MenuFrame();
 		this.dispose();
 	}
@@ -133,7 +133,7 @@ public class GameFrame extends JFrame{
 				this.add(menuButtons[i]); 
 			}
 
-			CheckButtonAvailable();
+			checkButtonAvailable();
 		}
 		
 		class BtnListener implements ActionListener {
@@ -142,40 +142,40 @@ public class GameFrame extends JFrame{
 				if(clickedObject == wallButton) {			// 장애물
 					gameState.ChangeActionMode();
 				} else if(clickedObject == prevButton) {		// prev
-					gameState.MoveToPrevTurn();
+					gameState.moveToPrevTurn();
 				} else if(clickedObject == nextButton) {		// next
-					gameState.MoveToNextTurn();
+					gameState.moveToNextTurn();
 				} else if(clickedObject == saveButton) {		// 저장
 					String defaultFileName;
 					defaultFileName = gameManager.getSaveFileName();
 					String fileName= JOptionPane.showInputDialog("저장할 파일명을 입력하세요.", defaultFileName);
 					if(fileName != null) {
-						gameManager.Save(fileName, false);
+						gameManager.save(fileName, false);
 						gameManager.getGameThread().interrupt();
-						gameFrame.OpenMenuFrame();
+						gameFrame.openMenuFrame();
 					}
 				} else if(clickedObject == giveupButton) {		// 기권
 					int give_up= JOptionPane.showConfirmDialog(null, "정말로 기권하시겠습니까?", "알림", JOptionPane.YES_NO_OPTION);
 					if(give_up == JOptionPane.YES_OPTION) {
-						gameState.GiveUp();
-						gameManager.getGameThread().GiveUp();
+						gameState.giveUp();
+						gameManager.getGameThread().giveUp();
 					}
 				} else if(clickedObject == playButton) {
 					if(((ReplayThread)gameThread).isPause()) {
-						((ReplayThread)gameThread).Play();
+						((ReplayThread)gameThread).play();
 						playButton.setText("중단");
 					} else {
-						((ReplayThread)gameThread).Pause();
+						((ReplayThread)gameThread).pause();
 						playButton.setText("재생");
 					}
 				} else if(clickedObject == exitButton) {
 					gameManager.getGameThread().interrupt();
-					gameFrame.OpenMenuFrame();
+					gameFrame.openMenuFrame();
 				}
 			}
 		}
 		
-		public void CheckButtonAvailable() {
+		public void checkButtonAvailable() {
 			if(gameMode == GAME_MODE.NETWORK_HOST || gameMode == GAME_MODE.NETWORK_GUEST) {	// 네트워크 호스트일 때
 				if(gameManager.isLocalPlayerTurn()) { // 본인의 차례일 때
 					if(gameState.getCurrentPlayer().getNumRemainWalls() == 0) {			// 설치 가능한 벽의 수가 0일 때
@@ -189,20 +189,20 @@ public class GameFrame extends JFrame{
 					giveupButton.setEnabled(false);
 				}
 			} else {								// 1인 또는 2인 모드, REPLAY 모드(장애물 버튼, 항복 버튼 없음)
-				if(gameState.getCurrentPlayer().CheckWallRemains()) {
+				if(gameState.getCurrentPlayer().checkWallRemains()) {
 					wallButton.setEnabled(true);
 				} else {
 					wallButton.setEnabled(false);
 				}
 				giveupButton.setEnabled(true);
 
-				if(gameState.CheckCanMoveToPrev()) {
+				if(gameState.checkCanMoveToPrev()) {
 					prevButton.setEnabled(true);
 				} else {
 					prevButton.setEnabled(false);
 				}
 	
-				if(gameState.CheckCanMoveToNext()) {
+				if(gameState.checkCanMoveToNext()) {
 					nextButton.setEnabled(true);
 				} else {
 					nextButton.setEnabled(false);
@@ -243,12 +243,12 @@ public class GameFrame extends JFrame{
 			}
 
 			updatePanel();
-			ShowGameOverPane();
-			gameManager.Save(gameManager.getSaveFileName(), true);
-			gameFrame.OpenMenuFrame();
+			showGameOverPane();
+			gameManager.save(gameManager.getSaveFileName(), true);
+			gameFrame.openMenuFrame();
 		}
 
-		public void ShowGameOverPane() {
+		public void showGameOverPane() {
 			String textToShow = gameState.getOpponentPlayer().getPlayerName() + "(" + gameState.getOpponentPlayer().getPlayerColor().toString() + ") 승리";
 			String paneTitle = "게임 결과";
 			JOptionPane.showMessageDialog(null, textToShow, paneTitle, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
@@ -293,9 +293,9 @@ public class GameFrame extends JFrame{
 		}
 
 		public void updatePanel() {
-			buttonPanel.CheckButtonAvailable();
-			infoPanel.UpdateTurnLabel();
-			infoPanel.UpdateWallLabel();
+			buttonPanel.checkButtonAvailable();
+			infoPanel.updateTurnLabel();
+			infoPanel.updateWallLabel();
 			repaint();
 		}
 		
@@ -374,7 +374,7 @@ public class GameFrame extends JFrame{
 			int xPos = wallPoint.x;
 
 			if(yPos >= 0 && yPos <= 7 && xPos >= 0 && xPos <= 7) {
-				if(gameState.CheckAvailableWall(new GameAction(wallPoint, verticalWall))) {
+				if(gameState.checkAvailableWall(new GameAction(wallPoint, verticalWall))) {
 					if(verticalWall) {
 						g.fillRect(38 * (xPos + 1) - 2, 38 * yPos, 5, 76);
 					} else {
@@ -423,7 +423,7 @@ public class GameFrame extends JFrame{
 			this.add(wallLabelWhitePlayer, BorderLayout.EAST);
 		}
 
-		public void UpdateTurnLabel() {
+		public void updateTurnLabel() {
 			if(!gameState.isGameOver()) {
 				turnLabel.setText(gameState.getCurrentPlayer().getPlayerName());
 				turnLabel.setForeground(gameState.getCurrentPlayer().getPlayerColor().getColor());
@@ -433,7 +433,7 @@ public class GameFrame extends JFrame{
 			}
 		}
 
-		public void UpdateWallLabel() {
+		public void updateWallLabel() {
 			wallLabelBlackPlayer.setText("Walls: " + gameState.getBlackPlayer().getNumRemainWalls());
 			wallLabelWhitePlayer.setText("Walls: " + gameState.getWhitePlayer().getNumRemainWalls());
 		}

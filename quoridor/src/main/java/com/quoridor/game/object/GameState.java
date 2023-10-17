@@ -34,7 +34,7 @@ public class GameState{
 	public boolean gameOver = false;
 	private String winner = null;
 
-	private int volume = Integer.parseInt(optionManager.GetConfig(GAME_OPTION.VOLUME));
+	private int volume = Integer.parseInt(optionManager.getConfig(GAME_OPTION.VOLUME));
 	private GameSound moveSound = new GameSound("quoridor\\src\\main\\java\\resources\\QuoridorResources\\sounds\\move.wav", volume);	// 이동 사운드
 	private GameSound wallSound = new GameSound("quoridor\\src\\main\\java\\resources\\QuoridorResources\\sounds\\wall.wav", volume);	// 벽 사운드
 
@@ -60,7 +60,7 @@ public class GameState{
 			numOfRepetitionsToMoveTurn = 1;
 		}
 
-		Initialize();
+		initialize();
 	}
 
     public boolean[][][] getWalls() { return wallPoints; }
@@ -91,21 +91,21 @@ public class GameState{
 		this.actionHistory = history;
 	}
 
-	public void Initialize() {
-		InitializePlayerPoint();
-		InitializeCurrentPlayer();
-		InitializeWalls();
+	public void initialize() {
+		initializePlayerPoint();
+		initializeCurrentPlayer();
+		initializeWalls();
 		updateAvailableMoves();
 	}
 
 	// 플레이어 위치 초기화
-	public void InitializePlayerPoint() {
-		blackPlayer.Move(new Point(4, 8));
-		whitePlayer.Move(new Point(4, 0));
+	public void initializePlayerPoint() {
+		blackPlayer.move(new Point(4, 8));
+		whitePlayer.move(new Point(4, 0));
 	}
 
 	// 벽 초기화
-	public void InitializeWalls() {
+	public void initializeWalls() {
 		for(int k=0; k < 2; k++) {
 			for(int i=0; i < 8; i++) {
 				for(int j=0; j < 8; j++) {
@@ -117,7 +117,7 @@ public class GameState{
 	}
 
 	// 현재 플레이어 초기 설정
-	public void InitializeCurrentPlayer() {
+	public void initializeCurrentPlayer() {
 		if(startColor == PLAYER_COLOR.BLACK) {
 			currentPlayer = blackPlayer;
 			opponentPlayer = whitePlayer;
@@ -128,29 +128,29 @@ public class GameState{
 	}
 
 	// 한 턴의 프로세스를 모두 실행하는 함수
-	public void ProceedTurnAction(TurnInfo turnInfo) {
+	public void proceedTurnAction(TurnInfo turnInfo) {
 		// History를 업데이트
 		// History에 현재 TurnInfo 추가
 		// action 수행
 		// Next Turn
 		// 게임 오버 체크
 		GameAction action = turnInfo.getAction();
-		Utils.LogAction(currentPlayer.getPlayerColor(), action);
-		UpdateHistory();
-		AddHistory(new TurnInfo(currentPlayer.getPlayerColor(), currentPlayer.getPoint(), action));
-		ApplyAction(action);
-		NextTurn();
-		CheckGameOver();
+		Utils.logAction(currentPlayer.getPlayerColor(), action);
+		updateHistory();
+		addHistory(new TurnInfo(currentPlayer.getPlayerColor(), currentPlayer.getPoint(), action));
+		applyAction(action);
+		nextTurn();
+		checkGameOver();
 	}
 
     // 턴을 바꾸는 함수
-	public void ChangeTurn() {
+	public void changeTurn() {
 		currentPlayer = opponentPlayer;
 		opponentPlayer = (currentPlayer == blackPlayer) ? whitePlayer : blackPlayer;
 	}
 
 	// 행동을 한 다음 그 이후 차례로 저장된 행동 제거
-	public void UpdateHistory() {
+	public void updateHistory() {
         // 현재 턴 이후 기록 제거
         // 되돌리기를 한 다음 돌을 놓을 경우를 위해서 필요
 		int historySize = actionHistory.size();
@@ -160,13 +160,13 @@ public class GameState{
 	}
 
 	// 턴 행동 저장
-	public void AddHistory(TurnInfo turnInfo) {
+	public void addHistory(TurnInfo turnInfo) {
 		actionHistory.add(turnInfo);
 	}
 
 	// 다음 턴
-	public void NextTurn() {
-		ChangeTurn();
+	public void nextTurn() {
+		changeTurn();
 		currentTurnCount++;
 		actionMode = ACTION_MODE.MOVE_MODE;
 		updateAvailableMoves();
@@ -177,7 +177,7 @@ public class GameState{
 	}
 
 	// 저장된 이전 턴 행동이 있는지 확인
-	public boolean CheckCanMoveToPrev() {
+	public boolean checkCanMoveToPrev() {
 		if(gameMode == GAME_MODE.REPLAY) {
 			if(currentTurnCount > 0) {
 				return true;
@@ -194,7 +194,7 @@ public class GameState{
 	}
 
 	// 저장된 다음 턴 행동이 있는지 확인
-	public boolean CheckCanMoveToNext() {
+	public boolean checkCanMoveToNext() {
 		if(currentTurnCount < getTurnCountSize()) {
 			return true;
 		} else {
@@ -203,63 +203,63 @@ public class GameState{
 	}
 
 	// 저장된 이전 턴 행동 실행
-	public void MoveToPrevTurn() {
+	public void moveToPrevTurn() {
 		for(int i=0; i < numOfRepetitionsToMoveTurn; i++) {
-			ChangeTurn();
+			changeTurn();
 			currentTurnCount--;
 			TurnInfo prevTurnInfo = getCurrentTurnInfo();
 			GameAction prevAction = prevTurnInfo.getAction();
 			if(prevAction.getActionMode().isWallMode()) {
-				DeleteWall(prevAction);
+				deleteWall(prevAction);
 			} else {
-				ApplyAction(new GameAction(prevTurnInfo.getStartPoint()));
+				applyAction(new GameAction(prevTurnInfo.getStartPoint()));
 			}
 		}
 		updateAvailableMoves();
 	}
 
 	// 저장된 다음 턴 행동 실행
-	public void MoveToNextTurn() {
+	public void moveToNextTurn() {
 		for(int i=0; i < numOfRepetitionsToMoveTurn; i++) {
 			TurnInfo nextTurnInfo = getCurrentTurnInfo();
 			GameAction nextAction = nextTurnInfo.getAction();
-			ApplyAction(nextAction);
-			ChangeTurn();
+			applyAction(nextAction);
+			changeTurn();
 			currentTurnCount++;
 		}
 		updateAvailableMoves();
 	}
 
 	// 저장된 턴 행동 모두 실행
-	public void MoveToLastTurn() {
+	public void moveToLastTurn() {
 		for(int i=0; i < getTurnCountSize(); i++) {
 			TurnInfo nextTurnInfo = getCurrentTurnInfo();
 			GameAction nextAction = nextTurnInfo.getAction();
-			ApplyAction(nextAction);
-			ChangeTurn();
+			applyAction(nextAction);
+			changeTurn();
 			currentTurnCount++;
 		}
 		updateAvailableMoves();
 	}
 
 	// 행동을 게임에 적용
-    public void ApplyAction(GameAction action) {
+    public void applyAction(GameAction action) {
 		if(action.getActionMode().isWallMode()) {
-			PutWall(action);
+			putWall(action);
 			wallSound.play();
 		} else {
-			currentPlayer.Move(action.getPoint());
+			currentPlayer.move(action.getPoint());
 			moveSound.play();
 		}
 	}
 
     // 벽을 놓는 함수
-	public void PutWall(GameAction action) {
+	public void putWall(GameAction action) {
 		boolean vertical = action.isVertical();
 		int yPos = action.getPoint().y;
 		int xPos = action.getPoint().x;
 
-		currentPlayer.DecreaseNumWalls();
+		currentPlayer.decreaseNumWalls();
 
 		if(vertical) {
 			wallPoints[1][yPos][xPos] = true;
@@ -290,7 +290,7 @@ public class GameState{
 	}
 	
 	// 벽을 제거하는 함수
-	public void DeleteWall(GameAction action) {
+	public void deleteWall(GameAction action) {
 		boolean vertical = action.isVertical();
 		int yPos = action.getPoint().y;
 		int xPos = action.getPoint().x;
@@ -307,7 +307,7 @@ public class GameState{
 				availableWalls[1][(yPos - 1)][xPos]--;
 			}
 
-			currentPlayer.IncreaseNumWalls();	// 놓을 수 있는 벽의 수 증가
+			currentPlayer.increaseNumWalls();	// 놓을 수 있는 벽의 수 증가
 		} else {
 			wallPoints[0][yPos][xPos] = false;
 
@@ -320,12 +320,12 @@ public class GameState{
 			if(xPos > 0) {
 				availableWalls[0][yPos][(xPos - 1)]--;
 			}
-			currentPlayer.IncreaseNumWalls();	// 놓을 수 있는 벽의 수 증가
+			currentPlayer.increaseNumWalls();	// 놓을 수 있는 벽의 수 증가
 		}
 	}
 
 	// 게임 오버인지 검사
-	public void CheckGameOver() { 
+	public void checkGameOver() { 
 		if(!gameOver) {
 			if(blackPlayer.getPoint().y == 0) {
 				winner = blackPlayer.getPlayerName();
@@ -338,14 +338,14 @@ public class GameState{
 	}
 
 	// 현재 플레이어가 항복하는 함수
-	public void GiveUp() {
+	public void giveUp() {
 		winner = opponentPlayer.getPlayerName();
 		gameOver = true;
 		giveUp = true;
 	}
 
 	// 가능한 벽 놓기 행동인지 검사
-	public boolean CheckAvailableWall(GameAction action) {
+	public boolean checkAvailableWall(GameAction action) {
 		int yPos = action.getPoint().y;
 		int xPos = action.getPoint().x;
 
@@ -357,9 +357,9 @@ public class GameState{
 	}
 
 	// 가능한 행동인지 검사
-	public boolean CheckAvailableAction(GameAction action) {
+	public boolean checkAvailableAction(GameAction action) {
 		if(action.getActionMode() == ACTION_MODE.WALL_MODE) {
-			return CheckAvailableWall(action);
+			return checkAvailableWall(action);
 		} else {
 			boolean available = false;
 			for(int i=0; i < availableMoves.size(); i++) {

@@ -24,7 +24,7 @@ public final class Utils {
 	}
 
 	// 폴더 생성
-	public static void MakeDir(String dirName)
+	public static void makeDir(String dirName)
 	{
 		File Folder = new File(dirName);
 		if(!Folder.exists()) {
@@ -32,7 +32,7 @@ public final class Utils {
 		}
 	}
 
-	public static void LogAction(PLAYER_COLOR playerColor, GameAction action) {
+	public static void logAction(PLAYER_COLOR playerColor, GameAction action) {
 		String stringToPrint = playerColor.name() + " ";
 		if(action.getActionMode().isWallMode()) {
 			stringToPrint += "Wall ";

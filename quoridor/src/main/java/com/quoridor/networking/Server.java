@@ -15,7 +15,7 @@ public class Server extends NetworkObject{
 	}
 	
 	// 서버 열기
-	public void OpenServer(int port, ServerFrame serverF) {
+	public void openServer(int port, ServerFrame serverF) {
 		this.serverFrame = serverF;
 		Runnable runnable = new Runnable() {
 			@Override
@@ -29,7 +29,7 @@ public class Server extends NetworkObject{
 					serverFrame.dispose();
 				} catch(Exception e) {
 					e.printStackTrace();
-					CloseSocket();
+					closeSocket();
 					serverFrame.setOpenServerButtonEnabled(true);
 					serverFrame.appendStringToTextArea("에러 발생");
 				}
@@ -42,7 +42,7 @@ public class Server extends NetworkObject{
 			openServerThread.start();
 		} catch(Exception e) {
 			if(socket != null) {
-				CloseSocket();
+				closeSocket();
 			}
 			serverFrame.setOpenServerButtonEnabled(true);
 			serverFrame.appendStringToTextArea("에러 발생");

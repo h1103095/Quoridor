@@ -24,8 +24,8 @@ public class ReplayThread extends GameThread {
             Thread.sleep(1000);
             while(!Thread.currentThread().isInterrupted()) {
                 if(!pause) {
-                    if(gameState.CheckCanMoveToNext()) {
-                        gameState.MoveToNextTurn();
+                    if(gameState.checkCanMoveToNext()) {
+                        gameState.moveToNextTurn();
                     } else if(giveUp && !giveUpPaneAppeared) {
                         String msg = gameState.getCurrentPlayer().getPlayerName() + "(" + gameState.getCurrentPlayer().getPlayerColor().toString() + ")이(가) 항복하였습니다.";
                         JOptionPane.showMessageDialog(null, msg, "항복", JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE);
@@ -39,11 +39,11 @@ public class ReplayThread extends GameThread {
         }
     }
 
-    public void Pause() {
+    public void pause() {
         pause = true;
     }
 
-    public void Play() {
+    public void play() {
         pause = false;
     }
 

@@ -31,18 +31,18 @@ public final class OptionManager {
     private OptionManager() {
         properties = new Properties();
 		// 옵션 불러오기
-		LoadConfig(Utils.configFilePath);
+		loadConfig(Utils.configFilePath);
     }
 
     public static OptionManager getInstance() {
         return instance;
     }
 
-    public int GetNumConfig() {
+    public int getNumConfig() {
         return GAME_OPTION.values().length;
     }
 
-    public String GetConfig(GAME_OPTION key) {
+    public String getConfig(GAME_OPTION key) {
         String stringKey = key.toString();
         if(properties.containsKey(stringKey)) {
             return properties.getProperty(stringKey);
@@ -51,19 +51,19 @@ public final class OptionManager {
         }
     }
 
-    public void SetConfig(GAME_OPTION optionEnum, String val) {
+    public void setConfig(GAME_OPTION optionEnum, String val) {
         properties.setProperty(optionEnum.toString(), val);
     }
 
-    public void Initialize() {
-        SetConfig(GAME_OPTION.PLAYER_NAME, defaultPlayerName);
-        SetConfig(GAME_OPTION.COMPLETED_GAME_SAVE_DIRECTORY, defaultCompletedGameSaveDirectory);
-        SetConfig(GAME_OPTION.INCOMPLETED_GAME_SAVE_DIRECTORY, defaultIncompletedGameSaveDirectory);
-        SetConfig(GAME_OPTION.VOLUME, defaultVolume);
-        SetConfig(GAME_OPTION.NUM_WALLS, defaultNumWalls);
+    public void initialize() {
+        setConfig(GAME_OPTION.PLAYER_NAME, defaultPlayerName);
+        setConfig(GAME_OPTION.COMPLETED_GAME_SAVE_DIRECTORY, defaultCompletedGameSaveDirectory);
+        setConfig(GAME_OPTION.INCOMPLETED_GAME_SAVE_DIRECTORY, defaultIncompletedGameSaveDirectory);
+        setConfig(GAME_OPTION.VOLUME, defaultVolume);
+        setConfig(GAME_OPTION.NUM_WALLS, defaultNumWalls);
     }
 
-    public boolean SaveConfig(String configFilePath) {
+    public boolean saveConfig(String configFilePath) {
         try {
             OutputStream outputStream = new FileOutputStream(configFilePath);
             properties.store(outputStream, null);
@@ -75,12 +75,12 @@ public final class OptionManager {
         }
     }
 
-    public boolean LoadConfig(String configFilePath) {
+    public boolean loadConfig(String configFilePath) {
         FileInputStream fileInputStream;
         File propertiesFile = new File(Utils.configFilePath);
         if(!propertiesFile.exists()) {
-            Initialize();
-            if(SaveConfig(configFilePath)) {
+            initialize();
+            if(saveConfig(configFilePath)) {
                 return true;
             } else {
                 return false;

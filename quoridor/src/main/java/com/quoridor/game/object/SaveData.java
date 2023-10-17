@@ -27,7 +27,7 @@ public class SaveData implements java.io.Serializable{
         this.blackPlayerName = gameState.getBlackPlayer().getPlayerName();
         this.whitePlayerName = gameState.getWhitePlayer().getPlayerName();
         this.startColor = gameState.getStartColor();
-        this.numWalls = Integer.parseInt(OptionManager.getInstance().GetConfig(GAME_OPTION.NUM_WALLS));
+        this.numWalls = Integer.parseInt(OptionManager.getInstance().getConfig(GAME_OPTION.NUM_WALLS));
         this.history = gameState.getHistory();
         this.giveUp = gameState.isGiveUp();
         this.completed = gameState.isGameOver();
